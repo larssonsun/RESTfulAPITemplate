@@ -4,11 +4,29 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0"/>
+  </ItemGroup>
+  <ItemGroup Condition="'$(MSSQL)' == 'True' ">
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0"/>
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    
+    <!-- you should delete these code after ↓ -->
+
+    <!-- 
+      加入自定义条件编译符号
+      DBINMEMORY 内存数据
+      MSSQL SQLserver数据库
+      -->
+    <DefineConstants>$(DefineConstants);DBINMEMORY</DefineConstants>
+    <!-- 设置自定义条件编译符号的值-->
+    <MSSQL>False</MSSQL>
+    <DBINMEMORY>True</DBINMEMORY>
+
+    <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*</DefaultItemExcludes>
+    <!-- you should delete these code before ↑ -->
+    
   </PropertyGroup>
 </Project>

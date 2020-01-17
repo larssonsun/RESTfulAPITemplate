@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿#if (!DBINMEMORY)
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RESTfulAPISample.Core.DomainModel;
 
@@ -16,3 +18,5 @@ namespace RESTfulAPISample.Infrastructure.EntityConfiguration
         }
     }
 }
+
+#endif

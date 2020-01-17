@@ -30,12 +30,17 @@ namespace RESTfulAPISample.Api
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // services.AddDbContext<MyContext>(opt =>
-            //     opt.UseInMemoryDatabase("RESTfulAPISampleDbConnStr"));
+#if (DBINMEMORY)
+
+            services.AddDbContext<MyContext>(opt =>
+                opt.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
+
+#elif (MSSQL)
 
             services.AddDbContext<MyContext>(options => options.UseSqlServer(
                Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")));
 
+#endif
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
@@ -49,6 +54,7 @@ namespace RESTfulAPISample.Api
             });
 
 #if (ENABLERESPONSECACHE)
+
             services.AddResponseCaching();
             services.AddHttpCacheHeaders(
             (e) =>

@@ -345,7 +345,7 @@ healthchecksdb
 MigrationBackup/
 
 # larsson
-appsettings.*
+appsettings*.json
 .[Vv]scode/
 *.db
 test*.*
