@@ -48,8 +48,8 @@ namespace RESTfulAPISample.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddResponseCaching(); // responseCache
-
+#if (ENABLERESPONSECACHE)
+            services.AddResponseCaching();
             services.AddHttpCacheHeaders(
             (e) =>
             {
@@ -58,7 +58,8 @@ namespace RESTfulAPISample.Api
             (v) =>
             {
                 v.MustRevalidate = true;
-            }); // responseCache
+            });
+#endif
 
 #if (LOCALMEMORYCACHE)
 
@@ -93,9 +94,12 @@ namespace RESTfulAPISample.Api
 
             app.UseRouting();
 
-            // app.UseResponseCaching(); // responseCache
+#if(ENABLERESPONSECACHE)
 
-            // app.UseHttpCacheHeaders(); // responseCache
+            app.UseResponseCaching();
+
+            app.UseHttpCacheHeaders();
+#endif
 
             app.UseAuthorization();
 

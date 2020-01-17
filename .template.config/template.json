@@ -32,6 +32,10 @@
         }
       ]
     },
+    "ENABLERESPONSECACHE": {
+      "type": "computed",
+      "value": "(enable-response-cache == \"true\")"
+    },
     "LOCALMEMORYCACHE": {
       "type": "computed",
       "value": "(cache-type == \"LocalMemoryCache\")"
@@ -51,6 +55,8 @@
         {
           "exclude": [
             "testRec.cs",
+            "README.md",
+            "LICENSE",
             ".gitignore",
             "RESTfulAPISample.code-workspace",
             ".vscode/*",

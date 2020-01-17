@@ -79,7 +79,7 @@ namespace RESTfulAPISample.Api.Controller
         {
 
 #if (LOCALMEMORYCACHE)
-Console.WriteLine("-------------------------mem");
+            Console.WriteLine("-------------------------mem");
             return await _cache.GetOrCreateAsync<IEnumerable<ProductResource>>("products-resource", async entry =>
             {
                 entry.Size = 1;
@@ -88,7 +88,7 @@ Console.WriteLine("-------------------------mem");
             });
 
 #elif (DISTRIBUTEDCACHE)
-Console.WriteLine("-------------------------dis");
+            Console.WriteLine("-------------------------dis");
             IEnumerable<ProductResource> productsResource = null;
             var productsResourceBytes = await _cache.GetAsync("products-resource");
             if (productsResourceBytes != null)
