@@ -1,0 +1,65 @@
+{
+  "author": "Larsson SUN",
+  "classifications": [
+    "Web/WebAPI"
+  ],
+  "name": "ASP.NET Core Web API for Larsson",
+  "identity": "ASPNETCoreWebAPIforLarsson",
+  "shortName": "webapil",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "RESTfulAPISample",
+  "preferNameDirectory": true,
+  "symbols": {
+    "enable-response-cache": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false"
+    },
+    "cache-type": {
+      "type": "parameter",
+      "dataType": "choice",
+      "choices": [
+        {
+          "choice": "LocalMemoryCache",
+          "description": "In-local-memory cache"
+        },
+        {
+          "choice": "DistributedCache",
+          "description": "Distributed caching (default in memory)"
+        }
+      ]
+    },
+    "LOCALMEMORYCACHE": {
+      "type": "computed",
+      "value": "(cache-type == \"LocalMemoryCache\")"
+    },
+    "DISTRIBUTEDCACHE": {
+      "type": "computed",
+      "value": "(cache-type == \"DistributedCache\")"
+    }
+  },
+  "sources": [
+    {
+      "rename": {
+        "appsettings_": "appsettings.json",
+        "appsettings.Development_": "appsettings.Development.json"
+      },
+      "modifiers": [
+        {
+          "exclude": [
+            "testRec.cs",
+            ".gitignore",
+            "RESTfulAPISample.code-workspace",
+            ".vscode/*",
+            "**/[Bb]in/**",
+            "**/*[pP]roperties**/*",
+            "**/*[aA]ppsettings**/*.json"
+          ]
+        }
+      ]
+    }
+  ]
+}
