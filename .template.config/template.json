@@ -46,7 +46,7 @@
           "description": "Database in Microsoft SQL Server"
         }
       ],
-      "default": "DbInMemory",
+      "defaultValue": "DbInMemory",
       "description": "The database type to use"
     },
     "ENABLERESPONSECACHE": {
@@ -84,16 +84,16 @@
             "LICENSE",
             ".gitignore",
             "RESTfulAPISample.code-workspace",
-            ".vscode/*",
+            "**/.[Gg]it/**",
+            "**/.[Vv]scode/**",
             "**/[Bb]in/**",
             "**/*[pP]roperties**/*",
-            "**/*[aA]ppsettings**/*.json"
-          ]
+            "**/*[aA]ppsettings**/*.json"          ]
         },
         {
           "exclude": [
-            "EntityConfigurations/*",
-            "Migrations/*"
+            "**/[Ee]ntityConfigurations/**",
+            "**/[Mm]igrations/**"
           ],
           "condition": "(db-type == \"DbInMemory\")"
         }

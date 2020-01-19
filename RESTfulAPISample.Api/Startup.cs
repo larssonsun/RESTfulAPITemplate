@@ -65,6 +65,7 @@ namespace RESTfulAPISample.Api
             {
                 v.MustRevalidate = true;
             });
+
 #endif
 
 #if (LOCALMEMORYCACHE)
@@ -105,6 +106,7 @@ namespace RESTfulAPISample.Api
             app.UseResponseCaching();
 
             app.UseHttpCacheHeaders();
+            
 #endif
 
             app.UseAuthorization();
