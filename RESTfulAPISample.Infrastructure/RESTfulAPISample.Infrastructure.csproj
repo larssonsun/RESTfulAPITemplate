@@ -15,7 +15,7 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-
+    
     <!-- you should delete these code after ↓ -->
 
     <DefineConstants>$(DefineConstants);DBINMEMORY</DefineConstants>
@@ -24,6 +24,6 @@
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*</DefaultItemExcludes>
 
     <!-- you should delete these code before ↑ -->
-    
+
   </PropertyGroup>
 </Project>
