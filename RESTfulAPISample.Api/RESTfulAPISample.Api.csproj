@@ -13,19 +13,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
-    <!-- you should delete these code after ↓ -->
+    <!-- ↓ -->
 
-    <!-- 
+    <!-- ↑ 
       加入自定义条件编译符号
       DISTRIBUTEDCACHE 分布式缓存（默认存储于内存）
       LOCALMEMORYCACHE 服务器本机内存缓存
-      -->
-    <!-- <DefineConstants>$(DefineConstants);LOCALMEMORYCACHE;ENABLERESPONSECACHE</DefineConstants> -->
-    <!-- 设置自定义条件编译符号的值-->
+      ↓ -->
+    <!-- ↑ <DefineConstants>$(DefineConstants);LOCALMEMORYCACHE;ENABLERESPONSECACHE</DefineConstants> ↓ -->
+    <!-- ↑ 设置自定义条件编译符号的值 ↓ -->
     <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     
-    <!-- you should delete these code before ↑ -->
+    <!-- ↑  -->
     
   </PropertyGroup>
 </Project>

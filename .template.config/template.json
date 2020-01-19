@@ -13,6 +13,16 @@
   "sourceName": "RESTfulAPISample",
   "preferNameDirectory": true,
   "symbols": {
+    "delete-sth-1": {
+      "type": "parameter",
+      "defaultValue": "",
+      "replaces": "↓ -->"
+    },
+    "delete-sth-2": {
+      "type": "parameter",
+      "defaultValue": "",
+      "replaces": "<!-- ↑"
+    },
     "enable-response-cache": {
       "type": "parameter",
       "dataType": "bool",
