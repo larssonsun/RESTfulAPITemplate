@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization; // jwt
 #if (LOCALMEMORYCACHE)
 using Microsoft.Extensions.Caching.Memory;
 #elif (DISTRIBUTEDCACHE)
@@ -22,6 +23,7 @@ namespace RESTfulAPISample.Api.Controller
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Route("[controller]")]
+    [Authorize] // jwt
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
