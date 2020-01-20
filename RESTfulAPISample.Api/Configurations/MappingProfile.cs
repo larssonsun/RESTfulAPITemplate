@@ -8,6 +8,7 @@ namespace RESTfulAPISample.Api.Configurations
     {
         public MappingProfile()
         {
+            CreateMap<LoginRequestDTO, LoginRequest>();
             CreateMap<Product, ProductResource>();
             CreateMap<ProductAddResource, Product>();
         }

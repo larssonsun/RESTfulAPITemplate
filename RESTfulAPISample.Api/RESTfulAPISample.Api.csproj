@@ -14,7 +14,15 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <!--  ↓ -->
+
+    <DefineConstants>$(DefineConstants);DBINMEMORY</DefineConstants>
+    <DBINMEMORY>True</DBINMEMORY>
     <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
+    
+    <!-- ↑  -->
+
   </PropertyGroup>
 </Project>
