@@ -15,6 +15,7 @@ using RESTfulAPISample.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using RESTfulAPISample.Api.Service;
 
 namespace RESTfulAPISample.Api
 {
@@ -30,6 +31,7 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
 
