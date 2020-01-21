@@ -2,6 +2,13 @@
   "ConnectionStrings": {
     "RESTfulAPISampleDbConnStr": ""
   },
+  "TokenManagement": {
+    "Secret": "RESTfulAPISampleSecretTheMinimsizeIs16",
+    "Issuer": "RESTfulAPISampleIssuer",
+    "Audience": "RESTfulAPISampleSecretAudience",
+    "AccessExpiration": 30,
+    "RefreshExpiration": 60
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",

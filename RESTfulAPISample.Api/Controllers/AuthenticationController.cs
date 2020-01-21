@@ -35,8 +35,8 @@ namespace RESTfulAPISample.Api.Controller
 
             var loginRequest = _mapper.Map<LoginRequest>(request);
 
-            string token;
-            if (_auth.IsAuthenticated(loginRequest, out token))
+            var (isAuth, token) = _auth.IsAuthenticated(loginRequest);
+            if (isAuth)
             {
                 return Ok(token);
             }

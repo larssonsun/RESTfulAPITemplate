@@ -4,6 +4,6 @@ namespace RESTfulAPISample.Core.Interface
 {
     public interface IAuthenticateService
     {
-        bool IsAuthenticated(LoginRequest request, out string token);
+        (bool IsAuthenticated, string Token) IsAuthenticated(LoginRequest request);
     }
 }

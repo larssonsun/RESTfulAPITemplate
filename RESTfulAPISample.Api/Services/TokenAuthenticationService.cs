@@ -18,14 +18,15 @@ namespace RESTfulAPISample.Api.Service
             _userService = userService;
             _tokenManagement = tokenManagement.Value;
         }
-        public bool IsAuthenticated(LoginRequest request, out string token)
+        public (bool IsAuthenticated, string Token) IsAuthenticated(LoginRequest request)
         {
-            token = string.Empty;
+            var token = string.Empty;
             if (!_userService.IsValid(request))
-                return false;
+                return (false, null);
+                
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name,request.Username)
+                new Claim(ClaimTypes.Name, request.Username)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -33,7 +34,7 @@ namespace RESTfulAPISample.Api.Service
 
             token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
-            return true;
+            return (true, token);
 
         }
     }

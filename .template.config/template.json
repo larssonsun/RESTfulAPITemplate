@@ -119,13 +119,13 @@
         },
         {
           "exclude": [
-            "Repositories/UserRepository.cs",
-            "Interfaces/IAuthenticateService.cs",
-            "Interfaces/IUserRepository.cs",
-            "DomainModels/LoginRequest.cs",
-            "DomainModels/TokenManagement.cs",
-            "Services/TokenAuthenticationService.cs",
-            "Controllers/AuthenticationController.cs"
+            "**/Repositories/UserRepository.cs",
+            "**/Interfaces/IAuthenticateService.cs",
+            "**/Interfaces/IUserRepository.cs",
+            "**/DomainModels/LoginRequest.cs",
+            "**/DomainModels/TokenManagement.cs",
+            "**/Services/TokenAuthenticationService.cs",
+            "**/Controllers/AuthenticationController.cs"
           ],
           "condition": "(enable-jwt-authentication != \"true\")"
         }
