@@ -14,11 +14,11 @@ namespace RESTfulAPISample.Api.Controller
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticateService _authService;
+        private readonly IAuthenticateService _auth;
         private readonly IMapper _mapper;
-        public AuthenticationController(IAuthenticateService authService, IMapper mapper)
+        public AuthenticationController(IAuthenticateService auth, IMapper mapper)
         {
-            this._authService = authService;
+            this._auth = auth;
             this._mapper = mapper;
         }
         
@@ -36,7 +36,7 @@ namespace RESTfulAPISample.Api.Controller
             var loginRequest = _mapper.Map<LoginRequest>(request);
 
             string token;
-            if (_authService.IsAuthenticated(loginRequest, out token))
+            if (_auth.IsAuthenticated(loginRequest, out token))
             {
                 return Ok(token);
             }

@@ -5,7 +5,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 {
     public class UserRepository : IUserRepository
     {
-        //模拟测试，默认都是人为验证有效
+        // Implement your own validation logic pls.
         public bool IsValid(LoginRequest req)
         {
             return true;
