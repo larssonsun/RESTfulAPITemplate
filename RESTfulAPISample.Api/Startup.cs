@@ -15,6 +15,8 @@ using RESTfulAPISample.Infrastructure.Repository;
 using RESTfulAPISample.Api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using RESTfulAPISample.Core.DomainModel;
+using System.Text;
 #endif
 namespace RESTfulAPISample.Api
 {
@@ -31,7 +33,7 @@ namespace RESTfulAPISample.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-#if ENABLEJWTAUTHENTICATION
+#if (ENABLEJWTAUTHENTICATION)
 
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
 

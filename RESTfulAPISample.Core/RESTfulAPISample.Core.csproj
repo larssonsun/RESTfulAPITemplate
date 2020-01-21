@@ -5,7 +5,8 @@
 
     <!--  ↓ -->
 
-    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <DefineConstants>$(DefineConstants);ENABLEJWTAUTHENTICATION</DefineConstants>
+    <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Interfaces\**\IAuthenticateService.cs;
     Interfaces\**\IUserRepository.cs;
