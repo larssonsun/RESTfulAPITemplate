@@ -8,15 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RESTfulAPISample.Api.Configurations;
-using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+#if (ENABLEJWTAUTHENTICATION)
+using RESTfulAPISample.Api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using RESTfulAPISample.Api.Service;
-
+#endif
 namespace RESTfulAPISample.Api
 {
     public class Startup
@@ -31,9 +30,14 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+#if ENABLEJWTAUTHENTICATION
+
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+
+#endif
 
             services.AddScoped<IProductRepository, ProductRepository>();
 
@@ -99,6 +103,8 @@ namespace RESTfulAPISample.Api
             // larsson：对链式验证进行短路“and”操作
             FluentValidation.ValidatorOptions.CascadeMode = FluentValidation.CascadeMode.StopOnFirstFailure; // dto validattion
 
+#if (ENABLEJWTAUTHENTICATION)
+
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
             services.AddAuthentication(x =>
@@ -118,7 +124,10 @@ namespace RESTfulAPISample.Api
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            }); // jwt
+            });
+
+#endif
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -131,7 +140,7 @@ namespace RESTfulAPISample.Api
 
             app.UseRouting();
 
-#if(ENABLERESPONSECACHE)
+#if (ENABLERESPONSECACHE)
 
             app.UseResponseCaching();
 
@@ -139,7 +148,11 @@ namespace RESTfulAPISample.Api
             
 #endif
 
-            app.UseAuthentication(); // jwt
+#if (ENABLEJWTAUTHENTICATION)
+
+            app.UseAuthentication();
+
+#endif
 
             app.UseAuthorization();
 

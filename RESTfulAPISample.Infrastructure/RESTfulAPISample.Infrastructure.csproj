@@ -21,7 +21,9 @@
     <DefineConstants>$(DefineConstants);DBINMEMORY</DefineConstants>
     <MSSQL>False</MSSQL>
     <DBINMEMORY>True</DBINMEMORY>
-    <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*</DefaultItemExcludes>
+    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>
+    <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);Repositories\**\UserRepository.cs</DefaultItemExcludes>
 
     <!-- ↑  -->
 

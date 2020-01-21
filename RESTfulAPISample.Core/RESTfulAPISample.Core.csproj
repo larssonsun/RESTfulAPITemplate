@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+
+    <!--  ↓ -->
+
+    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
+    Interfaces\**\IAuthenticateService.cs;
+    Interfaces\**\IUserRepository.cs;
+    DomainModels\**\LoginRequest.cs;
+    DomainModels\**\TokenManagement.cs;</DefaultItemExcludes>
+
+    <!-- ↑  -->
+    
   </PropertyGroup>
 
 </Project>

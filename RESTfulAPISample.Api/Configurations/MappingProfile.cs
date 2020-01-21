@@ -8,7 +8,13 @@ namespace RESTfulAPISample.Api.Configurations
     {
         public MappingProfile()
         {
+
+#if (ENABLEJWTAUTHENTICATION)
+
             CreateMap<LoginRequestDTO, LoginRequest>();
+
+#endif
+
             CreateMap<Product, ProductResource>();
             CreateMap<ProductAddResource, Product>();
         }
