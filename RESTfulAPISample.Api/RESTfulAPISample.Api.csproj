@@ -22,12 +22,12 @@
     <!--  ↓ -->
 
 
-    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLEJWTAUTHENTICATION;ENABLESWAGGER</DefineConstants>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLEJWTAUTHENTICATION</DefineConstants>
     <DBINMEMORY>True</DBINMEMORY>
     <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
-    <ENABLESWAGGER>True</ENABLESWAGGER>
+    <ENABLESWAGGER>False</ENABLESWAGGER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
     Controllers\**\AuthenticationController.cs;</DefaultItemExcludes>
