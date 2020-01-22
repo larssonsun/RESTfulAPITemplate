@@ -11,9 +11,11 @@ using RESTfulAPISample.Api.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+#if (ENABLESWAGGER)
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
+#endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -127,6 +129,8 @@ namespace RESTfulAPISample.Api
 
 #endif
 
+#if (ENABLESWAGGER)
+
             services.AddSwaggerGen(sgo =>
             {
                 sgo.SwaggerDoc("v1", new OpenApiInfo
@@ -161,6 +165,8 @@ namespace RESTfulAPISample.Api
                 });
             });
 
+#endif
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -170,6 +176,8 @@ namespace RESTfulAPISample.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+#if (ENABLESWAGGER)
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -183,6 +191,7 @@ namespace RESTfulAPISample.Api
                 suo.DocumentTitle = "RESTfulAPISample API";
             });
 
+#endif
 
             app.UseRouting();
 

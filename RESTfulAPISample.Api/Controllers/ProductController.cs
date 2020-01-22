@@ -197,7 +197,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="400">If the product to be created is null</response>
         /// <response code="401">If authorization verification is not passed</response>
         /// <response code="412">The source of the product has changed 这个暂时放在这里，应该放在put中</response> 
-        /// <response code="422">DTO failed to pass the model validation</response>
+        /// <response code="422">DTO ProductResource failed to pass the model validation</response>
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)] // 格式数据请求使用[Consumes]，若没有该属性，则直接识别请求头中的Content-Type，也就是[Consumes]可以省略，只要Content-Type为你需要的就能进行数据的模型绑定 // larsson：实际上asp.net core 默认就是json
         [ProducesResponseType(StatusCodes.Status201Created)]

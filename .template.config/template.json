@@ -23,6 +23,11 @@
       "defaultValue": "",
       "replaces": "<!-- ↑"
     },
+    "enable-swagger": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false"
+    },
     "enable-jwt-authentication": {
       "type": "parameter",
       "dataType": "bool",
@@ -63,6 +68,10 @@
       ],
       "defaultValue": "DbInMemory",
       "description": "The database type to use"
+    },
+    "ENABLESWAGGER": {
+      "type":"computed",
+      "value":"(enable-swagger == \"true\")"
     },
     "ENABLEJWTAUTHENTICATION": {
       "type": "computed",

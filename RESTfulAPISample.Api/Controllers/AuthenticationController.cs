@@ -9,6 +9,9 @@ using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Controller
 {
+    /// <summary>
+    /// Authentication
+    /// </summary>
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Route("[controller]")]
@@ -22,6 +25,13 @@ namespace RESTfulAPISample.Api.Controller
             this._mapper = mapper;
         }
         
+        /// <summary>
+        /// Get JWT Token
+        /// </summary>
+        /// <param name="request">User login info</param>
+        /// <response code="200">Returns the JWT token</response>
+        /// <response code="400">If authorization verification is not passed</response>
+        /// <response code="422">DTO LoginRequestDTO failed to pass the model validation</response>
         [AllowAnonymous]
         [HttpPost("request-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
