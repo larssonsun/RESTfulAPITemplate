@@ -11,6 +11,9 @@ using RESTfulAPISample.Api.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System;
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,48 +50,42 @@ namespace RESTfulAPISample.Api
 
 #if (DBINMEMORY)
 
-            services.AddDbContext<MyContext>(opt =>
-                opt.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
+            services.AddDbContext<MyContext>(dcob =>
+                dcob.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
 
 #elif (MSSQL)
 
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(
+            services.AddDbContext<MyContext>(dcob => dcob.UseSqlServer(
                Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")));
 
 #endif
-            var mappingConfig = new MapperConfiguration(mc =>
+            var mappingConfig = new MapperConfiguration(ice =>
             {
-                mc.AddProfile(new MappingProfile());
+                ice.AddProfile(new MappingProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.Configure<ApiBehaviorOptions>(options =>
+            services.Configure<ApiBehaviorOptions>(abo =>
             {
-                options.SuppressModelStateInvalidFilter = true;
+                abo.SuppressModelStateInvalidFilter = true;
             });
 
 #if (ENABLERESPONSECACHE)
 
             services.AddResponseCaching();
             services.AddHttpCacheHeaders(
-            (e) =>
-            {
-                e.MaxAge = 30;
-            },
-            (v) =>
-            {
-                v.MustRevalidate = true;
-            });
+            (e) => { e.MaxAge = 30; },
+            (v) => { v.MustRevalidate = true; });
 
 #endif
 
 #if (LOCALMEMORYCACHE)
 
-            services.AddMemoryCache(options =>
+            services.AddMemoryCache(mco =>
             {
-                options.SizeLimit = 10; // 份数
-                options.CompactionPercentage = 0.2; // 超出份数后的压缩比例，从低优先级的缓存开始压缩。这里就是压缩2份
+                mco.SizeLimit = 10; // 份数
+                mco.CompactionPercentage = 0.2; // 超出份数后的压缩比例，从低优先级的缓存开始压缩。这里就是压缩2份
             });
 
 #elif (DISTRIBUTEDCACHE)
@@ -99,7 +96,7 @@ namespace RESTfulAPISample.Api
 
             services.AddControllers()
                 .AddFluentValidation(
-                    options => options.RegisterValidatorsFromAssemblyContaining<Startup>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
+                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Startup>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
 
             // larsson：对链式验证进行短路“and”操作
@@ -109,15 +106,15 @@ namespace RESTfulAPISample.Api
 
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
-            services.AddAuthentication(x =>
+            services.AddAuthentication(ao =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+                ao.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                ao.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jbo =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                jbo.RequireHttpsMetadata = false;
+                jbo.SaveToken = true;
+                jbo.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
@@ -130,6 +127,40 @@ namespace RESTfulAPISample.Api
 
 #endif
 
+            services.AddSwaggerGen(sgo =>
+            {
+                sgo.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "RESTfulAPISample API",
+                    Version = "v1",
+                    Description = "API for RESTfulAPISample",
+                    Contact = new OpenApiContact { Name = "Larsson", Email = "77540975@qq.com", Url = new Uri("https://blog.larssonsun.net") }
+                });
+
+                // include document file
+                sgo.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml"), true);
+
+                // add security definitions
+                sgo.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "Please enter into field the word 'Bearer' followed by a space and the JWT value",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                });
+                sgo.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference()
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    }, Array.Empty<string>() }
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,6 +170,19 @@ namespace RESTfulAPISample.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(suo =>
+            {
+                suo.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTfulAPISample API V1");
+                suo.RoutePrefix = string.Empty;
+                suo.DocumentTitle = "RESTfulAPISample API";
+            });
+
 
             app.UseRouting();
 
