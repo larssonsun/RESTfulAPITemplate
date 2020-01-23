@@ -38,9 +38,16 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult RequestToken([FromBody] LoginRequestDTO request)
         {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null
+
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid Request");
+                return new UnprocessableEntityObjectResult(ModelState); // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
             }
 
             var loginRequest = _mapper.Map<LoginRequest>(request);

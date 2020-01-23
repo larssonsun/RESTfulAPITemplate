@@ -191,7 +191,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <summary>
         /// Create a product
         /// </summary>
-        /// <param name="ProductResource">The product to be created</param>
+        /// <param name="productDTO">The product to be created</param>
         /// <returns>The created new product</returns>
         /// <response code="201">Returns the newly created product</response>
         /// <response code="400">If the product to be created is null</response>
@@ -205,9 +205,9 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductResource>> CreateAsync([FromBody]ProductAddResource ProductResource)
+        public async Task<ActionResult<ProductResource>> CreateAsync([FromBody]ProductAddResource productDTO)
         {
-            if (ProductResource == null)
+            if (productDTO == null)
             {
                 return BadRequest();
             }
@@ -219,7 +219,7 @@ namespace RESTfulAPISample.Api.Controller
                 return new UnprocessableEntityObjectResult(ModelState); // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
             }
 
-            var product = _mapper.Map<Product>(ProductResource);
+            var product = _mapper.Map<Product>(productDTO);
             _repository.AddProduct(product);
             await _unitOfWork.SaveAsync();
 
