@@ -94,7 +94,9 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">If authorization verification is not passed</response>
         /// <response code="404">If you don't get any products</response>
         [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IEnumerable<ProductResource>> Get()
