@@ -11,6 +11,7 @@ using RESTfulAPISample.Api.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+using AutoWrapper;
 #if (ENABLESWAGGER)
 using Microsoft.OpenApi.Models;
 using System.IO;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using System.Text;
+using RESTfulAPISample.Middleware;
 #endif
 namespace RESTfulAPISample.Api
 {
@@ -172,6 +174,10 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCatchTheLastMiddleware();
+
+            app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { ShowStatusCode = true });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -187,7 +193,7 @@ namespace RESTfulAPISample.Api
             app.UseSwaggerUI(suo =>
             {
                 suo.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTfulAPISample API V1");
-                suo.RoutePrefix = string.Empty;
+                suo.RoutePrefix = "swagger"; //larsson：为了AutoWrapper能正常识别swagger这里必须要设置一个前缀而不是string.Empty
                 suo.DocumentTitle = "RESTfulAPISample API";
             });
 
@@ -200,7 +206,7 @@ namespace RESTfulAPISample.Api
             app.UseResponseCaching();
 
             app.UseHttpCacheHeaders();
-            
+
 #endif
 
 #if (ENABLEJWTAUTHENTICATION)
