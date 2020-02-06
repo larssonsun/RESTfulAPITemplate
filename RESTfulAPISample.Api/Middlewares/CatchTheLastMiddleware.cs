@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace RESTfulAPISample.Middleware
 {
@@ -45,22 +46,22 @@ namespace RESTfulAPISample.Middleware
                         context.Response.ContentLength = contentLength;
                         await context.Response.WriteAsync(responseBody);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        if (newBodyStream.Length > 0)
+                        context.Response.Body = originalBodyStream;
+                        context.Response.StatusCode = 200;
+                        context.Response.ContentType = "application/json";
+                        var bodyText = JsonSerializer.Serialize(new
                         {
-                            newBodyStream.Seek(0, SeekOrigin.Begin);
-                            await newBodyStream.CopyToAsync(originalBodyStream);
-                        }
-                        else
-                        {
-                            context.Response.Body = originalBodyStream;
-                            context.Response.StatusCode = 200;
-                            context.Response.ContentType = "application/json";
-                            context.Response.ContentLength = 49;
-                            await context.Response.WriteAsync("{\"larsson\":\"todo. finish this json result\"}");
-
-                        }
+                            statusCode = 500,
+                            isError = true,
+                            responseException = new
+                            {
+                                exceptionMessage = $"Stranger Error， {e.Message}"
+                            }
+                        });
+                        context.Response.ContentLength = bodyText.Length;
+                        await context.Response.WriteAsync(bodyText);
                     }
                 }
             }
