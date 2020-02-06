@@ -94,7 +94,13 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">If authorization verification is not passed</response>
         /// <response code="404">If you don't get any products</response>
         [HttpGet]
+
+#if (ENABLEJWTAUTHENTICATION)
+
         [AllowAnonymous]
+        
+#endif
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

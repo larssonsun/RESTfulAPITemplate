@@ -12,6 +12,7 @@ using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
 using AutoWrapper;
+using RESTfulAPISample.Middleware;
 #if (ENABLESWAGGER)
 using Microsoft.OpenApi.Models;
 using System.IO;
@@ -23,7 +24,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using System.Text;
-using RESTfulAPISample.Middleware;
 #endif
 namespace RESTfulAPISample.Api
 {
