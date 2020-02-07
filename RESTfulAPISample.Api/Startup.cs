@@ -174,6 +174,15 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+#if (ENABLERESPONSECACHE)
+
+            app.UseResponseCaching();
+
+            app.UseHttpCacheHeaders();
+
+#endif
+
             app.UseCatchTheLastMiddleware();
 
             app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { ShowStatusCode = true });
@@ -200,14 +209,6 @@ namespace RESTfulAPISample.Api
 #endif
 
             app.UseRouting();
-
-#if (ENABLERESPONSECACHE)
-
-            app.UseResponseCaching();
-
-            app.UseHttpCacheHeaders();
-
-#endif
 
 #if (ENABLEJWTAUTHENTICATION)
 
