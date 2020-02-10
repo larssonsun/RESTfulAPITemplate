@@ -8,7 +8,7 @@
     <PackageReference Include="FluentValidation" Version="8.6.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.1" />
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
-    <PackageReference Condition="'$(LOCALMEMORYCACHE)' == 'True'" Include="MessagePack" Version="2.0.323" />
+    <PackageReference Condition="'$(LOCALMEMORYCACHE)' == 'True'" Include="MessagePack" Version="2.1.80" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="autowrapper.core" Version="3.0.0" />
   </ItemGroup>
@@ -22,12 +22,13 @@
   <PropertyGroup>
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLERESPONSECACHE;ENABLEJWTAUTHENTICATION;ENABLESWAGGER</DefineConstants>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;LOCALMEMORYCACHE</DefineConstants>
     <DBINMEMORY>True</DBINMEMORY>
-    <ENABLERESPONSECACHE>True</ENABLERESPONSECACHE>
+    <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
+    <LOCALMEMORYCACHE>True</LOCALMEMORYCACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
-    <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
-    <ENABLESWAGGER>True</ENABLESWAGGER>
+    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <ENABLESWAGGER>False</ENABLESWAGGER>
     <RESPONSEHANDLERWRAPPER>False</RESPONSEHANDLERWRAPPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
