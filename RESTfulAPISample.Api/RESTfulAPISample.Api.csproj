@@ -5,12 +5,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="autowrapper.core" Version="3.0.0" />
     <PackageReference Include="FluentValidation" Version="8.6.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.1" />
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
     <PackageReference Condition="'$(LOCALMEMORYCACHE)' == 'True'" Include="MessagePack" Version="2.0.323" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+    <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="autowrapper.core" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(ENABLEJWTAUTHENTICATION)' == 'True'">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
@@ -28,6 +28,7 @@
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <ENABLESWAGGER>True</ENABLESWAGGER>
+    <RESPONSEHANDLERWRAPPER>False</RESPONSEHANDLERWRAPPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
     Controllers\**\AuthenticationController.cs;</DefaultItemExcludes>

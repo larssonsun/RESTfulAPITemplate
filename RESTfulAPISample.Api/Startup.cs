@@ -11,8 +11,10 @@ using RESTfulAPISample.Api.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+#if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
 using RESTfulAPISample.Middleware;
+#endif
 #if (ENABLESWAGGER)
 using Microsoft.OpenApi.Models;
 using System.IO;
@@ -183,6 +185,8 @@ namespace RESTfulAPISample.Api
 
 #endif
 
+#if (RESPONSEHANDLERWRAPPER)
+
             app.UseCatchTheLastMiddleware();
 
             app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { ShowStatusCode = true });
@@ -191,6 +195,8 @@ namespace RESTfulAPISample.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+#endif
 
 #if (ENABLESWAGGER)
 

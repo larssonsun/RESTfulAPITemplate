@@ -9,11 +9,11 @@ using System.Text;
 
 namespace RESTfulAPISample.Middleware
 {
-    public class CatchTheLastMiddleware
+    public class FixAutoWrapperMiddleware
     {
         private readonly RequestDelegate _next;
         public IConfiguration _configuration { get; }
-        public CatchTheLastMiddleware(RequestDelegate next, IConfiguration configuration)
+        public FixAutoWrapperMiddleware(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
             _configuration = configuration;
@@ -86,7 +86,7 @@ namespace RESTfulAPISample.Middleware
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return app.UseMiddleware<CatchTheLastMiddleware>();
+            return app.UseMiddleware<FixAutoWrapperMiddleware>();
 
         }
     }
