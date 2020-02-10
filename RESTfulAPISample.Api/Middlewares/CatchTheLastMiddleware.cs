@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using System.Text;
 
 namespace RESTfulAPISample.Middleware
 {
@@ -34,11 +35,14 @@ namespace RESTfulAPISample.Middleware
 
                         await _next.Invoke(context);
 
-                        var contentType = context.Response.ContentType;
-                        var contentLength = context.Response.ContentLength;
                         newBodyStream.Seek(0, SeekOrigin.Begin);
                         var responseBody = await new StreamReader(newBodyStream).ReadToEndAsync();
                         newBodyStream.Seek(0, SeekOrigin.Begin);
+                        responseBody = responseBody.Replace("\"\\\"", "\"").Replace("\\\"\"", "\"")
+                            .Replace("\"{", "{").Replace("}\"", "}")
+                            .Replace("\\\"", "\"");
+                        var contentType = context.Response.ContentType;
+                        var contentLength = responseBody != null ? Encoding.UTF8.GetByteCount(responseBody) : 0;
 
                         context.Response.Body = originalBodyStream;
                         context.Response.StatusCode = 200;
