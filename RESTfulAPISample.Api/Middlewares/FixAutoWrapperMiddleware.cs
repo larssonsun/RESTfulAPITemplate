@@ -12,11 +12,14 @@ namespace RESTfulAPISample.Middleware
     public class FixAutoWrapperMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly FixAutoWrapperOptions _options;
         public IConfiguration _configuration { get; }
-        public FixAutoWrapperMiddleware(RequestDelegate next, IConfiguration configuration)
+
+        public FixAutoWrapperMiddleware(RequestDelegate next, IConfiguration configuration, FixAutoWrapperOptions options)
         {
             _next = next;
             _configuration = configuration;
+            _options = options;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -45,7 +48,7 @@ namespace RESTfulAPISample.Middleware
                         var contentLength = responseBody != null ? Encoding.UTF8.GetByteCount(responseBody) : 0;
 
                         context.Response.Body = originalBodyStream;
-                        context.Response.StatusCode = 200;
+                        context.Response.StatusCode = _options.HttpStatusForce200 ? 200 : context.Response.StatusCode;
                         context.Response.ContentType = contentType;
                         context.Response.ContentLength = contentLength;
                         await context.Response.WriteAsync(responseBody);
@@ -53,7 +56,7 @@ namespace RESTfulAPISample.Middleware
                     catch (Exception e)
                     {
                         context.Response.Body = originalBodyStream;
-                        context.Response.StatusCode = 200;
+                        context.Response.StatusCode = _options.HttpStatusForce200 ? 200 : context.Response.StatusCode;
                         context.Response.ContentType = "application/json";
                         var bodyText = JsonSerializer.Serialize(new
                         {
@@ -73,20 +76,22 @@ namespace RESTfulAPISample.Middleware
 
         private bool IsSwagger(HttpContext context)
         {
-            return context.Request.Path.StartsWithSegments(new PathString("/swagger"));
+            return context.Request.Path.StartsWithSegments(new PathString(_options.SwaggerStartsWithSegments));
         }
     }
 
-    public static class CatchTheLastMiddlewareExt
+    public static class FixAutoWrapperMiddlewareExt
     {
-        public static IApplicationBuilder UseCatchTheLastMiddleware(this IApplicationBuilder app)
+        public static IApplicationBuilder UseFixAutoWrapperMiddleware(this IApplicationBuilder app, Action<FixAutoWrapperOptions> setupAction = null)
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            return app.UseMiddleware<FixAutoWrapperMiddleware>();
+            var options = new FixAutoWrapperOptions();
+            setupAction?.Invoke(options);
+            return app.UseMiddleware<FixAutoWrapperMiddleware>(options);
 
         }
     }

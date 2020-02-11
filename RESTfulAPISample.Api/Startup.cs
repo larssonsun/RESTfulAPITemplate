@@ -187,7 +187,11 @@ namespace RESTfulAPISample.Api
 
 #if (RESPONSEHANDLERWRAPPER)
 
-            app.UseCatchTheLastMiddleware();
+            app.UseFixAutoWrapperMiddleware(fasa =>
+            {
+                fasa.HttpStatusForce200 = false;
+                fasa.SwaggerStartsWithSegments = "/" + Configuration["Publics:SwaggerStartsWithSegments"];
+            });
 
             app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { ShowStatusCode = true });
 
@@ -208,7 +212,7 @@ namespace RESTfulAPISample.Api
             app.UseSwaggerUI(suo =>
             {
                 suo.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTfulAPISample API V1");
-                suo.RoutePrefix = "swagger"; //larsson：为了AutoWrapper能正常识别swagger这里必须要设置一个前缀而不是string.Empty
+                suo.RoutePrefix = Configuration["Publics:SwaggerStartsWithSegments"];;
                 suo.DocumentTitle = "RESTfulAPISample API";
             });
 

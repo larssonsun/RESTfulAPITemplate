@@ -9,6 +9,9 @@
     "AccessExpiration": 30,
     "RefreshExpiration": 60
   },
+  "Publics": {
+    "SwaggerStartsWithSegments": "swagger"
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",

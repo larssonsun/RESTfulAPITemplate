@@ -22,14 +22,14 @@
   <PropertyGroup>
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants);DBINMEMORY;LOCALMEMORYCACHE</DefineConstants>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLESWAGGER;RESPONSEHANDLERWRAPPER</DefineConstants>
     <DBINMEMORY>True</DBINMEMORY>
     <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
     <LOCALMEMORYCACHE>True</LOCALMEMORYCACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
-    <ENABLESWAGGER>False</ENABLESWAGGER>
-    <RESPONSEHANDLERWRAPPER>False</RESPONSEHANDLERWRAPPER>
+    <ENABLESWAGGER>True</ENABLESWAGGER>
+    <RESPONSEHANDLERWRAPPER>True</RESPONSEHANDLERWRAPPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
     Controllers\**\AuthenticationController.cs;</DefaultItemExcludes>
