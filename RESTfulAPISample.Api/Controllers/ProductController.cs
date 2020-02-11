@@ -85,7 +85,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-        #region snippet_Get
+        #region snippet_GetProducts
         /// <summary>
         /// Get Products
         /// </summary>
@@ -105,7 +105,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IEnumerable<ProductResource>> Get()
+        public async Task<IEnumerable<ProductResource>> GetProducts()
         {
 
 #if (LOCALMEMORYCACHE)
@@ -144,7 +144,7 @@ namespace RESTfulAPISample.Api.Controller
 
         #endregion
 
-        #region snippet_GetById   
+        #region snippet_GetProduct   
         /// <summary>
         /// Get product by productId
         /// </summary>
@@ -157,7 +157,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductResource>> GetById(Guid id)
+        public async Task<ActionResult<ProductResource>> GetProduct(Guid id)
         {
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
@@ -169,7 +169,7 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-        #region snippet_GetOnSaleProductsAsync
+        #region snippet_GetProductsAsync
         /// <summary>
         /// Get products asynchronously by product id
         /// </summary>
@@ -177,11 +177,11 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="200">Returns the target product</response>
         /// <response code="401">If authorization verification is not passed</response>
         /// <response code="404">If you don't get any product</response>
-        [HttpGet("asyncsale")]
+        [HttpGet("async")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async IAsyncEnumerable<ProductResource> GetOnSaleProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
+        public async IAsyncEnumerable<ProductResource> GetProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
         {
             var products = _repository.GetProductsAsync();
 
@@ -195,7 +195,7 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-        #region snippet_CreateAsync
+        #region snippet_CreateProductAsync
         /// <summary>
         /// Create a product
         /// </summary>
@@ -213,7 +213,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductResource>> CreateAsync([FromBody]ProductAddResource productDTO)
+        public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductAddResource productDTO)
         {
             if (productDTO == null)
             {
@@ -231,7 +231,7 @@ namespace RESTfulAPISample.Api.Controller
             _repository.AddProduct(product);
             await _unitOfWork.SaveAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
         #endregion
     }
