@@ -3,7 +3,7 @@ using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Resource.Validator
 {
-    public class ProductAddResourceValidator : AbstractValidator<ProductAddResource>
+    public class ProductAddResourceValidator : AbstractValidator<ProductCreateDTO>
     {
         public ProductAddResourceValidator(IProductRepository productRepository)
         {

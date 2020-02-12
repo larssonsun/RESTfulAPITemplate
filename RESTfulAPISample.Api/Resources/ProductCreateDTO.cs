@@ -1,6 +1,6 @@
-namespace RESTfulAPISample.Api.Resource
+﻿namespace RESTfulAPISample.Api.Resource
 {
-    public class ProductAddResource
+    public class ProductCreateDTO
     {
         public System.Guid Id { get; set; }
         public string Name { get; set; }

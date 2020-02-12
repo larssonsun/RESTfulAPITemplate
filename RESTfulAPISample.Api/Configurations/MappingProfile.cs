@@ -16,7 +16,7 @@ namespace RESTfulAPISample.Api.Configurations
 #endif
 
             CreateMap<Product, ProductResource>();
-            CreateMap<ProductAddResource, Product>();
+            CreateMap<ProductCreateDTO, Product>();
         }
     }
 }

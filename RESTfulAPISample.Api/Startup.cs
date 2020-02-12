@@ -100,7 +100,11 @@ namespace RESTfulAPISample.Api
 
 #endif
 
-            services.AddControllers()
+            // larsson：
+            // ReturnHttpNotAcceptable属性设为true，如果想要的格式不支持，那么就会返回406 Not Acceptable
+            // 比如请求头中Acccept Header是application/xml，而响应头content-type返回的是application/json时会返回406
+            // 不指定Accept Header的情况下就返回默认的json格式
+            services.AddControllers(mo => mo.ReturnHttpNotAcceptable = true)
                 .AddFluentValidation(
                     fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Startup>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
@@ -212,7 +216,7 @@ namespace RESTfulAPISample.Api
             app.UseSwaggerUI(suo =>
             {
                 suo.SwaggerEndpoint("/swagger/v1/swagger.json", "RESTfulAPISample API V1");
-                suo.RoutePrefix = Configuration["Publics:SwaggerStartsWithSegments"];;
+                suo.RoutePrefix = Configuration["Publics:SwaggerStartsWithSegments"]; ;
                 suo.DocumentTitle = "RESTfulAPISample API";
             });
 

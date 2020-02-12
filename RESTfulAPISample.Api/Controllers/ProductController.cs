@@ -109,7 +109,7 @@ namespace RESTfulAPISample.Api.Controller
         {
 
 #if (LOCALMEMORYCACHE)
-            Console.WriteLine("-------------------------mem");
+
             return await _cache.GetOrCreateAsync<IEnumerable<ProductResource>>("products-resource", async entry =>
             {
                 entry.Size = 1;
@@ -118,7 +118,7 @@ namespace RESTfulAPISample.Api.Controller
             });
 
 #elif (DISTRIBUTEDCACHE)
-            Console.WriteLine("-------------------------dis");
+
             IEnumerable<ProductResource> productsResource = null;
             var productsResourceBytes = await _cache.GetAsync("products-resource");
             if (productsResourceBytes != null)
@@ -126,13 +126,14 @@ namespace RESTfulAPISample.Api.Controller
 
             if (productsResourceBytes == null)
             {
-                var products = await _repository.GetProducts();
-                productsResource = _mapper.Map<IEnumerable<ProductResource>>(products);
-                var bytes = MessagePackSerializer.Serialize<IEnumerable<ProductResource>>(productsResource);
+                productsResource = _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts());
+                var productsResourceBytes = MessagePackSerializer.Serialize<IEnumerable<ProductResource>>(productsResource);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(10));
-                await _cache.SetAsync("products-resource", bytes, options);
+                await _cache.SetAsync("products-resource", productsResourceBytes, options);
             }
+
             return productsResource;
+
 #else
 
             return _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts());
@@ -199,7 +200,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <summary>
         /// Create a product
         /// </summary>
-        /// <param name="productDTO">The product to be created</param>
+        /// <param name="productCreateDTO">The product to be created</param>
         /// <returns>The created new product</returns>
         /// <response code="201">Returns the newly created product</response>
         /// <response code="400">If the product to be created is null</response>
@@ -213,21 +214,21 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductAddResource productDTO)
+        public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
         {
-            if (productDTO == null)
+            // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
+
+            if (productCreateDTO == null)
             {
                 return BadRequest();
             }
-
-            // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null
 
             if (!ModelState.IsValid)
             {
                 return new UnprocessableEntityObjectResult(ModelState); // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
             }
 
-            var product = _mapper.Map<Product>(productDTO);
+            var product = _mapper.Map<Product>(productCreateDTO);
             _repository.AddProduct(product);
             await _unitOfWork.SaveAsync();
 
