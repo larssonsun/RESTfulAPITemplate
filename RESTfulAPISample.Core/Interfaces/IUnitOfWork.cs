@@ -4,6 +4,6 @@ namespace RESTfulAPISample.Core.Interface
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveAsync();
+        Task<bool> SaveAsync();
     }
 }

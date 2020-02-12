@@ -105,6 +105,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         public async Task<IEnumerable<ProductResource>> GetProducts()
         {
 
@@ -154,10 +155,11 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="200">Returns the target product</response>
         /// <response code="401">If authorization verification is not passed</response>
         /// <response code="404">If you don't get any product</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         public async Task<ActionResult<ProductResource>> GetProduct(Guid id)
         {
             var result = await _repository.TryGetProduct(id);
@@ -182,6 +184,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         public async IAsyncEnumerable<ProductResource> GetProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
         {
             var products = _repository.GetProductsAsync();
@@ -212,7 +215,9 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+        [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
         {
@@ -230,10 +235,21 @@ namespace RESTfulAPISample.Api.Controller
 
             var product = _mapper.Map<Product>(productCreateDTO);
             _repository.AddProduct(product);
-            await _unitOfWork.SaveAsync();
+            {
+                if (!await _unitOfWork.SaveAsync())
+                {
+                    return StatusCode(500, "Adding products failed.");
+                }
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+                var productDTO = _mapper.Map<ProductResource>(product);
+
+                // larsson：CreatedAtRoute在response中加入一个locaton头，包含GetProduct的调用
+                return CreatedAtRoute(nameof(GetProduct), new
+                {
+                    id = product.Id
+                }, productDTO);
+            }
+            #endregion
         }
-        #endregion
     }
 }

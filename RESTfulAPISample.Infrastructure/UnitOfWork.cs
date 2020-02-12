@@ -12,9 +12,17 @@ namespace RESTfulAPISample.Infrastructure
             _myContext = myContext;
         }
 
-        public async Task<int> SaveAsync()
+        public async Task<bool> SaveAsync()
         {
-            return await _myContext.SaveChangesAsync();
+            try
+            {
+                return await _myContext.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
     }
 }
