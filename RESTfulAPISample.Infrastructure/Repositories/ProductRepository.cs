@@ -77,5 +77,10 @@ namespace RESTfulAPISample.Infrastructure.Repository
             product.CreateTime = DateTime.Now;
             _context.Products.Add(product);
         }
+
+        public void DeleteProduct(Product product)
+        {
+            _context.Products.Remove(product);
+        }
     }
 }

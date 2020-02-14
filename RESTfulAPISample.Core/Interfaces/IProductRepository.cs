@@ -12,5 +12,6 @@ namespace RESTfulAPISample.Core.Interface
         IAsyncEnumerable<Product> GetProductsAsync();
         Task<int> CountNameWithString(string s);
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);
+        void DeleteProduct(Product product);
     }
 }

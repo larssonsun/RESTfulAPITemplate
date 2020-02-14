@@ -91,8 +91,10 @@ namespace RESTfulAPISample.Api.Controller
         /// </summary>
         /// <returns>products</returns>
         /// <response code="200">Returns the target products</response>
-        /// <response code="401">If authorization verification is not passed</response>
-        /// <response code="404">If you don't get any products</response>
+        /// <response code="304">Server-side data is not modified</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="404">Did not get any product</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
         [HttpGet]
 
 #if (ENABLEJWTAUTHENTICATION)
@@ -153,10 +155,13 @@ namespace RESTfulAPISample.Api.Controller
         /// <param name="id">productId</param>
         /// <returns>product</returns>
         /// <response code="200">Returns the target product</response>
-        /// <response code="401">If authorization verification is not passed</response>
-        /// <response code="404">If you don't get any product</response>
+        /// <response code="304">Client-side data is up to date</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="404">Did not get any product</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
         [HttpGet("{id}", Name = "GetProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
@@ -178,10 +183,13 @@ namespace RESTfulAPISample.Api.Controller
         /// </summary>
         /// <returns>products</returns>
         /// <response code="200">Returns the target product</response>
-        /// <response code="401">If authorization verification is not passed</response>
-        /// <response code="404">If you don't get any product</response>
+        /// <response code="304">server-side cached data has not changed</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="404">Did not get any product</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
         [HttpGet("async")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
@@ -206,10 +214,13 @@ namespace RESTfulAPISample.Api.Controller
         /// <param name="productCreateDTO">The product to be created</param>
         /// <returns>The created new product</returns>
         /// <response code="201">Returns the newly created product</response>
-        /// <response code="400">If the product to be created is null</response>
-        /// <response code="401">If authorization verification is not passed</response>
-        /// <response code="412">The source of the product has changed 这个暂时放在这里，应该放在put中</response> 
+        /// <response code="400">The product to be created is null</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
+        /// <response code="412">Source of the product has changed 这个暂时放在这里，应该放在put中</response> 
+        /// <response code="415">Server cannot accept the media-type of the incoming data.</response>
         /// <response code="422">DTO ProductResource failed to pass the model validation</response>
+        /// <response code="500">Adding product service side failed</response>
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)] // 格式数据请求使用[Consumes]，若没有该属性，则直接识别请求头中的Content-Type，也就是[Consumes]可以省略，只要Content-Type为你需要的就能进行数据的模型绑定 // larsson：实际上asp.net core 默认就是json
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -219,6 +230,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
         {
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
@@ -249,7 +261,43 @@ namespace RESTfulAPISample.Api.Controller
                     id = product.Id
                 }, productDTO);
             }
-            #endregion
         }
+        #endregion
+
+        #region snippet_DeleteProduct
+        /// <summary>
+        /// Delete a product
+        /// </summary>
+        /// <param name="productId">The id of product whitch to be deleting</param>
+        /// <returns>Results of the product deleting</returns>
+        /// <response code="204">Product successfully deleted</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="404">Did not get any product</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
+        /// <response code="500">Deleting product service side failed</response>
+        [HttpDelete("{productId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteProduct(Guid productId)
+        {
+            var result = await _repository.TryGetProduct(productId);
+            if (!result.hasProduct)
+            {
+                return NotFound();
+            }
+
+            _repository.DeleteProduct(result.product);
+            if (!await _unitOfWork.SaveAsync())
+            {
+                return StatusCode(500, "Delere product failed.");
+            }
+
+            return NoContent();
+        }
+
+        #endregion
     }
 }

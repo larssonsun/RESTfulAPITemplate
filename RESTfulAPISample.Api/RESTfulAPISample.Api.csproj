@@ -18,19 +18,21 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    
   </PropertyGroup>
   <PropertyGroup>
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLESWAGGER;RESPONSEHANDLERWRAPPER</DefineConstants>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLERESPONSECACHE;ENABLESWAGGER;RESPONSEHANDLERWRAPPER</DefineConstants>
     <MSSQL>False</MSSQL>
     <DBINMEMORY>True</DBINMEMORY>
-    <ENABLERESPONSECACHE>False</ENABLERESPONSECACHE>
+    <ENABLERESPONSECACHE>True</ENABLERESPONSECACHE>
     <LOCALMEMORYCACHE>False</LOCALMEMORYCACHE>
     <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <ENABLESWAGGER>True</ENABLESWAGGER>
     <RESPONSEHANDLERWRAPPER>True</RESPONSEHANDLERWRAPPER>
+    <IncludeOpenAPIAnalyzers Condition="'$(ENABLESWAGGER)' == 'True' ">True</IncludeOpenAPIAnalyzers>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
     Controllers\**\AuthenticationController.cs;</DefaultItemExcludes>
