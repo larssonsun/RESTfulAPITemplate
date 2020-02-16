@@ -36,6 +36,7 @@ namespace RESTfulAPISample.Api.Controller
         [HttpPost("request-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult RequestToken([FromBody] LoginRequestDTO request)
         {
             if (request == null)

@@ -64,8 +64,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
         public async Task<int> CountNameWithString(string s)
         {
-            int v = await _context.Products?.CountAsync(x => x.Name.Contains(s));
-            return v;
+            return await _context.Products.CountAsync(x => x.Name.Contains(s));
         }
 
         public async Task<(bool hasProduct, Product product)> TryGetProduct(Guid id)
@@ -85,7 +84,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
         {
             _context.Products.Remove(product);
         }
-        
+
         public void UpdateProduct(Product product)
         {
             _context.Update(product);
