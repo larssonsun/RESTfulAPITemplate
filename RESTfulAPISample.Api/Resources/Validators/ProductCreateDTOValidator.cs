@@ -3,9 +3,9 @@ using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Resource.Validator
 {
-    public class ProductAddResourceValidator : AbstractValidator<ProductCreateDTO>
+    public class ProductCreateDTOValidator : AbstractValidator<ProductCreateDTO>
     {
-        public ProductAddResourceValidator(IProductRepository productRepository)
+        public ProductCreateDTOValidator(IProductRepository productRepository)
         {
             RuleFor(p => p.Name).NotEmpty().WithName("产品名称").WithMessage("“{PropertyName}”是必填项")
                 .MinimumLength(2).WithMessage("“{PropertyName}”的长度不可少于{MinLength}位")

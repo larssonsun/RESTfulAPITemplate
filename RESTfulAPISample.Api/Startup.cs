@@ -56,12 +56,12 @@ namespace RESTfulAPISample.Api
 
 #if (DBINMEMORY)
 
-            services.AddDbContext<MyContext>(dcob =>
+            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
                 dcob.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
 
 #elif (MSSQL)
 
-            services.AddDbContext<MyContext>(dcob => dcob.UseSqlServer(
+            services.AddDbContext<RESTfulAPISampleContext>(dcob => dcob.UseSqlServer(
                Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")));
 
 #endif

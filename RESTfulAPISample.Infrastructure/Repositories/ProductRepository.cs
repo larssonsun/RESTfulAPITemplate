@@ -10,9 +10,9 @@ namespace RESTfulAPISample.Infrastructure.Repository
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly MyContext _context;
+        private readonly RESTfulAPISampleContext _context;
 
-        public ProductRepository(MyContext context)
+        public ProductRepository(RESTfulAPISampleContext context)
         {
             _context = context;
 
@@ -62,8 +62,11 @@ namespace RESTfulAPISample.Infrastructure.Repository
         public IAsyncEnumerable<Product> GetProductsAsync() =>
             _context.Products.OrderBy(p => p.Name).AsAsyncEnumerable();
 
-        public async Task<int> CountNameWithString(string s) => 
-            await _context.Products.CountAsync(x => x.Name.Contains(s));
+        public async Task<int> CountNameWithString(string s)
+        {
+            int v = await _context.Products?.CountAsync(x => x.Name.Contains(s));
+            return v;
+        }
 
         public async Task<(bool hasProduct, Product product)> TryGetProduct(Guid id)
         {
@@ -81,6 +84,11 @@ namespace RESTfulAPISample.Infrastructure.Repository
         public void DeleteProduct(Product product)
         {
             _context.Products.Remove(product);
+        }
+        
+        public void UpdateProduct(Product product)
+        {
+            _context.Update(product);
         }
     }
 }

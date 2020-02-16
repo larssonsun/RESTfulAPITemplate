@@ -13,5 +13,6 @@ namespace RESTfulAPISample.Core.Interface
         Task<int> CountNameWithString(string s);
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);
         void DeleteProduct(Product product);
+        void UpdateProduct(Product product);
     }
 }
