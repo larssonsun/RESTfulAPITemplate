@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 
 #if (!DBINMEMORY)
 

@@ -1,6 +1,6 @@
 using AutoMapper;
 using RESTfulAPISample.Api.DTO;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 
 namespace RESTfulAPISample.Api.Configurations
 {

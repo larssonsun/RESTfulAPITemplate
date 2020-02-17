@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 
 namespace RESTfulAPISample.Infrastructure.EntityConfiguration
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 
 namespace RESTfulAPISample.Core.Interface
 {

@@ -8,7 +8,7 @@ using RESTfulAPISample.Infrastructure;
 
 namespace RESTfulAPISample.Infrastructure.RESTfulAPISample.Infrastructure.Migrations
 {
-    [DbContext(typeof(MyContext))]
+    [DbContext(typeof(RESTfulAPISampleContext))]
     partial class MyContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

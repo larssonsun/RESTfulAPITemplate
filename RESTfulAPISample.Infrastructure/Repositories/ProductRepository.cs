@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Infrastructure.Repository

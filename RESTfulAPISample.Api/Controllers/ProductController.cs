@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Api.DTO;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Controller
