@@ -88,13 +88,15 @@ namespace RESTfulAPISample.Infrastructure.Repository
             _context.Update(product);
         }
 
-        public async Task<IEnumerable<Product>> GetProducts(ProductDTOParameters parm)
+        public async Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parm)
         {
-            return await _context.Products
-                .OrderBy(x => x.Id.ToString())
+            var query = _context.Products.OrderBy(x => x.Id);
+            var count = await query.CountAsync();
+            var data = await query
                 .Skip(parm.PageSize * parm.PageIndex)
-                .Take(parm.PageSize)
-                .ToListAsync<Product>();
-        }
+                .Take(parm.PageSize).ToListAsync();
+
+            return new PaginatedList<Product>(parm.PageIndex, parm.PageSize, count, data);
+        }        
     }
 }

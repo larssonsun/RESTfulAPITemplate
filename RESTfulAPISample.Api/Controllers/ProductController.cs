@@ -50,36 +50,40 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
         private readonly IMapper _mapper;
+        private readonly IUrlHelper _urlHelper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _repository;
 
 #if (LOCALMEMORYCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
         {
             _logger = logger;
             _cache = cache;
             _mapper = mapper;
+            _urlHelper = urlHelper;
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
 
 #elif (DISTRIBUTEDCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
         {
             _logger = logger;
             _cache = cache;
             _mapper = mapper;
+            _urlHelper = urlHelper;
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
 #else
 
-        public ProductController(ILogger<ProductController> logger, IMapper mapper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
         {
             _logger = logger;
             _mapper = mapper;
+            _urlHelper = urlHelper;
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
@@ -97,7 +101,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet]
+        [HttpGet(Name = "GetProductsAsync")]
 
 #if (ENABLEJWTAUTHENTICATION)
 
@@ -140,12 +144,26 @@ namespace RESTfulAPISample.Api.Controller
             return productsResource;
 
 #else
-
-            return _mapper.Map<IEnumerable<ProductDTO>>(await _repository.GetProducts(parameters));
+            var pagedList = await _repository.GetProducts(parameters);
+            var result = _mapper.Map<IEnumerable<ProductDTO>>(pagedList);
 
 #endif
 
+            var previousPageLink = pagedList.HasPrevious ? CreateCountryUri(parameters, PaginationResourceUriType.PreviousPage) : null;
+            var nextPageLink = pagedList.HasNext ? CreateCountryUri(parameters, PaginationResourceUriType.NextPage) : null;
+            var meta = new
+            {
+                pagedList.TotalItemsCount,
+                pagedList.PaginationBase.PageSize,
+                pagedList.PaginationBase.PageIndex,
+                pagedList.PageCount,
+                previousPageLink,
+                nextPageLink
+            };
 
+            Response.Headers.Add("X-Pagination", System.Text.Json.JsonSerializer.Serialize(meta));
+
+            return result;
         }
 
         #endregion
@@ -411,5 +429,48 @@ namespace RESTfulAPISample.Api.Controller
             return NoContent();
         }
         #endregion
+
+// https://stackoverflow.com/questions/37322076/injection-of-iurlhelper-in-asp-net-core
+        private string CreateCountryUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
+        {
+            switch (uriType)
+            {
+                case PaginationResourceUriType.PreviousPage:
+                    var previousParameters = new
+                    {
+                        pageIndex = parameters.PageIndex - 1,
+                        pageSize = parameters.PageSize,
+                        orderBy = parameters.OrderBy,
+                        // fields = parameters.Fields,
+                        // chineseName = parameters.ChineseName,
+                        // englishName = parameters.EnglishName
+                    };
+                    return _urlHelper.Link("GetProductsAsync", previousParameters);
+                case PaginationResourceUriType.NextPage:
+                    var nextParameters = new
+                    {
+                        pageIndex = parameters.PageIndex + 1,
+                        pageSize = parameters.PageSize,
+                        orderBy = parameters.OrderBy,
+                        // fields = parameters.Fields,
+                        // chineseName = parameters.ChineseName,
+                        // englishName = parameters.EnglishName
+                    };
+                    return _urlHelper.Link("GetProductsAsync", nextParameters);
+                default:
+                case PaginationResourceUriType.CurrentPage:
+                    var currentParameters = new
+                    {
+                        pageIndex = parameters.PageIndex,
+                        pageSize = parameters.PageSize,
+                        orderBy = parameters.OrderBy,
+                        // fields = parameters.Fields,
+                        // chineseName = parameters.ChineseName,
+                        // englishName = parameters.EnglishName
+                    };
+                    return _urlHelper.Link("GetProductsAsync", currentParameters);
+            }
+        }
+
     }
 }

@@ -19,6 +19,8 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -72,6 +74,8 @@ namespace RESTfulAPISample.Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            
             services.Configure<ApiBehaviorOptions>(abo =>
             {
                 abo.SuppressModelStateInvalidFilter = true;
