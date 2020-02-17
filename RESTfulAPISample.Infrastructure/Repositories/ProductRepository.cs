@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
 
@@ -56,10 +57,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
             }
         }
 
-        public async Task<IEnumerable<Product>> GetProducts() =>
-            await _context.Products.OrderBy(p => p.Name).ToListAsync();
-
-        public IAsyncEnumerable<Product> GetProductsAsync() =>
+        public IAsyncEnumerable<Product> GetProductsEachAsync() =>
             _context.Products.OrderBy(p => p.Name).AsAsyncEnumerable();
 
         public async Task<int> CountNameWithString(string s)
@@ -88,6 +86,15 @@ namespace RESTfulAPISample.Infrastructure.Repository
         public void UpdateProduct(Product product)
         {
             _context.Update(product);
+        }
+
+        public async Task<IEnumerable<Product>> GetProducts(ProductDTOParameters parm)
+        {
+            return await _context.Products
+                .OrderBy(x => x.Id.ToString())
+                .Skip(parm.PageSize * parm.PageIndex)
+                .Take(parm.PageSize)
+                .ToListAsync<Product>();
         }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Api.DTO;
+using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
 
@@ -85,10 +86,11 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-        #region snippet_GetProducts
+        #region snippet_GetProductsAsync
         /// <summary>
         /// Get Products
         /// </summary>
+        /// <param name="parameters">The params for filter and page products</param>
         /// <returns>products</returns>
         /// <response code="200">Returns the target products</response>
         /// <response code="304">Server-side data is not modified</response>
@@ -108,7 +110,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<IEnumerable<ProductDTO>> GetProducts()
+        public async Task<IEnumerable<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters parameters)
         {
 
 #if (LOCALMEMORYCACHE)
@@ -117,7 +119,7 @@ namespace RESTfulAPISample.Api.Controller
             {
                 entry.Size = 1;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(10));
-                return _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts());
+                return _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts(parm));
             });
 
 #elif (DISTRIBUTEDCACHE)
@@ -129,7 +131,7 @@ namespace RESTfulAPISample.Api.Controller
 
             if (productsResourceBytes == null)
             {
-                productsResource = _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts());
+                productsResource = _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts(parm));
                 var productsResourceBytes = MessagePackSerializer.Serialize<IEnumerable<ProductResource>>(productsResource);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(10));
                 await _cache.SetAsync("products-resource", productsResourceBytes, options);
@@ -139,7 +141,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #else
 
-            return _mapper.Map<IEnumerable<ProductDTO>>(await _repository.GetProducts());
+            return _mapper.Map<IEnumerable<ProductDTO>>(await _repository.GetProducts(parameters));
 
 #endif
 
@@ -148,7 +150,7 @@ namespace RESTfulAPISample.Api.Controller
 
         #endregion
 
-        #region snippet_GetProduct   
+        #region snippet_GetProductAsync   
         /// <summary>
         /// Get product by productId
         /// </summary>
@@ -159,13 +161,13 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet("{id}", Name = "GetProduct")]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<ActionResult<ProductDTO>> GetProduct(Guid id)
+        public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id)
         {
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
@@ -177,7 +179,7 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-        #region snippet_GetProductsAsync
+        #region snippet_GetProductsEachAsync
         /// <summary>
         /// Get products asynchronously by product id
         /// </summary>
@@ -193,9 +195,9 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async IAsyncEnumerable<ProductDTO> GetProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
+        public async IAsyncEnumerable<ProductDTO> GetProductsEachAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
         {
-            var products = _repository.GetProductsAsync();
+            var products = _repository.GetProductsEachAsync();
 
             await foreach (var product in products)
             {
@@ -254,7 +256,7 @@ namespace RESTfulAPISample.Api.Controller
                 var productDTO = _mapper.Map<ProductDTO>(product);
 
                 // larsson：CreatedAtRoute在response中加入一个locaton头，包含GetProduct的调用
-                return CreatedAtRoute(nameof(GetProduct), new
+                return CreatedAtRoute(nameof(GetProductAsync), new
                 {
                     id = product.Id
                 }, productDTO);
@@ -262,7 +264,7 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-        #region snippet_DeleteProduct
+        #region snippet_DeleteProductAsync
         /// <summary>
         /// Delete a product
         /// </summary>
@@ -279,7 +281,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteProduct(Guid productId)
+        public async Task<IActionResult> DeleteProductAsync(Guid productId)
         {
             var result = await _repository.TryGetProduct(productId);
             if (!result.hasProduct)
@@ -322,7 +324,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody]ProductUpdateDTO productUpdateDTO)
+        public async Task<IActionResult> UpdateProductAsync(Guid productId, [FromBody]ProductUpdateDTO productUpdateDTO)
         {
             if (productUpdateDTO == null)
             {
