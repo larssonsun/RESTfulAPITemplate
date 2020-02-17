@@ -1,5 +1,5 @@
 using AutoMapper;
-using RESTfulAPISample.Api.Resource;
+using RESTfulAPISample.Api.DTO;
 using RESTfulAPISample.Core.DomainModel;
 
 namespace RESTfulAPISample.Api.Configurations
@@ -15,9 +15,9 @@ namespace RESTfulAPISample.Api.Configurations
 
 #endif
 
-            CreateMap<Product, ProductResource>();
-            CreateMap<ProductCreateDTO, Product>();
-            CreateMap<ProductUpdateDTO, Product>();
+            CreateMap<Product, ProductDTO>();
+            CreateMap<ProductCreateOrUpdateDTO, Product>();
+            CreateMap<ProductUpdateDTO, Product>().ReverseMap();
         }
     }
 }

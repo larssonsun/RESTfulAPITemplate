@@ -16,7 +16,7 @@ using MessagePack;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RESTfulAPISample.Api.Resource;
+using RESTfulAPISample.Api.DTO;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Interface;
 
@@ -108,7 +108,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<IEnumerable<ProductResource>> GetProducts()
+        public async Task<IEnumerable<ProductDTO>> GetProducts()
         {
 
 #if (LOCALMEMORYCACHE)
@@ -139,7 +139,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #else
 
-            return _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts());
+            return _mapper.Map<IEnumerable<ProductDTO>>(await _repository.GetProducts());
 
 #endif
 
@@ -165,7 +165,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<ActionResult<ProductResource>> GetProduct(Guid id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(Guid id)
         {
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
@@ -173,7 +173,7 @@ namespace RESTfulAPISample.Api.Controller
                 return NotFound();
             }
 
-            return _mapper.Map<ProductResource>(result.product);
+            return _mapper.Map<ProductDTO>(result.product);
         }
         #endregion
 
@@ -193,7 +193,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async IAsyncEnumerable<ProductResource> GetProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
+        public async IAsyncEnumerable<ProductDTO> GetProductsAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
         {
             var products = _repository.GetProductsAsync();
 
@@ -201,7 +201,7 @@ namespace RESTfulAPISample.Api.Controller
             {
                 if (product.IsOnSale)
                 {
-                    yield return _mapper.Map<ProductResource>(product);
+                    yield return _mapper.Map<ProductDTO>(product);
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductResource>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
+        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody]ProductCreateOrUpdateDTO productCreateDTO)
         {
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
 
@@ -251,7 +251,7 @@ namespace RESTfulAPISample.Api.Controller
                     return StatusCode(500, "Adding product failed.");
                 }
 
-                var productDTO = _mapper.Map<ProductResource>(product);
+                var productDTO = _mapper.Map<ProductDTO>(product);
 
                 // larsson：CreatedAtRoute在response中加入一个locaton头，包含GetProduct的调用
                 return CreatedAtRoute(nameof(GetProduct), new
@@ -346,6 +346,64 @@ namespace RESTfulAPISample.Api.Controller
             if (!await _unitOfWork.SaveAsync())
             {
                 return StatusCode(500, "Updating product field.");
+            }
+
+            return NoContent();
+        }
+        #endregion
+
+        #region snippet_PartiallyUpdateProductAsync
+        /// <summary>
+        /// Partially Update a product
+        /// </summary>
+        /// <param name="patchDoc">The JsonPatchDocument for the product partially updating</param>
+        /// <param name="productId">The id of the product to be partially updated</param>
+        /// <returns>The partially update a product</returns>
+        /// <response code="204">Partially updating product succeed</response>
+        /// <response code="400">The product to be partially updated is null</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
+        /// <response code="412">Source of the product has changed</response> 
+        /// <response code="415">Server cannot accept the media-type of the incoming data.</response>
+        /// <response code="422">DTO productUpdateDTO failed to pass the model validation</response>
+        /// <response code="500">Partially updating product service side failed</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status412PreconditionFailed)]
+        [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPatch("{productId}")]
+        public async Task<IActionResult> PartiallyUpdateProductAsync(Guid productId, [FromBody] Microsoft.AspNetCore.JsonPatch.JsonPatchDocument<ProductUpdateDTO> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest();
+            }
+
+            var result = await _repository.TryGetProduct(productId);
+            if (!result.hasProduct)
+            {
+                return NotFound();
+            }
+
+            var productUpdateDTO = _mapper.Map<ProductUpdateDTO>(result.product);
+            patchDoc.ApplyTo(productUpdateDTO, ModelState);
+
+            TryValidateModel(productUpdateDTO);
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
+            _mapper.Map(productUpdateDTO, result.product);
+            _repository.UpdateProduct(result.product);
+
+            if (!await _unitOfWork.SaveAsync())
+            {
+                return StatusCode(500, "Patching product field.");
             }
 
             return NoContent();
