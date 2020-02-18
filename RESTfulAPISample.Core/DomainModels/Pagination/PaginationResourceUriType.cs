@@ -2,8 +2,8 @@ namespace RESTfulAPISample.Core.DomainModel
 {
     public enum PaginationResourceUriType
     {
-        CurrentPage,
-        PreviousPage,
-        NextPage
+        CurrentPage = 0,
+        PreviousPage = -1,
+        NextPage = 1
     }
 }

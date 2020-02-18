@@ -52,7 +52,6 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _accessor;
         private readonly LinkGenerator _generator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _repository;
@@ -82,11 +81,10 @@ namespace RESTfulAPISample.Api.Controller
         }
 #else
 
-        public ProductController(ILogger<ProductController> logger, IMapper mapper, IHttpContextAccessor accessor, LinkGenerator generator, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMapper mapper, LinkGenerator generator, IUnitOfWork unitOfWork, IProductRepository repository)
         {
             _logger = logger;
             _mapper = mapper;
-            _accessor = accessor;
             _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
@@ -148,13 +146,14 @@ namespace RESTfulAPISample.Api.Controller
             return productsResource;
 
 #else
+
             var pagedList = await _repository.GetProducts(parameters);
             var result = _mapper.Map<IEnumerable<ProductDTO>>(pagedList);
 
 #endif
 
-            var previousPageLink = pagedList.HasPrevious ? CreateCountryUri(parameters, PaginationResourceUriType.PreviousPage) : null;
-            var nextPageLink = pagedList.HasNext ? CreateCountryUri(parameters, PaginationResourceUriType.NextPage) : null;
+            var previousPageLink = pagedList.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
+            var nextPageLink = pagedList.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
             var meta = new
             {
                 pagedList.TotalItemsCount,
@@ -438,58 +437,22 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-        private string CreateCountryUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
+        private string CreateProductsUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
         {
-            switch (uriType)
+            var paginationParms = new
             {
-                case PaginationResourceUriType.PreviousPage:
-                    var previousParameters = new
-                    {
-                        pageIndex = parameters.PageIndex - 1,
-                        pageSize = parameters.PageSize,
-                        orderBy = parameters.OrderBy,
-                        // fields = parameters.Fields,
-                        // chineseName = parameters.ChineseName,
-                        // englishName = parameters.EnglishName
-                    };
-                    return _generator.GetUriByAction(
-                        httpContext: _accessor.HttpContext,
-                        action: "GetProducts",
-                        controller: "Product",
-                        values: previousParameters);
-                case PaginationResourceUriType.NextPage:
-                    var nextParameters = new
-                    {
-                        pageIndex = parameters.PageIndex + 1,
-                        pageSize = parameters.PageSize,
-                        orderBy = parameters.OrderBy,
-                        // fields = parameters.Fields,
-                        // chineseName = parameters.ChineseName,
-                        // englishName = parameters.EnglishName
-                    };
-                    return _generator.GetUriByAction(
-                        _accessor.HttpContext,
-                        action: "GetProducts",
-                        controller: "Product",
-                        nextParameters);
-                default:
-                case PaginationResourceUriType.CurrentPage:
-                    var currentParameters = new
-                    {
-                        pageIndex = parameters.PageIndex,
-                        pageSize = parameters.PageSize,
-                        orderBy = parameters.OrderBy,
-                        // fields = parameters.Fields,
-                        // chineseName = parameters.ChineseName,
-                        // englishName = parameters.EnglishName
-                    };
-                    return _generator.GetUriByAction(
-                        _accessor.HttpContext,
-                        action: "GetProducts",
-                        controller: "Product",
-                        currentParameters);
-            }
+                pageIndex = parameters.PageIndex + (int)uriType,
+                pageSize = parameters.PageSize,
+                orderBy = parameters.OrderBy,
+                fields = parameters.Fields,
+                // chineseName = parameters.ChineseName,
+                // englishName = parameters.EnglishName
+            };
+            return _generator.GetUriByAction(
+                httpContext: HttpContext,
+                action: "GetProducts",
+                controller: "Product",
+                values: paginationParms);
         }
-
     }
 }
