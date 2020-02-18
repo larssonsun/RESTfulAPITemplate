@@ -22,6 +22,7 @@ using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
+using RESTfulAPISample.Core.Pagination;
 
 namespace RESTfulAPISample.Api.Controller
 {

@@ -7,7 +7,8 @@ using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
-using RESTfulAPISample.Infrastructure.Extension;
+using RESTfulAPISample.Core.Pagination;
+using RESTfulAPISample.Core.Sort;
 
 namespace RESTfulAPISample.Infrastructure.Repository
 {

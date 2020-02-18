@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace RESTfulAPISample.Core.DomainModel
+namespace RESTfulAPISample.Core.Pagination
 {
     public class PaginatedList<T> : List<T> where T : class
     {

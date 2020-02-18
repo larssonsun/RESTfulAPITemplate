@@ -1,4 +1,4 @@
-﻿namespace RESTfulAPISample.Core.DomainModel
+﻿namespace RESTfulAPISample.Core.Sort
 {
     public class MappedProperty
     {

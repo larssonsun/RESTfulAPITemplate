@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Sort;
 using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Extension

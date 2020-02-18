@@ -1,6 +1,6 @@
 ﻿using RESTfulAPISample.Core.Interface;
 
-namespace RESTfulAPISample.Core.DomainModel
+namespace RESTfulAPISample.Core.Pagination
 {
     public class PaginationBase
     {

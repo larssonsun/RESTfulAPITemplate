@@ -1,4 +1,4 @@
-namespace RESTfulAPISample.Core.DomainModel
+namespace RESTfulAPISample.Core.Pagination
 {
     public enum PaginationResourceUriType
     {

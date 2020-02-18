@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using RESTfulAPISample.Core.Interface;
 
-namespace RESTfulAPISample.Core.DomainModel
+namespace RESTfulAPISample.Core.Sort
 {
     public abstract class PropertyMapping<TSource, TDestination> : IPropertyMapping where TDestination : IEntity
     {

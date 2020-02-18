@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Interface;
 using System.Linq.Dynamic.Core;
 
-namespace RESTfulAPISample.Infrastructure.Extension
+namespace RESTfulAPISample.Core.Sort
 {
     public static class QueryableExtensions
     {

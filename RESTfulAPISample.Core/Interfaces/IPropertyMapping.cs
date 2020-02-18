@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.Sort;
 
 namespace RESTfulAPISample.Core.Interface
 {

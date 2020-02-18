@@ -4,7 +4,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1"/>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.20"/>
   </ItemGroup>
   <ItemGroup Condition="'$(DBINMEMORY)' == 'True' ">
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1"/>
