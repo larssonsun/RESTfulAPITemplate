@@ -4,7 +4,7 @@ using System.Linq;
 using RESTfulAPISample.Core.Interface;
 using System.Linq.Dynamic.Core;
 
-namespace RESTfulAPISample.Core.Sort
+namespace RESTfulAPISample.Core.SortAndQuery
 {
     public static class QueryableExtensions
     {

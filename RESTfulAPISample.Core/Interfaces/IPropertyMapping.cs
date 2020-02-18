@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RESTfulAPISample.Core.Sort;
+using RESTfulAPISample.Core.SortAndQuery;
 
 namespace RESTfulAPISample.Core.Interface
 {

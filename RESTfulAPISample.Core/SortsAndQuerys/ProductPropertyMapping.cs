@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 
-namespace RESTfulAPISample.Core.Sort
+namespace RESTfulAPISample.Core.SortAndQuery
 {
     public class ProductPropertyMapping : PropertyMapping<ProductDTO, Product>
     {

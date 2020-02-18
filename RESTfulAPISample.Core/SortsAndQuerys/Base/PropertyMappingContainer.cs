@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RESTfulAPISample.Core.Interface;
 
-namespace RESTfulAPISample.Core.Sort
+namespace RESTfulAPISample.Core.SortAndQuery
 {
     public class PropertyMappingContainer : IPropertyMappingContainer
     {

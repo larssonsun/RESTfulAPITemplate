@@ -21,7 +21,7 @@ using System.IO;
 using System;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using RESTfulAPISample.Api.Extension;
+using RESTfulAPISample.Core.SortAndQuery;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;

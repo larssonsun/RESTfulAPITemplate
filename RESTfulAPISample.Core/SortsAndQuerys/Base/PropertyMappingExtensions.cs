@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RESTfulAPISample.Core.Sort;
 using RESTfulAPISample.Core.Interface;
 
-namespace RESTfulAPISample.Api.Extension
+namespace RESTfulAPISample.Core.SortAndQuery
 {
     public static class PropertyMappingExtensions
     {
