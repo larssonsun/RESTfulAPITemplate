@@ -74,8 +74,6 @@ namespace RESTfulAPISample.Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            
             services.Configure<ApiBehaviorOptions>(abo =>
             {
                 abo.SuppressModelStateInvalidFilter = true;

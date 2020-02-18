@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 #if (ENABLEJWTAUTHENTICATION)
@@ -15,6 +16,7 @@ using MessagePack;
 #endif
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Api.DTO;
 using RESTfulAPISample.Core.DomainModel;
@@ -50,7 +52,8 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
         private readonly IMapper _mapper;
-        private readonly IUrlHelper _urlHelper;
+        private readonly IHttpContextAccessor _accessor;
+        private readonly LinkGenerator _generator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _repository;
 
@@ -79,11 +82,12 @@ namespace RESTfulAPISample.Api.Controller
         }
 #else
 
-        public ProductController(ILogger<ProductController> logger, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMapper mapper, IHttpContextAccessor accessor, LinkGenerator generator, IUnitOfWork unitOfWork, IProductRepository repository)
         {
             _logger = logger;
             _mapper = mapper;
-            _urlHelper = urlHelper;
+            _accessor = accessor;
+            _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
         }
@@ -101,7 +105,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet(Name = "GetProductsAsync")]
+        [HttpGet]
 
 #if (ENABLEJWTAUTHENTICATION)
 
@@ -161,7 +165,11 @@ namespace RESTfulAPISample.Api.Controller
                 nextPageLink
             };
 
-            Response.Headers.Add("X-Pagination", System.Text.Json.JsonSerializer.Serialize(meta));
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(meta, new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            }));
 
             return result;
         }
@@ -430,7 +438,6 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
-// https://stackoverflow.com/questions/37322076/injection-of-iurlhelper-in-asp-net-core
         private string CreateCountryUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
         {
             switch (uriType)
@@ -445,7 +452,11 @@ namespace RESTfulAPISample.Api.Controller
                         // chineseName = parameters.ChineseName,
                         // englishName = parameters.EnglishName
                     };
-                    return _urlHelper.Link("GetProductsAsync", previousParameters);
+                    return _generator.GetUriByAction(
+                        httpContext: _accessor.HttpContext,
+                        action: "GetProducts",
+                        controller: "Product",
+                        values: previousParameters);
                 case PaginationResourceUriType.NextPage:
                     var nextParameters = new
                     {
@@ -456,7 +467,11 @@ namespace RESTfulAPISample.Api.Controller
                         // chineseName = parameters.ChineseName,
                         // englishName = parameters.EnglishName
                     };
-                    return _urlHelper.Link("GetProductsAsync", nextParameters);
+                    return _generator.GetUriByAction(
+                        _accessor.HttpContext,
+                        action: "GetProducts",
+                        controller: "Product",
+                        nextParameters);
                 default:
                 case PaginationResourceUriType.CurrentPage:
                     var currentParameters = new
@@ -468,7 +483,11 @@ namespace RESTfulAPISample.Api.Controller
                         // chineseName = parameters.ChineseName,
                         // englishName = parameters.EnglishName
                     };
-                    return _urlHelper.Link("GetProductsAsync", currentParameters);
+                    return _generator.GetUriByAction(
+                        _accessor.HttpContext,
+                        action: "GetProducts",
+                        controller: "Product",
+                        currentParameters);
             }
         }
 
