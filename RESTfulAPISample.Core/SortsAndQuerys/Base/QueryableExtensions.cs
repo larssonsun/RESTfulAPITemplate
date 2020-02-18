@@ -10,6 +10,7 @@ namespace RESTfulAPISample.Core.SortAndQuery
     {
         public static IQueryable<T> ApplySort<T>(this IQueryable<T> source, string orderBy, IPropertyMapping propertyMapping)
         {
+            var orderByStr = string.Empty;
             if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
@@ -39,17 +40,20 @@ namespace RESTfulAPISample.Core.SortAndQuery
                     throw new ArgumentException($"Key mapping for {propertyName} is missing");
                 }
                 var mappedProperties = mappingDictionary[propertyName];
+                
                 if (mappedProperties == null)
                 {
                     throw new ArgumentNullException(propertyName);
                 }
-                mappedProperties.Reverse();
+                // mappedProperties.Reverse();
+                
                 foreach (var destinationProperty in mappedProperties)
                 {
                     if (destinationProperty.Revert)
                     {
                         orderDescending = !orderDescending;
                     }
+                    Console.WriteLine("----------------------" + destinationProperty.Name + (orderDescending ? " descending" : " ascending"));
                     source = source.OrderBy(destinationProperty.Name + (orderDescending ? " descending" : " ascending"));
                 }
             }

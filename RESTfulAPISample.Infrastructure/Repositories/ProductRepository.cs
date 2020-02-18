@@ -36,13 +36,13 @@ namespace RESTfulAPISample.Infrastructure.Repository
                     new Product
                     {
                         Name = "D Learning EF Core",
-                        Description = "A best-selling book covering the fundamentals of Entity Framework Core",
+                        Description = "A best-selling book covering the fundamentals of C#",
                         IsOnSale = true,
                         CreateTime = now,
                     },
                     new Product
                     {
-                        Name = "D Learning .NET Standard",
+                        Name = "D Learning EF Core",
                         Description = "B best-selling book covering the fundamentals of .NET Standard",
                         CreateTime = now.AddDays(2),
                     },
