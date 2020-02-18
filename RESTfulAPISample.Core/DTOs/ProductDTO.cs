@@ -1,7 +1,7 @@
 ﻿#if (DISTRIBUTEDCACHE)
 using MessagePack;
 #endif
-namespace RESTfulAPISample.Api.DTO
+namespace RESTfulAPISample.Core.DTO
 {
 #if (DISTRIBUTEDCACHE)
     [MessagePackObject]

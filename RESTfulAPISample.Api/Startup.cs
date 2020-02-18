@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RESTfulAPISample.Api.Configurations;
+using RESTfulAPISample.Core.DTO.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;

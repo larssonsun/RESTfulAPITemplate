@@ -1,4 +1,4 @@
-﻿namespace RESTfulAPISample.Api.DTO
+﻿namespace RESTfulAPISample.Core.DTO
 {
     public class LoginRequestDTO
     {
