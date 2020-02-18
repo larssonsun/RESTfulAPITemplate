@@ -21,6 +21,7 @@ using System.IO;
 using System;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using RESTfulAPISample.Api.Extension;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -73,6 +74,8 @@ namespace RESTfulAPISample.Api
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddPropertyMappings();
 
             services.Configure<ApiBehaviorOptions>(abo =>
             {

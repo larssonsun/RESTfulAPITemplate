@@ -149,9 +149,10 @@ namespace RESTfulAPISample.Api.Controller
 
             var pagedList = await _repository.GetProducts(parameters);
             var result = _mapper.Map<IEnumerable<ProductDTO>>(pagedList);
-
+            
+            
 #endif
-
+    
             var previousPageLink = pagedList.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
             var nextPageLink = pagedList.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
             var meta = new

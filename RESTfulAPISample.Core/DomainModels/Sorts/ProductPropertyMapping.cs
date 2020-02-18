@@ -15,13 +15,17 @@ namespace RESTfulAPISample.Core.DomainModel
                     new MappedProperty{ Name = nameof(Product.Name), Revert = false},
                     new MappedProperty{ Name = nameof(Product.Description), Revert = false}
                 },
+                [nameof(ProductDTO.Name)] = new List<MappedProperty>
+                {
+                    new MappedProperty{ Name = nameof(Product.Name), Revert = false}
+                },
                 [nameof(ProductDTO.Description)] = new List<MappedProperty>
                 {
                     new MappedProperty{ Name = nameof(Product.Description), Revert = false}
                 },
                 [nameof(ProductDTO.CreateTime)] = new List<MappedProperty>
                 {
-                    new MappedProperty{ Name = nameof(Product.CreateTime), Revert = true}
+                    new MappedProperty{ Name = nameof(Product.CreateTime), Revert = false}
                 }
             })
         {

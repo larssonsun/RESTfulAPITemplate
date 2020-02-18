@@ -4,18 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
+using RESTfulAPISample.Infrastructure.Extension;
 
 namespace RESTfulAPISample.Infrastructure.Repository
 {
     public class ProductRepository : IProductRepository
     {
         private readonly RESTfulAPISampleContext _context;
+        private readonly IPropertyMappingContainer _propertyMappingContainer;
 
-        public ProductRepository(RESTfulAPISampleContext context)
+        public ProductRepository(RESTfulAPISampleContext context, IPropertyMappingContainer propertyMappingContainer)
         {
             _context = context;
+            _propertyMappingContainer = propertyMappingContainer;
 
             if (_context.Products.Count() == 0)
             {
@@ -23,29 +27,29 @@ namespace RESTfulAPISample.Infrastructure.Repository
                 _context.Products.AddRange(
                     new Product
                     {
-                        Name = "Learning ASP.NET Core",
-                        Description = "A best-selling book covering the fundamentals of ASP.NET Core",
+                        Name = "A Learning ASP.NET Core",
+                        Description = "C best-selling book covering the fundamentals of ASP.NET Core",
                         IsOnSale = true,
-                        CreateTime = now,
+                        CreateTime = now.AddDays(1),
                     },
                     new Product
                     {
-                        Name = "Learning EF Core",
+                        Name = "D Learning EF Core",
                         Description = "A best-selling book covering the fundamentals of Entity Framework Core",
                         IsOnSale = true,
                         CreateTime = now,
                     },
                     new Product
                     {
-                        Name = "Learning .NET Standard",
-                        Description = "A best-selling book covering the fundamentals of .NET Standard",
-                        CreateTime = now,
+                        Name = "D Learning .NET Standard",
+                        Description = "B best-selling book covering the fundamentals of .NET Standard",
+                        CreateTime = now.AddDays(2),
                     },
                     new Product
                     {
-                        Name = "Learning .NET Core",
-                        Description = "A best-selling book covering the fundamentals of .NET Core",
-                        CreateTime = now,
+                        Name = "C Learning .NET Core",
+                        Description = "D best-selling book covering the fundamentals of .NET Core",
+                        CreateTime = now.AddDays(13),
                     },
                     new Product
                     {
@@ -88,15 +92,17 @@ namespace RESTfulAPISample.Infrastructure.Repository
             _context.Update(product);
         }
 
-        public async Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parm)
+        public async Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parameters)
         {
-            var query = _context.Products.OrderBy(x => x.Id);
+            var query = _context.Products.AsQueryable();
+            query = query.ApplySort(parameters.OrderBy, _propertyMappingContainer.Resolve<ProductDTO, Product>());
+            // query = query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Description);
             var count = await query.CountAsync();
             var data = await query
-                .Skip(parm.PageSize * parm.PageIndex)
-                .Take(parm.PageSize).ToListAsync();
+                .Skip(parameters.PageSize * parameters.PageIndex)
+                .Take(parameters.PageSize).ToListAsync();
 
-            return new PaginatedList<Product>(parm.PageIndex, parm.PageSize, count, data);
-        }        
+            return new PaginatedList<Product>(parameters.PageIndex, parameters.PageSize, count, data);
+        }
     }
 }
