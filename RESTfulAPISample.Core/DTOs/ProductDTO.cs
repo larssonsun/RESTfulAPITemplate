@@ -28,5 +28,9 @@ namespace RESTfulAPISample.Core.DTO
         [Key(4)]
 #endif
         public string CreateTime { get; set; }
+#if (DISTRIBUTEDCACHE)
+        [Key(5)]
+#endif
+        public string FullName { get; set; }
     }
 }
