@@ -19,9 +19,7 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using RESTfulAPISample.Core.SortAndQuery;
+using RESTfulAPISample.Core;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -110,7 +108,10 @@ namespace RESTfulAPISample.Api
             // 比如请求头中Acccept Header是application/xml，而响应头content-type返回的是application/json时会返回406
             // 如果不指定Accept Header的情况下就返回默认的json格式
             services.AddControllers(mo => mo.ReturnHttpNotAcceptable = true)
-                .AddNewtonsoftJson()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+                })
                 .AddFluentValidation(
                     fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Startup>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion

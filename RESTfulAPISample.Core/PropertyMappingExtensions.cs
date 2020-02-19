@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RESTfulAPISample.Core.Interface;
+using RESTfulAPISample.Core.Shaping;
+using RESTfulAPISample.Core.SortAndQuery;
 
-namespace RESTfulAPISample.Core.SortAndQuery
+namespace RESTfulAPISample.Core
 {
     public static class PropertyMappingExtensions
     {
@@ -11,7 +13,7 @@ namespace RESTfulAPISample.Core.SortAndQuery
             propertyMappingContainer.Register<ProductPropertyMapping>();
 
             services.AddSingleton<IPropertyMappingContainer>(propertyMappingContainer);
-            // services.AddTransient<ITypeHelperService, TypeHelperService>();
+            services.AddTransient<ITypeHelperService, TypeHelperService>();
         }
     }
 }

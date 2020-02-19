@@ -96,8 +96,21 @@ namespace RESTfulAPISample.Infrastructure.Repository
         public async Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parameters)
         {
             var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(parameters.Name))
+            {
+                var name = parameters.Name.Trim().ToLowerInvariant();
+                query = query.Where(x => x.Name.ToLowerInvariant() == name);
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Description))
+            {
+                var description = parameters.Description.Trim().ToLowerInvariant();
+                query = query.Where(x => x.Description.ToLowerInvariant().Contains(description));
+            }
+
             query = query.ApplySort(parameters.OrderBy, _propertyMappingContainer.Resolve<ProductDTO, Product>());
-            // query = query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Description);
+
             var count = await query.CountAsync();
             var data = await query
                 .Skip(parameters.PageSize * parameters.PageIndex)

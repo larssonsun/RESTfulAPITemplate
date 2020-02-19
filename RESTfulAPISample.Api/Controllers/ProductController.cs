@@ -23,6 +23,7 @@ using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Core.Pagination;
+using RESTfulAPISample.Core.Shaping;
 
 namespace RESTfulAPISample.Api.Controller
 {
@@ -56,10 +57,14 @@ namespace RESTfulAPISample.Api.Controller
         private readonly LinkGenerator _generator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _repository;
+        private readonly IPropertyMappingContainer _propertyMappingContainer;
+        private readonly ITypeHelperService _typeHelperService;
 
 #if (LOCALMEMORYCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, IUrlHelper urlHelper, 
+            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer,
+            ITypeHelperService typeHelperService)
         {
             _logger = logger;
             _cache = cache;
@@ -67,11 +72,15 @@ namespace RESTfulAPISample.Api.Controller
             _urlHelper = urlHelper;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _propertyMappingContainer = propertyMappingContainer;
+            _typeHelperService = typeHelperService;
         }
 
 #elif (DISTRIBUTEDCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, IUrlHelper urlHelper, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, IUrlHelper urlHelper, 
+            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer, 
+            ITypeHelperService typeHelperService)
         {
             _logger = logger;
             _cache = cache;
@@ -79,16 +88,21 @@ namespace RESTfulAPISample.Api.Controller
             _urlHelper = urlHelper;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _propertyMappingContainer = propertyMappingContainer;
+            _typeHelperService = typeHelperService;
         }
 #else
 
-        public ProductController(ILogger<ProductController> logger, IMapper mapper, LinkGenerator generator, IUnitOfWork unitOfWork, IProductRepository repository)
+        public ProductController(ILogger<ProductController> logger, IMapper mapper, LinkGenerator generator, IUnitOfWork unitOfWork,
+        IProductRepository repository, IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService)
         {
             _logger = logger;
             _mapper = mapper;
             _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _propertyMappingContainer = propertyMappingContainer;
+            _typeHelperService = typeHelperService;
         }
 
 #endif
@@ -114,11 +128,22 @@ namespace RESTfulAPISample.Api.Controller
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<IEnumerable<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters parameters)
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters parameters)
         {
+            if (!_propertyMappingContainer.ValidMappingExistsFor<ProductDTO, Product>(parameters.OrderBy))
+            {
+                return BadRequest("Can't find the fields for sorting.");
+            }
+
+            if (!_typeHelperService.TypeHasProperties<ProductDTO>(parameters.Fields))
+            {
+                return BadRequest("Can't find the fields on DTO.");
+            }
 
 #if (LOCALMEMORYCACHE)
 
@@ -150,10 +175,9 @@ namespace RESTfulAPISample.Api.Controller
 
             var pagedList = await _repository.GetProducts(parameters);
             var result = _mapper.Map<IEnumerable<ProductDTO>>(pagedList);
-            
-            
+
 #endif
-    
+
             var previousPageLink = pagedList.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
             var nextPageLink = pagedList.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
             var meta = new
@@ -172,7 +196,7 @@ namespace RESTfulAPISample.Api.Controller
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             }));
 
-            return result;
+            return Ok(result.ToDynamicIEnumerable(parameters.Fields));
         }
 
         #endregion
@@ -447,8 +471,9 @@ namespace RESTfulAPISample.Api.Controller
                 pageSize = parameters.PageSize,
                 orderBy = parameters.OrderBy,
                 fields = parameters.Fields,
-                // chineseName = parameters.ChineseName,
-                // englishName = parameters.EnglishName
+
+                name = parameters.Name,
+                description = parameters.Description
             };
             return _generator.GetUriByAction(
                 httpContext: HttpContext,
