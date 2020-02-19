@@ -45,7 +45,7 @@ namespace RESTfulAPISample.Core.SortAndQuery
                 {
                     throw new ArgumentNullException(propertyName);
                 }
-                // mappedProperties.Reverse();
+                mappedProperties.Reverse();
                 
                 foreach (var destinationProperty in mappedProperties)
                 {
@@ -53,9 +53,11 @@ namespace RESTfulAPISample.Core.SortAndQuery
                     {
                         orderDescending = !orderDescending;
                     }
-                    Console.WriteLine("----------------------" + destinationProperty.Name + (orderDescending ? " descending" : " ascending"));
+    
                     source = source.OrderBy(destinationProperty.Name + (orderDescending ? " descending" : " ascending"));
                 }
+
+                mappedProperties.Reverse();
             }
 
             return source;
