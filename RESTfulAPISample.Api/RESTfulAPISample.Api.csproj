@@ -5,7 +5,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
-    <PackageReference Condition="'$(LOCALMEMORYCACHE)' == 'True'" Include="MessagePack" Version="2.1.80" />
+    <PackageReference Condition="'$(DISTRIBUTEDCACHE)' == 'True'" Include="MessagePack" Version="2.1.80" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="autowrapper.core" Version="3.0.0" />
@@ -20,12 +20,12 @@
   <PropertyGroup>
     <!-- ↓ -->
 
-    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLERESPONSECACHE;ENABLESWAGGER;RESPONSEHANDLERWRAPPER</DefineConstants>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLERESPONSECACHE;DISTRIBUTEDCACHE;ENABLESWAGGER;RESPONSEHANDLERWRAPPER</DefineConstants>
     <MSSQL>False</MSSQL>
     <DBINMEMORY>True</DBINMEMORY>
     <ENABLERESPONSECACHE>True</ENABLERESPONSECACHE>
     <LOCALMEMORYCACHE>False</LOCALMEMORYCACHE>
-    <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
+    <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <ENABLESWAGGER>True</ENABLESWAGGER>
     <RESPONSEHANDLERWRAPPER>True</RESPONSEHANDLERWRAPPER>

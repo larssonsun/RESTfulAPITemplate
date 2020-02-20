@@ -62,14 +62,14 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (LOCALMEMORYCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, IUrlHelper urlHelper, 
+        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, LinkGenerator generator,
             IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer,
             ITypeHelperService typeHelperService)
         {
             _logger = logger;
             _cache = cache;
             _mapper = mapper;
-            _urlHelper = urlHelper;
+            _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
             _propertyMappingContainer = propertyMappingContainer;
@@ -78,14 +78,14 @@ namespace RESTfulAPISample.Api.Controller
 
 #elif (DISTRIBUTEDCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, IUrlHelper urlHelper, 
-            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer, 
+        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, LinkGenerator generator,
+            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer,
             ITypeHelperService typeHelperService)
         {
             _logger = logger;
             _cache = cache;
             _mapper = mapper;
-            _urlHelper = urlHelper;
+            _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
             _propertyMappingContainer = propertyMappingContainer;
@@ -145,58 +145,43 @@ namespace RESTfulAPISample.Api.Controller
                 return BadRequest("Can't find the fields on DTO.");
             }
 
+            PaginatedList<Product> pagedProducts;
+
 #if (LOCALMEMORYCACHE)
 
-            return await _cache.GetOrCreateAsync<IEnumerable<ProductResource>>("products-resource", async entry =>
+            pagedProducts = await _cache.GetOrCreateAsync<PaginatedList<Product>>("products", async entry =>
             {
                 entry.Size = 1;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(10));
-                return _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts(parm));
+                return await _repository.GetProducts(parameters);
             });
+
+            SetPaginationHead(pagedProducts, parameters);
 
 #elif (DISTRIBUTEDCACHE)
 
-            IEnumerable<ProductResource> productsResource = null;
-            var productsResourceBytes = await _cache.GetAsync("products-resource");
-            if (productsResourceBytes != null)
-                productsResource = MessagePackSerializer.Deserialize<IEnumerable<ProductResource>>(productsResourceBytes);
-
-            if (productsResourceBytes == null)
+            var pagedProductsBytes = await _cache.GetAsync("products");
+            if (pagedProductsBytes != null)
             {
-                productsResource = _mapper.Map<IEnumerable<ProductResource>>(await _repository.GetProducts(parm));
-                var productsResourceBytes = MessagePackSerializer.Serialize<IEnumerable<ProductResource>>(productsResource);
-                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(10));
-                await _cache.SetAsync("products-resource", productsResourceBytes, options);
+                pagedProducts = MessagePackSerializer.Deserialize<PaginatedList<Product>>(pagedProductsBytes);
             }
-
-            return productsResource;
+            else
+            {
+                pagedProducts = await _repository.GetProducts(parameters);
+                var productsResourceBytes = MessagePackSerializer.Serialize<PaginatedList<Product>>(pagedProducts);
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
+                await _cache.SetAsync("products", productsResourceBytes, options);
+            }
 
 #else
 
-            var pagedList = await _repository.GetProducts(parameters);
-            var result = _mapper.Map<IEnumerable<ProductDTO>>(pagedList);
+             pagedProducts = await _repository.GetProducts(parameters);
 
 #endif
 
-            var previousPageLink = pagedList.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
-            var nextPageLink = pagedList.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
-            var meta = new
-            {
-                pagedList.TotalItemsCount,
-                pagedList.PaginationBase.PageSize,
-                pagedList.PaginationBase.PageIndex,
-                pagedList.PageCount,
-                previousPageLink,
-                nextPageLink
-            };
-
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(meta, new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            }));
-
-            return Ok(result.ToDynamicIEnumerable(parameters.Fields));
+            SetPaginationHead(pagedProducts, parameters);
+            var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
+            return Ok(mappedProducts.ToDynamicIEnumerable(parameters.Fields));
         }
 
         #endregion
@@ -206,6 +191,7 @@ namespace RESTfulAPISample.Api.Controller
         /// Get product by productId
         /// </summary>
         /// <param name="id">productId</param>
+        /// <param name="fields">fields to keep</param>
         /// <returns>product</returns>
         /// <response code="200">Returns the target product</response>
         /// <response code="304">Client-side data is up to date</response>
@@ -218,7 +204,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id)
+        public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id, string fields)
         {
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
@@ -226,7 +212,7 @@ namespace RESTfulAPISample.Api.Controller
                 return NotFound();
             }
 
-            return _mapper.Map<ProductDTO>(result.product);
+            return Ok(_mapper.Map<ProductDTO>(result.product).ToDynamic(fields));
         }
         #endregion
 
@@ -463,6 +449,27 @@ namespace RESTfulAPISample.Api.Controller
         }
         #endregion
 
+
+        private void SetPaginationHead(PaginatedList<Product> pagedProducts, ProductDTOParameters parameters)
+        {
+            var previousPageLink = pagedProducts.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
+            var nextPageLink = pagedProducts.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
+            var meta = new
+            {
+                pagedProducts.TotalItemsCount,
+                pagedProducts.PaginationBase.PageSize,
+                pagedProducts.PaginationBase.PageIndex,
+                pagedProducts.PageCount,
+                previousPageLink,
+                nextPageLink
+            };
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(meta, new JsonSerializerOptions
+            {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            }));
+        }
         private string CreateProductsUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
         {
             var paginationParms = new

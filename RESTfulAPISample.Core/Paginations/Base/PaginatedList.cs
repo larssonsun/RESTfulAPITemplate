@@ -1,8 +1,14 @@
 
 using System.Collections.Generic;
+#if (DISTRIBUTEDCACHE)
+using MessagePack;
+#endif
 
 namespace RESTfulAPISample.Core.Pagination
 {
+#if (DISTRIBUTEDCACHE)
+    [MessagePackObject(keyAsPropertyName: true)]
+#endif
     public class PaginatedList<T> : List<T> where T : class
     {
         public PaginationBase PaginationBase { get; }
@@ -13,15 +19,23 @@ namespace RESTfulAPISample.Core.Pagination
         public bool HasPrevious => PaginationBase.PageIndex > 0;
         public bool HasNext => PaginationBase.PageIndex < PageCount - 1;
 
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public IEnumerable<T> Data { get; set; }
+
         public PaginatedList(int pageIndex, int pageSize, int totalItemsCount, IEnumerable<T> data)
         {
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            Data = data;
+
             PaginationBase = new PaginationBase
             {
-                PageIndex = pageIndex,
-                PageSize = pageSize
+                PageIndex = PageIndex,
+                PageSize = PageSize
             };
             TotalItemsCount = totalItemsCount;
-            AddRange(data);
+            AddRange(Data);
         }
     }
 }

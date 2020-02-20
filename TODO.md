@@ -8,7 +8,8 @@
 // TODO：[√b] FixAutoWrapperMiddleware 将CatchTheLastMiddleware中的isSwagger中的前缀设置与startUp中的UseSwaggerUI的swagger前缀设置都放到config中
 // TODO：[√b] FixAutoWrapperMiddleware 将CathcTheLastMiddleware中的设置HttpStatusCode为200改为可选项作为中间件的option
 // TODO：[√] dto validattion (fluent-validation)
-// TODO：[√] finish CRUD, pagination, filter and sort, adapter for local and distrubuted cache.
-// TODO：resouce shaping, ienumerable and single object
+// TODO：[√] finish CRUD, pagination, filter and sort
+// TODO：pagination adapter for local and distrubuted cache (key of differet page NO.)
+// TODO：[√] resouce shaping, ienumerable and single object
 // TODO：NLog
 // TODO：DataSeed, AsNoTracking

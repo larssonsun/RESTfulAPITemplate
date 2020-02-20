@@ -1,7 +1,13 @@
 ﻿using System;
+#if (DISTRIBUTEDCACHE)
+using MessagePack;
+#endif
 
 namespace RESTfulAPISample.Core.Entity
 {
+#if (DISTRIBUTEDCACHE)
+    [MessagePackObject(keyAsPropertyName: true)]
+#endif
     public class Product : Entity
     {
         public string Name { get; set; }
