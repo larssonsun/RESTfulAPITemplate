@@ -11,8 +11,8 @@
 
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants);DISTRIBUTEDCACHE</DefineConstants>
-    <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Interfaces\**\IAuthenticateService.cs;

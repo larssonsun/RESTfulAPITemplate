@@ -149,18 +149,18 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (LOCALMEMORYCACHE)
 
-            pagedProducts = await _cache.GetOrCreateAsync<PaginatedList<Product>>("products", async entry =>
+            var cacheKey = Request.QueryString.Value;
+            pagedProducts = await _cache.GetOrCreateAsync<PaginatedList<Product>>(cacheKey, async entry =>
             {
-                entry.Size = 1;
-                entry.SetSlidingExpiration(TimeSpan.FromSeconds(10));
+                entry.Size = 2;
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 return await _repository.GetProducts(parameters);
             });
 
-            SetPaginationHead(pagedProducts, parameters);
-
 #elif (DISTRIBUTEDCACHE)
 
-            var pagedProductsBytes = await _cache.GetAsync("products");
+            var cacheKey = Request.QueryString.Value;
+            var pagedProductsBytes = await _cache.GetAsync(cacheKey);
             if (pagedProductsBytes != null)
             {
                 pagedProducts = MessagePackSerializer.Deserialize<PaginatedList<Product>>(pagedProductsBytes);
@@ -169,8 +169,8 @@ namespace RESTfulAPISample.Api.Controller
             {
                 pagedProducts = await _repository.GetProducts(parameters);
                 var productsResourceBytes = MessagePackSerializer.Serialize<PaginatedList<Product>>(pagedProducts);
-                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
-                await _cache.SetAsync("products", productsResourceBytes, options);
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));            
+                await _cache.SetAsync(cacheKey, productsResourceBytes, options);
             }
 
 #else
