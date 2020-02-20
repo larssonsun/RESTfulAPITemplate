@@ -9,7 +9,7 @@
 // TODO：[√b] FixAutoWrapperMiddleware 将CathcTheLastMiddleware中的设置HttpStatusCode为200改为可选项作为中间件的option
 // TODO：[√] dto validattion (fluent-validation)
 // TODO：[√] finish CRUD, pagination, filter and sort
-// TODO：pagination adapter for local and distrubuted cache (key of differet page NO.)
+// TODO：[√] pagination adapter for local and distrubuted cache (use queerystring for cache key )
 // TODO：[√] resouce shaping, ienumerable and single object
 // TODO：NLog
 // TODO：DataSeed, AsNoTracking
