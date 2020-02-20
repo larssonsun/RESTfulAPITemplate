@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RESTfulAPISample.Core;
 using RESTfulAPISample.Core.DTO.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
@@ -19,7 +20,6 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
-using RESTfulAPISample.Core;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -28,6 +28,7 @@ using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using System.Text;
 #endif
+
 namespace RESTfulAPISample.Api
 {
     public class Startup

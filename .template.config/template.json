@@ -121,6 +121,7 @@
         {
           "exclude": [
             "testRec.cs",
+            "TODO.md",
             "README.md",
             "LICENSE",
             ".gitignore",
