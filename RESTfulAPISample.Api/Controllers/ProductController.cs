@@ -180,7 +180,11 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-            Response.Headers.Add("X-Pagination", SetPaginationHead(pagedProducts, queryStrParams, "Product", "GetProducts"));
+            var addonProps = new Dictionary<string, object>();
+            var fuk = queryStrParams.GetType().GetProperties();
+            addonProps.Add("name", queryStrParams.Name);
+            addonProps.Add("description", queryStrParams.Description);
+            Response.Headers.Add("X-Pagination", SetPaginationHead(pagedProducts, queryStrParams, addonProps, "Product", "GetProducts"));
             var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
             return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
         }
@@ -452,18 +456,14 @@ namespace RESTfulAPISample.Api.Controller
 
 
         private string SetPaginationHead<TPaged, TQueryParams>(PaginatedList<TPaged> pagedEntity, TQueryParams queryParams,
-            string controllerName, string actionName)
+            Dictionary<string, object> filterProps, string controllerName, string actionName)
             where TPaged : class
             where TQueryParams : PaginationBase
         {
-            var addonProps = new Dictionary<string, object>();
-            addonProps.Add("name", "aa22a");
-            addonProps.Add("description", "vb33vb");
-
-            var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, addonProps,
+            var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, filterProps,
                 (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
 
-            var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, addonProps,
+            var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, filterProps,
                 (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
 
             var meta = new
@@ -482,7 +482,7 @@ namespace RESTfulAPISample.Api.Controller
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
         }
-        private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> addon, Func<object, string> linkGenerator)
+        private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> filterProps, Func<object, string> linkGenerator)
             where T : PaginationBase
         {
             dynamic paginationParms = new System.Dynamic.ExpandoObject();
@@ -494,9 +494,7 @@ namespace RESTfulAPISample.Api.Controller
 
             var dict = (paginationParms as IDictionary<string, object>);
 
-            dict["name"] = "aa";
-            dict["description"] = "bb";
-            addon.Any(x =>
+            filterProps.Any(x =>
             {
                 dict[x.Key] = x.Value;
                 return false;
