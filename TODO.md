@@ -11,5 +11,6 @@
 // TODO：[√] finish CRUD, pagination, filter and sort
 // TODO：[√] pagination adapter for local and distrubuted cache (use queerystring for cache key )
 // TODO：[√] resouce shaping, ienumerable and single object
+// TODO：pagination improve and abstruct
 // TODO：NLog
-// TODO：DataSeed, AsNoTracking
+// TODO：init DataSeed, AsNoTracking

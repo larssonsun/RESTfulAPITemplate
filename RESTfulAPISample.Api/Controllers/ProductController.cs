@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -111,7 +112,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <summary>
         /// Get Products
         /// </summary>
-        /// <param name="parameters">The params for filter and page products</param>
+        /// <param name="queryStrParams">The params for filter and page products</param>
         /// <returns>products</returns>
         /// <response code="200">Returns the target products</response>
         /// <response code="304">Server-side data is not modified</response>
@@ -133,14 +134,14 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters parameters)
+        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters queryStrParams)
         {
-            if (!_propertyMappingContainer.ValidMappingExistsFor<ProductDTO, Product>(parameters.OrderBy))
+            if (!_propertyMappingContainer.ValidMappingExistsFor<ProductDTO, Product>(queryStrParams.OrderBy))
             {
                 return BadRequest("Can't find the fields for sorting.");
             }
 
-            if (!_typeHelperService.TypeHasProperties<ProductDTO>(parameters.Fields))
+            if (!_typeHelperService.TypeHasProperties<ProductDTO>(queryStrParams.Fields))
             {
                 return BadRequest("Can't find the fields on DTO.");
             }
@@ -154,7 +155,7 @@ namespace RESTfulAPISample.Api.Controller
             {
                 entry.Size = 2;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
-                return await _repository.GetProducts(parameters);
+                return await _repository.GetProducts(queryStrParams);
             });
 
 #elif (DISTRIBUTEDCACHE)
@@ -179,9 +180,9 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-            SetPaginationHead(pagedProducts, parameters);
+            Response.Headers.Add("X-Pagination", SetPaginationHead(pagedProducts, queryStrParams, "Product", "GetProducts"));
             var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
-            return Ok(mappedProducts.ToDynamicIEnumerable(parameters.Fields));
+            return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
         }
 
         #endregion
@@ -450,43 +451,58 @@ namespace RESTfulAPISample.Api.Controller
         #endregion
 
 
-        private void SetPaginationHead(PaginatedList<Product> pagedProducts, ProductDTOParameters parameters)
+        private string SetPaginationHead<TPaged, TQueryParams>(PaginatedList<TPaged> pagedEntity, TQueryParams queryParams,
+            string controllerName, string actionName)
+            where TPaged : class
+            where TQueryParams : PaginationBase
         {
-            var previousPageLink = pagedProducts.HasPrevious ? CreateProductsUri(parameters, PaginationResourceUriType.PreviousPage) : null;
-            var nextPageLink = pagedProducts.HasNext ? CreateProductsUri(parameters, PaginationResourceUriType.NextPage) : null;
+            var addonProps = new Dictionary<string, object>();
+            addonProps.Add("name", "aa22a");
+            addonProps.Add("description", "vb33vb");
+
+            var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, addonProps,
+                (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
+
+            var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, addonProps,
+                (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
+
             var meta = new
             {
-                pagedProducts.TotalItemsCount,
-                pagedProducts.PaginationBase.PageSize,
-                pagedProducts.PaginationBase.PageIndex,
-                pagedProducts.PageCount,
+                pagedEntity.TotalItemsCount,
+                pagedEntity.PaginationBase.PageSize,
+                pagedEntity.PaginationBase.PageIndex,
+                pagedEntity.PageCount,
                 previousPageLink,
                 nextPageLink
             };
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(meta, new JsonSerializerOptions
+            return JsonSerializer.Serialize(meta, new JsonSerializerOptions
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            }));
+            });
         }
-        private string CreateProductsUri(ProductDTOParameters parameters, PaginationResourceUriType uriType)
+        private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> addon, Func<object, string> linkGenerator)
+            where T : PaginationBase
         {
-            var paginationParms = new
-            {
-                pageIndex = parameters.PageIndex + (int)uriType,
-                pageSize = parameters.PageSize,
-                orderBy = parameters.OrderBy,
-                fields = parameters.Fields,
+            dynamic paginationParms = new System.Dynamic.ExpandoObject();
 
-                name = parameters.Name,
-                description = parameters.Description
-            };
-            return _generator.GetUriByAction(
-                httpContext: HttpContext,
-                action: "GetProducts",
-                controller: "Product",
-                values: paginationParms);
+            paginationParms.pageIndex = parameters.PageIndex + (int)uriType;
+            paginationParms.pageSize = parameters.PageSize;
+            paginationParms.orderBy = parameters.OrderBy;
+            paginationParms.fields = parameters.Fields;
+
+            var dict = (paginationParms as IDictionary<string, object>);
+
+            dict["name"] = "aa";
+            dict["description"] = "bb";
+            addon.Any(x =>
+            {
+                dict[x.Key] = x.Value;
+                return false;
+            });
+
+            return linkGenerator(paginationParms);
         }
     }
 }
