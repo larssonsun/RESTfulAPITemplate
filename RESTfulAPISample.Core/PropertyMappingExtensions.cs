@@ -7,10 +7,11 @@ namespace RESTfulAPISample.Core
 {
     public static class PropertyMappingExtensions
     {
-        public static void AddPropertyMappings(this IServiceCollection services)
+        public static void AddPropertyMappings<TPropertyMapping>(this IServiceCollection services)
+        where TPropertyMapping : IPropertyMapping, new()
         {
             var propertyMappingContainer = new PropertyMappingContainer();
-            propertyMappingContainer.Register<ProductPropertyMapping>();
+            propertyMappingContainer.Register<TPropertyMapping>();
 
             services.AddSingleton<IPropertyMappingContainer>(propertyMappingContainer);
             services.AddTransient<ITypeHelperService, TypeHelperService>();

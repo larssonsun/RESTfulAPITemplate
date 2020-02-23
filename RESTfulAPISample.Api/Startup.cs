@@ -20,6 +20,7 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
+using RESTfulAPISample.Core.SortAndQuery;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -74,7 +75,7 @@ namespace RESTfulAPISample.Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddPropertyMappings();
+            services.AddPropertyMappings<ProductPropertyMapping>();
 
             services.Configure<ApiBehaviorOptions>(abo =>
             {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -180,11 +179,18 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-            var addonProps = new Dictionary<string, object>();
-            var fuk = queryStrParams.GetType().GetProperties();
-            addonProps.Add("name", queryStrParams.Name);
-            addonProps.Add("description", queryStrParams.Description);
-            Response.Headers.Add("X-Pagination", SetPaginationHead(pagedProducts, queryStrParams, addonProps, "Product", "GetProducts"));
+            var filterProps = new Dictionary<string, object>();
+            filterProps.Add("name", queryStrParams.Name);
+            filterProps.Add("description", queryStrParams.Description);
+
+            Response.SetPaginationHead(pagedProducts, queryStrParams, filterProps,
+                values => _generator.GetUriByAction(HttpContext, controller: "Product", action: "GetProducts", values: values),
+                meta => JsonSerializer.Serialize(meta, new JsonSerializerOptions
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                })
+            );
             var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
             return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
         }
@@ -455,52 +461,52 @@ namespace RESTfulAPISample.Api.Controller
         #endregion
 
 
-        private string SetPaginationHead<TPaged, TQueryParams>(PaginatedList<TPaged> pagedEntity, TQueryParams queryParams,
-            Dictionary<string, object> filterProps, string controllerName, string actionName)
-            where TPaged : class
-            where TQueryParams : PaginationBase
-        {
-            var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, filterProps,
-                (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
+        // private string SetPaginationHead<TPaged, TQueryParams>(PaginatedList<TPaged> pagedEntity, TQueryParams queryParams,
+        //     Dictionary<string, object> filterProps, string controllerName, string actionName)
+        //     where TPaged : class
+        //     where TQueryParams : PaginationBase
+        // {
+        //     var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, filterProps,
+        //         (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
 
-            var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, filterProps,
-                (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
+        //     var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, filterProps,
+        //         (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
 
-            var meta = new
-            {
-                pagedEntity.TotalItemsCount,
-                pagedEntity.PaginationBase.PageSize,
-                pagedEntity.PaginationBase.PageIndex,
-                pagedEntity.PageCount,
-                previousPageLink,
-                nextPageLink
-            };
+        //     var meta = new
+        //     {
+        //         pagedEntity.TotalItemsCount,
+        //         pagedEntity.PaginationBase.PageSize,
+        //         pagedEntity.PaginationBase.PageIndex,
+        //         pagedEntity.PageCount,
+        //         previousPageLink,
+        //         nextPageLink
+        //     };
 
-            return JsonSerializer.Serialize(meta, new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-        }
-        private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> filterProps, Func<object, string> linkGenerator)
-            where T : PaginationBase
-        {
-            dynamic paginationParms = new System.Dynamic.ExpandoObject();
+        //     return JsonSerializer.Serialize(meta, new JsonSerializerOptions
+        //     {
+        //         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        //         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        //     });
+        // }
+        // private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> filterProps, Func<object, string> linkGenerator)
+        //     where T : PaginationBase
+        // {
+        //     dynamic paginationParms = new System.Dynamic.ExpandoObject();
 
-            paginationParms.pageIndex = parameters.PageIndex + (int)uriType;
-            paginationParms.pageSize = parameters.PageSize;
-            paginationParms.orderBy = parameters.OrderBy;
-            paginationParms.fields = parameters.Fields;
+        //     paginationParms.pageIndex = parameters.PageIndex + (int)uriType;
+        //     paginationParms.pageSize = parameters.PageSize;
+        //     paginationParms.orderBy = parameters.OrderBy;
+        //     paginationParms.fields = parameters.Fields;
 
-            var dict = (paginationParms as IDictionary<string, object>);
+        //     var dict = (paginationParms as IDictionary<string, object>);
 
-            filterProps.Any(x =>
-            {
-                dict[x.Key] = x.Value;
-                return false;
-            });
+        //     filterProps.Any(x =>
+        //     {
+        //         dict[x.Key] = x.Value;
+        //         return false;
+        //     });
 
-            return linkGenerator(paginationParms);
-        }
+        //     return linkGenerator(paginationParms);
+        // }
     }
 }
