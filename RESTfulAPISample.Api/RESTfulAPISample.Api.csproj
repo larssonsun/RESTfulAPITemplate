@@ -29,6 +29,7 @@
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <ENABLESWAGGER>True</ENABLESWAGGER>
     <RESPONSEHANDLERWRAPPER>True</RESPONSEHANDLERWRAPPER>
+    <RESTFULAPIHELPER>False</RESTFULAPIHELPER>
     <IncludeOpenAPIAnalyzers Condition="'$(ENABLESWAGGER)' == 'True' ">True</IncludeOpenAPIAnalyzers>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+#if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.SortAndQuery;
+#endif
 using Microsoft.EntityFrameworkCore;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.DTO;
@@ -15,12 +17,27 @@ namespace RESTfulAPISample.Infrastructure.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly RESTfulAPISampleContext _context;
+
+#if (RESTFULAPIHELPER)
+
         private readonly IPropertyMappingContainer _propertyMappingContainer;
+
+#endif
+
+#if (RESTFULAPIHELPER)
 
         public ProductRepository(RESTfulAPISampleContext context, IPropertyMappingContainer propertyMappingContainer)
         {
             _context = context;
             _propertyMappingContainer = propertyMappingContainer;
+#else
+
+        public ProductRepository(RESTfulAPISampleContext context)
+        {
+            _context = context;
+
+#endif
+
 
             if (_context.Products.Count() == 0)
             {
@@ -109,14 +126,33 @@ namespace RESTfulAPISample.Infrastructure.Repository
                 query = query.Where(x => x.Description.ToLowerInvariant().Contains(description));
             }
 
+#if (RESTFULAPIHELPER)
+
             query = query.ApplySort(parameters.OrderBy, _propertyMappingContainer.Resolve<ProductDTO, Product>());
+
+#endif
 
             var count = await query.CountAsync();
             var data = await query
+
+#if (RESTFULAPIHELPER)
+
                 .Skip(parameters.PageSize * parameters.PageIndex)
-                .Take(parameters.PageSize).ToListAsync();
+                .Take(parameters.PageSize)
+
+#endif
+
+                .ToListAsync();
+
+#if (RESTFULAPIHELPER)
 
             return new PagedListBase<Product>(parameters.PageIndex, parameters.PageSize, count, data);
+
+#else
+
+            return (PagedListBase<Product>)data;
+
+#endif
         }
     }
 }

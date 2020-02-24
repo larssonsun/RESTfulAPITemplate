@@ -11,7 +11,9 @@ using RESTfulAPISample.Core.DTO.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+#if (RESTFULAPIHELPER) 
 using Larsson.RESTfulAPIHelper;
+#endif
 #if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
 using RESTfulAPISample.Middleware;
@@ -20,7 +22,6 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
-using RESTfulAPISample.Core.PropertyMapping;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;
@@ -75,7 +76,11 @@ namespace RESTfulAPISample.Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+#if (RESTFULAPIHELPER)
+
             services.AddRESTfulAPIHelper(rho => rho.Register<ProductPropertyMapping>());
+
+#endif
 
             services.Configure<ApiBehaviorOptions>(abo =>
             {

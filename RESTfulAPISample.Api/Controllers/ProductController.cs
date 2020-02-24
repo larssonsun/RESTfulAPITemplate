@@ -22,10 +22,11 @@ using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
+#if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.Pagination;
 using Larsson.RESTfulAPIHelper.Shaping;
-
+#endif
 namespace RESTfulAPISample.Api.Controller
 {
     /// <summary>
@@ -58,8 +59,13 @@ namespace RESTfulAPISample.Api.Controller
         private readonly LinkGenerator _generator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IProductRepository _repository;
+
+#if (RESTFULAPIHELPER)
+        
         private readonly IPropertyMappingContainer _propertyMappingContainer;
         private readonly ITypeHelperService _typeHelperService;
+
+#endif
 
 #if (LOCALMEMORYCACHE)
 
@@ -95,15 +101,29 @@ namespace RESTfulAPISample.Api.Controller
 #else
 
         public ProductController(ILogger<ProductController> logger, IMapper mapper, LinkGenerator generator, IUnitOfWork unitOfWork,
-        IProductRepository repository, IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService)
+        IProductRepository repository
+
+#if (RESTFULAPIHELPER)     
+        
+        , IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService
+        
+#endif
+
+        )
         {
             _logger = logger;
             _mapper = mapper;
             _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
+
+#if (RESTFULAPIHELPER)
+            
             _propertyMappingContainer = propertyMappingContainer;
             _typeHelperService = typeHelperService;
+
+#endif
+
         }
 
 #endif
@@ -136,6 +156,9 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters queryStrParams)
         {
+
+#if (RESTFULAPIHELPER)
+
             if (!_propertyMappingContainer.ValidMappingExistsFor<ProductDTO, Product>(queryStrParams.OrderBy))
             {
                 return BadRequest("Can't find the fields for sorting.");
@@ -145,6 +168,8 @@ namespace RESTfulAPISample.Api.Controller
             {
                 return BadRequest("Can't find the fields on DTO.");
             }
+
+#endif
 
             PagedListBase<Product> pagedProducts;
 
@@ -178,9 +203,11 @@ namespace RESTfulAPISample.Api.Controller
 
 #else
 
-             pagedProducts = await _repository.GetProducts(queryStrParams);
+            pagedProducts = await _repository.GetProducts(queryStrParams);
 
 #endif
+
+#if (RESTFULAPIHELPER)
 
             var filterProps = new Dictionary<string, object>();
             filterProps.Add("name", queryStrParams.Name);
@@ -194,8 +221,20 @@ namespace RESTfulAPISample.Api.Controller
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 })
             );
+
+#endif
+
             var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
+
+#if (RESTFULAPIHELPER)
+            
             return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
+#else
+
+            return Ok(mappedProducts);
+
+#endif
+
         }
 
         #endregion
@@ -226,7 +265,15 @@ namespace RESTfulAPISample.Api.Controller
                 return NotFound();
             }
 
+#if (RESTFULAPIHELPER)
+
             return Ok(_mapper.Map<ProductDTO>(result.product).ToDynamic(fields));
+
+#else
+
+            return Ok(_mapper.Map<ProductDTO>(result.product));
+
+#endif
         }
         #endregion
 
@@ -462,54 +509,5 @@ namespace RESTfulAPISample.Api.Controller
             return NoContent();
         }
         #endregion
-
-
-        // private string SetPaginationHead<TPaged, TQueryParams>(PaginatedList<TPaged> pagedEntity, TQueryParams queryParams,
-        //     Dictionary<string, object> filterProps, string controllerName, string actionName)
-        //     where TPaged : class
-        //     where TQueryParams : PaginationBase
-        // {
-        //     var previousPageLink = pagedEntity.HasPrevious ? CreateProductsUri(queryParams, PaginationResourceUriType.PreviousPage, filterProps,
-        //         (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
-
-        //     var nextPageLink = pagedEntity.HasNext ? CreateProductsUri(queryParams, PaginationResourceUriType.NextPage, filterProps,
-        //         (values) => _generator.GetUriByAction(HttpContext, actionName, controllerName, values)) : null;
-
-        //     var meta = new
-        //     {
-        //         pagedEntity.TotalItemsCount,
-        //         pagedEntity.PaginationBase.PageSize,
-        //         pagedEntity.PaginationBase.PageIndex,
-        //         pagedEntity.PageCount,
-        //         previousPageLink,
-        //         nextPageLink
-        //     };
-
-        //     return JsonSerializer.Serialize(meta, new JsonSerializerOptions
-        //     {
-        //         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        //         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        //     });
-        // }
-        // private string CreateProductsUri<T>(T parameters, PaginationResourceUriType uriType, Dictionary<string, object> filterProps, Func<object, string> linkGenerator)
-        //     where T : PaginationBase
-        // {
-        //     dynamic paginationParms = new System.Dynamic.ExpandoObject();
-
-        //     paginationParms.pageIndex = parameters.PageIndex + (int)uriType;
-        //     paginationParms.pageSize = parameters.PageSize;
-        //     paginationParms.orderBy = parameters.OrderBy;
-        //     paginationParms.fields = parameters.Fields;
-
-        //     var dict = (paginationParms as IDictionary<string, object>);
-
-        //     filterProps.Any(x =>
-        //     {
-        //         dict[x.Key] = x.Value;
-        //         return false;
-        //     });
-
-        //     return linkGenerator(paginationParms);
-        // }
     }
 }
