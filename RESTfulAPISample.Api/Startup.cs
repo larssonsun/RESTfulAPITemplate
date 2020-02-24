@@ -75,7 +75,7 @@ namespace RESTfulAPISample.Api
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddPropertyMappings<ProductPropertyMapping>();
+            services.AddRESTfulAPIHelper(rho => rho.Register<ProductPropertyMapping>());
 
             services.Configure<ApiBehaviorOptions>(abo =>
             {

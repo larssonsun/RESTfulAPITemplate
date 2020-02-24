@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using RESTfulAPISample.Core.Interface;
 
@@ -8,16 +7,16 @@ namespace RESTfulAPISample.Core.SortAndQuery
 {
     public class PropertyMappingContainer : IPropertyMappingContainer
     {
-        private readonly IList<IPropertyMapping> _propertyMappings = new List<IPropertyMapping>();
-
-        public void Register<T>() where T : IPropertyMapping, new()
+        private RESTfulAPIHelperOptions _options;
+        
+        public PropertyMappingContainer(RESTfulAPIHelperOptions options)
         {
-            _propertyMappings.Add(new T());
-        }
+            _options = options;
+        }       
 
         public IPropertyMapping Resolve<TSource, TDestination>() where TDestination : IEntity
         {
-            var matchingMapping = _propertyMappings.OfType<PropertyMapping<TSource, TDestination>>().ToList();
+            var matchingMapping = _options.PropertyMappings.OfType<PropertyMapping<TSource, TDestination>>().ToList();
             if (matchingMapping.Count == 1)
             {
                 return matchingMapping.First();
