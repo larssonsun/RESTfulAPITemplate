@@ -146,13 +146,14 @@ namespace RESTfulAPISample.Api.Controller
                 return BadRequest("Can't find the fields on DTO.");
             }
 
-            PaginatedList<Product> pagedProducts;
+            PagedListBase<Product> pagedProducts;
 
 #if (LOCALMEMORYCACHE)
 
             var cacheKey = Request.QueryString.Value;
-            pagedProducts = await _cache.GetOrCreateAsync<PaginatedList<Product>>(cacheKey, async entry =>
+            pagedProducts = await _cache.GetOrCreateAsync<PagedListBase<Product>>(cacheKey, async entry =>
             {
+                Console.WriteLine("--------------------not from cache-----------------------");
                 entry.Size = 2;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 return await _repository.GetProducts(queryStrParams);
@@ -164,19 +165,20 @@ namespace RESTfulAPISample.Api.Controller
             var pagedProductsBytes = await _cache.GetAsync(cacheKey);
             if (pagedProductsBytes != null)
             {
-                pagedProducts = MessagePackSerializer.Deserialize<PaginatedList<Product>>(pagedProductsBytes);
+                pagedProducts = MessagePackSerializer.Deserialize<PagedListBase<Product>>(pagedProductsBytes);
             }
             else
             {
-                pagedProducts = await _repository.GetProducts(parameters);
-                var productsResourceBytes = MessagePackSerializer.Serialize<PaginatedList<Product>>(pagedProducts);
+                Console.WriteLine("--------------------not from cache-----------------------");
+                pagedProducts = await _repository.GetProducts(queryStrParams);
+                var productsResourceBytes = MessagePackSerializer.Serialize<PagedListBase<Product>>(pagedProducts);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));            
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
             }
 
 #else
 
-             pagedProducts = await _repository.GetProducts(parameters);
+             pagedProducts = await _repository.GetProducts(queryStrParams);
 
 #endif
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Larsson.RESTfulAPIHelper.Pagination;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Entity;
 
@@ -10,7 +9,7 @@ namespace RESTfulAPISample.Core.Interface
     public interface IProductRepository
     {
         void AddProduct(Product product);
-        Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parm);
+        Task<PagedListBase<Product>> GetProducts(ProductDTOParameters parm);
         IAsyncEnumerable<Product> GetProductsEachAsync();
         Task<int> CountNameWithString(string s);
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);

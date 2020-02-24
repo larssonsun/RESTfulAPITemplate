@@ -20,7 +20,7 @@ using RESTfulAPISample.Middleware;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using System;
-using RESTfulAPISample.Core.SortAndQuery;
+using RESTfulAPISample.Core.PropertyMapping;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
 using RESTfulAPISample.Api.Service;

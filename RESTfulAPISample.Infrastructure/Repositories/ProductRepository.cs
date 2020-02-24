@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Larsson.RESTfulAPIHelper.Interface;
-using Larsson.RESTfulAPIHelper.Pagination;
 using Larsson.RESTfulAPIHelper.SortAndQuery;
 using Microsoft.EntityFrameworkCore;
 using RESTfulAPISample.Core.DomainModel;
@@ -94,7 +93,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
             _context.Update(product);
         }
 
-        public async Task<PaginatedList<Product>> GetProducts(ProductDTOParameters parameters)
+        public async Task<PagedListBase<Product>> GetProducts(ProductDTOParameters parameters)
         {
             var query = _context.Products.AsQueryable();
 
@@ -117,7 +116,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
                 .Skip(parameters.PageSize * parameters.PageIndex)
                 .Take(parameters.PageSize).ToListAsync();
 
-            return new PaginatedList<Product>(parameters.PageIndex, parameters.PageSize, count, data);
+            return new PagedListBase<Product>(parameters.PageIndex, parameters.PageSize, count, data);
         }
     }
 }

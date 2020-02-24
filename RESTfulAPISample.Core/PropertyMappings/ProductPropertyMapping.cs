@@ -4,7 +4,7 @@ using Larsson.RESTfulAPIHelper.SortAndQuery;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 
-namespace RESTfulAPISample.Core.SortAndQuery
+namespace RESTfulAPISample.Core.PropertyMapping
 {
     public class ProductPropertyMapping : PropertyMapping<ProductDTO, Product>
     {
