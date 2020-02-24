@@ -13,6 +13,7 @@ using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
 #if (RESTFULAPIHELPER) 
 using Larsson.RESTfulAPIHelper;
+using RESTfulAPISample.Core.PropertyMapping;
 #endif
 #if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
