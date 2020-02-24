@@ -1,4 +1,4 @@
-namespace RESTfulAPISample.Core.Pagination
+namespace Larsson.RESTfulAPIHelper.Pagination
 {
     public enum PaginationResourceUriType
     {

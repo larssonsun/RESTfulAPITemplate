@@ -1,9 +1,9 @@
 ﻿
 using System;
 using System.Linq;
-using RESTfulAPISample.Core.Interface;
+using Larsson.RESTfulAPIHelper.Interface;
 
-namespace RESTfulAPISample.Core.SortAndQuery
+namespace Larsson.RESTfulAPIHelper.SortAndQuery
 {
     public class PropertyMappingContainer : IPropertyMappingContainer
     {

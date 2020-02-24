@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RESTfulAPISample.Core.Interface;
+using Larsson.RESTfulAPIHelper.Interface;
 
-namespace RESTfulAPISample.Core
+namespace Larsson.RESTfulAPIHelper
 {
     public class RESTfulAPIHelperOptions
     {

@@ -1,14 +1,8 @@
 
 using System.Collections.Generic;
-#if (DISTRIBUTEDCACHE)
-using MessagePack;
-#endif
 
-namespace RESTfulAPISample.Core.Pagination
+namespace Larsson.RESTfulAPIHelper.Pagination
 {
-#if (DISTRIBUTEDCACHE)
-    [MessagePackObject(keyAsPropertyName: true)]
-#endif
     public class PaginatedList<T> : List<T> where T : class
     {
         public PaginationBase PaginationBase { get; }

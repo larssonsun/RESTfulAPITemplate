@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RESTfulAPISample.core\RESTfulAPISample.core.csproj" />
     <ProjectReference Include="..\RESTfulAPISample.infrastructure\RESTfulAPISample.Infrastructure.csproj" />
+    <ProjectReference Include="..\Larsson.RESTfulAPIHelper\Larsson.RESTfulAPIHelper.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />

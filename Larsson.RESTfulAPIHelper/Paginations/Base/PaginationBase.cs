@@ -1,6 +1,6 @@
-﻿using RESTfulAPISample.Core.Interface;
+﻿using Larsson.RESTfulAPIHelper.Interface;
 
-namespace RESTfulAPISample.Core.Pagination
+namespace Larsson.RESTfulAPIHelper.Pagination
 {
     public class PaginationBase
     {

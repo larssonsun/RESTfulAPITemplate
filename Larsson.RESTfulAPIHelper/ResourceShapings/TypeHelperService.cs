@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using RESTfulAPISample.Core.Interface;
+using Larsson.RESTfulAPIHelper.Interface;
 
-namespace RESTfulAPISample.Core.Shaping
+namespace Larsson.RESTfulAPIHelper.Shaping
 {
     public class TypeHelperService : ITypeHelperService
     {

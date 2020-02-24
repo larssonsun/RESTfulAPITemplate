@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RESTfulAPISample.Core.Interface;
+using Larsson.RESTfulAPIHelper.Interface;
 using System.Linq.Dynamic.Core;
 
-namespace RESTfulAPISample.Core.SortAndQuery
+namespace Larsson.RESTfulAPIHelper.SortAndQuery
 {
     public static class QueryableExtensions
     {

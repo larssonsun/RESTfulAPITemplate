@@ -1,4 +1,4 @@
-﻿namespace RESTfulAPISample.Core.Interface
+﻿namespace Larsson.RESTfulAPIHelper.Interface
 {
     public interface IPropertyMappingContainer
     {

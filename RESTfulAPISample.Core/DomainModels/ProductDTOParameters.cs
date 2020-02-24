@@ -1,4 +1,4 @@
-﻿using RESTfulAPISample.Core.Pagination;
+﻿using Larsson.RESTfulAPIHelper.Pagination;
 
 namespace RESTfulAPISample.Core.DomainModel
 {

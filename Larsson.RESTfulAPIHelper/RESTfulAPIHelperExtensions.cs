@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
-using RESTfulAPISample.Core.Interface;
-using RESTfulAPISample.Core.Shaping;
-using RESTfulAPISample.Core.SortAndQuery;
+using Larsson.RESTfulAPIHelper.Interface;
+using Larsson.RESTfulAPIHelper.Shaping;
+using Larsson.RESTfulAPIHelper.SortAndQuery;
 
-namespace RESTfulAPISample.Core
+namespace Larsson.RESTfulAPIHelper
 {
     public static class RESTfulAPIHelperExtensions
     {

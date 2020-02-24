@@ -1,4 +1,4 @@
-﻿namespace RESTfulAPISample.Core.SortAndQuery
+﻿namespace Larsson.RESTfulAPIHelper.SortAndQuery
 {
     public class MappedProperty
     {

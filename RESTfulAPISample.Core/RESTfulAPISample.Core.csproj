@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="..\Larsson.RESTfulAPIHelper\Larsson.RESTfulAPIHelper.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="FluentValidation" Version="8.6.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.1" />

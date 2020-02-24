@@ -1,4 +1,4 @@
-﻿using RESTfulAPISample.Core.Interface;
+﻿using Larsson.RESTfulAPIHelper.Interface;
 
 namespace RESTfulAPISample.Core.Entity
 {

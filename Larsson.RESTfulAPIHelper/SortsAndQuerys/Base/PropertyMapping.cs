@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using RESTfulAPISample.Core.Interface;
+using Larsson.RESTfulAPIHelper.Interface;
 
-namespace RESTfulAPISample.Core.SortAndQuery
+namespace Larsson.RESTfulAPIHelper.SortAndQuery
 {
     public abstract class PropertyMapping<TSource, TDestination> : IPropertyMapping where TDestination : IEntity
     {

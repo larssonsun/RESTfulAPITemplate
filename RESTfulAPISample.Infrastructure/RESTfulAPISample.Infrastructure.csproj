@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\RESTfulAPISample.core\RESTfulAPISample.Core.csproj"/>
+    <ProjectReference Include="..\Larsson.RESTfulAPIHelper\Larsson.RESTfulAPIHelper.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1"/>

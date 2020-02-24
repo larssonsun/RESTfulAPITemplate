@@ -11,6 +11,8 @@
 // TODO：[√] finish CRUD, pagination, filter and sort
 // TODO：[√] pagination adapter for local and distrubuted cache (use queerystring for cache key )
 // TODO：[√] resouce shaping, ienumerable and single object
-// TODO：pagination improve and abstruct
+// TODO：pagination improve and abstruct, PaginatedList需要继承后使用。并根据需要引入序列化包
 // TODO：NLog
 // TODO：init DataSeed, AsNoTracking
+
+// TODO：去掉core中的引用dynamic.core

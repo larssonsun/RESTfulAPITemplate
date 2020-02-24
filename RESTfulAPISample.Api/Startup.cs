@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RESTfulAPISample.Core;
 using RESTfulAPISample.Core.DTO.Configurations;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
+using Larsson.RESTfulAPIHelper;
 #if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
 using RESTfulAPISample.Middleware;

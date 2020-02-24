@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
-namespace RESTfulAPISample.Core.Shaping
+namespace Larsson.RESTfulAPIHelper.Shaping
 {
     public static class ObjectExtensions
     {

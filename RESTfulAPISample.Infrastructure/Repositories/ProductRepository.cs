@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Larsson.RESTfulAPIHelper.Interface;
+using Larsson.RESTfulAPIHelper.Pagination;
+using Larsson.RESTfulAPIHelper.SortAndQuery;
 using Microsoft.EntityFrameworkCore;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 using RESTfulAPISample.Core.Interface;
-using RESTfulAPISample.Core.Pagination;
-using RESTfulAPISample.Core.SortAndQuery;
 
 namespace RESTfulAPISample.Infrastructure.Repository
 {
