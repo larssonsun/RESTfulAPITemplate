@@ -6,12 +6,12 @@
   <ItemGroup>
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
     <PackageReference Condition="'$(DISTRIBUTEDCACHE)' == 'True'" Include="MessagePack" Version="2.1.90" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
-    <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="autowrapper.core" Version="3.0.0" />
+    <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="Autowrapper.core" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(ENABLEJWTAUTHENTICATION)' == 'True'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
   <PropertyGroup>
