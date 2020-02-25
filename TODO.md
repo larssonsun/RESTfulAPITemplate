@@ -10,6 +10,6 @@ TODO：[√b] FixAutoWrapperMiddleware 将CathcTheLastMiddleware中的设置Http
 TODO：[√bn] pagination, resouce shaping, sorting(sqlserver2012+), filter(not in helper) to nuget package.
 TODO：[√] dto validattion (fluent-validation)
 TODO：[√] finish CRUD, pagination, filter and sort, AsNoTracking
-TODO：init DataSeed
+TODO：[√] init DataSeed
 TODO: TEST SQLServer , the sqlserver ef 2012 sort problem
 TODO：NLog

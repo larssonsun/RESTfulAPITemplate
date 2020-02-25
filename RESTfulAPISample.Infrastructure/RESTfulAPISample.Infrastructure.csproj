@@ -15,9 +15,9 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <DefineConstants>$(DefineConstants);DBINMEMORY;RESTFULAPIHELPER</DefineConstants>
-    <MSSQL>False</MSSQL>
-    <DBINMEMORY>True</DBINMEMORY>
+    <DefineConstants>$(DefineConstants);MSSQL;RESTFULAPIHELPER</DefineConstants>
+    <MSSQL>True</MSSQL>
+    <DBINMEMORY>False</DBINMEMORY>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>

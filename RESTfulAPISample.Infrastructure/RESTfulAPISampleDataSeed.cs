@@ -3,6 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Core.Entity;
+#if (MSSQL)
+using Microsoft.EntityFrameworkCore;
+#endif
 
 namespace RESTfulAPISample.Infrastructure
 {
@@ -13,8 +16,11 @@ namespace RESTfulAPISample.Infrastructure
             int retryForAvailability = retry;
             try
             {
-                // TODO: Only run this if using a real database
-                // myContext.Database.Migrate();
+
+#if (MSSQL)
+
+                context.Database.Migrate();
+#endif
 
                 if (!context.Products.Any())
                 {
@@ -29,14 +35,14 @@ namespace RESTfulAPISample.Infrastructure
                         },
                         new Product
                         {
-                            Name = "D Learning EF Core",
+                            Name = "D Learning EF Core 2",
                             Description = "A best-selling book covering the fundamentals of C#",
                             IsOnSale = true,
                             CreateTime = now,
                         },
                         new Product
                         {
-                            Name = "D Learning EF Core",
+                            Name = "D Learning EF Core 3",
                             Description = "B best-selling book covering the fundamentals of .NET Standard",
                             CreateTime = now.AddDays(2),
                         },
