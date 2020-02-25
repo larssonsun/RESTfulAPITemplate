@@ -80,7 +80,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
         }
 
         public IAsyncEnumerable<Product> GetProductsEachAsync() =>
-            _context.Products.OrderBy(p => p.Name).AsAsyncEnumerable();
+            _context.Products.OrderBy(p => p.Name).AsNoTracking().AsAsyncEnumerable();
 
         public async Task<int> CountNameWithString(string s)
         {
@@ -89,7 +89,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
         public async Task<(bool hasProduct, Product product)> TryGetProduct(Guid id)
         {
-            var result = await _context.Products.FindAsync(id);
+            var result = await _context.Products.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
 
             return (result != null, result);
         }
@@ -114,7 +114,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
 #if (RESTFULAPIHELPER)
 
-        Task<PagedListBase<Product>> 
+        Task<PagedListBase<Product>>
 
 #else
 
@@ -153,7 +153,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
 #endif
 
-                .ToListAsync();
+                .AsNoTracking().ToListAsync();
 
 #if (RESTFULAPIHELPER)
 

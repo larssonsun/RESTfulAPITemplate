@@ -18,7 +18,7 @@ namespace RESTfulAPISample.Core.DTO.Configurations
             CreateMap<Product, ProductDTO>().ForMember(
                 dto => dto.FullName,
                 opt => opt.MapFrom(entity => $"{entity.Name} {entity.Description}"));
-            CreateMap<ProductCreateOrUpdateDTO, Product>();
+            CreateMap<ProductCreateDTO, Product>();
             CreateMap<ProductUpdateDTO, Product>().ReverseMap();
         }
     }

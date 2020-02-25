@@ -55,7 +55,7 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
 #if (RESTFULAPIHELPER)
-        
+
         private readonly LinkGenerator _generator;
         private readonly IPropertyMappingContainer _propertyMappingContainer;
         private readonly ITypeHelperService _typeHelperService;
@@ -80,9 +80,9 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
 #if (RESTFULAPIHELPER)
-        
+
         , LinkGenerator generator, IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService
-        
+
 #endif
 
         )
@@ -98,11 +98,11 @@ namespace RESTfulAPISample.Api.Controller
 #endif
 
 #if (RESTFULAPIHELPER)
-        
+
             _generator = generator;
             _propertyMappingContainer = propertyMappingContainer;
             _typeHelperService = typeHelperService;
-        
+
 #endif
 
         }
@@ -223,7 +223,7 @@ namespace RESTfulAPISample.Api.Controller
             var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
 
 #if (RESTFULAPIHELPER)
-            
+
             return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
 #else
 
@@ -233,7 +233,7 @@ namespace RESTfulAPISample.Api.Controller
 
         }
 
-#endregion
+        #endregion
 
         #region snippet_GetProductAsync   
         /// <summary>
@@ -247,7 +247,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetProductAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -325,7 +325,7 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody]ProductCreateOrUpdateDTO productCreateDTO)
+        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
         {
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
 
@@ -474,6 +474,8 @@ namespace RESTfulAPISample.Api.Controller
         [HttpPatch("{productId}")]
         public async Task<IActionResult> PartiallyUpdateProductAsync(Guid productId, [FromBody] Microsoft.AspNetCore.JsonPatch.JsonPatchDocument<ProductUpdateDTO> patchDoc)
         {
+            // body的格式详见JsonPatchDocument
+
             if (patchDoc == null)
             {
                 return BadRequest();
