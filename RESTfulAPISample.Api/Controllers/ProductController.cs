@@ -162,7 +162,7 @@ namespace RESTfulAPISample.Api.Controller
             var cacheKey = Request.QueryString.Value;
             pagedProducts = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                Console.WriteLine("--------------------not from cache-----------------------");
+                Console.WriteLine("--------------------not from localmemory cache-----------------------");
                 entry.Size = 2;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 return await _repository.GetProducts(queryStrParams);
@@ -190,7 +190,7 @@ namespace RESTfulAPISample.Api.Controller
             }
             else
             {
-                Console.WriteLine("--------------------not from cache-----------------------");
+                Console.WriteLine("--------------------not from distributed cache-----------------------");
                 pagedProducts = await _repository.GetProducts(queryStrParams);
                 var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
