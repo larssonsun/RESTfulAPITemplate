@@ -11,8 +11,8 @@
 
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants);DISTRIBUTEDCACHE;RESTFULAPIHELPER</DefineConstants>
-    <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
+    <DefineConstants>$(DefineConstants);RESTFULAPIHELPER</DefineConstants>
+    <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
