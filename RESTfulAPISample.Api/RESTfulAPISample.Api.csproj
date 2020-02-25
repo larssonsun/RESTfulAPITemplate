@@ -19,7 +19,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- ↓ -->
-
     <DefineConstants>$(DefineConstants);MSSQL;OBSOLETESQLSERVER;ENABLERESPONSECACHE;DISTRIBUTEDCACHE;ENABLESWAGGER;RESPONSEHANDLERWRAPPER;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>True</MSSQL>
     <DBINMEMORY>False</DBINMEMORY>
@@ -35,7 +34,6 @@
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Services\**\TokenAuthenticationService.cs;
     Controllers\**\AuthenticationController.cs;</DefaultItemExcludes>
-
     <!-- ↑ -->
   </PropertyGroup>
   <PropertyGroup Condition="'$(ENABLESWAGGER)' == 'True'">

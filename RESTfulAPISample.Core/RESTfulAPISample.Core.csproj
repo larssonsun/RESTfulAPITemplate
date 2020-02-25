@@ -8,9 +8,7 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-
     <!--  ↓ -->
-
     <DefineConstants>$(DefineConstants);OBSOLETESQLSERVER;DISTRIBUTEDCACHE;RESTFULAPIHELPER</DefineConstants>
     <OBSOLETESQLSERVER>True</OBSOLETESQLSERVER>
     <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
@@ -25,7 +23,6 @@
     PropertyMappings\**;
     Entities\**\Entity.cs;</DefaultItemExcludes>
     <!-- ↑  -->
-
   </PropertyGroup>
 
 </Project>

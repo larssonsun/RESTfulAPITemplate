@@ -18,6 +18,7 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+     <!--  ↓ -->
     <DefineConstants>$(DefineConstants);MSSQL;OBSOLETESQLSERVER;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>True</MSSQL>
     <DBINMEMORY>False</DBINMEMORY>
@@ -26,5 +27,6 @@
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);Repositories\**\UserRepository.cs</DefaultItemExcludes>
+    <!-- ↑  -->
   </PropertyGroup>
 </Project>
