@@ -40,9 +40,12 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
         }
 
+#if (!OBSOLETESQLSERVER)
+
         public IAsyncEnumerable<Product> GetProductsEachAsync() =>
             _context.Products.OrderBy(p => p.Name).AsNoTracking().AsAsyncEnumerable();
-
+            
+#endif
         public async Task<int> CountNameWithString(string s)
         {
             return await _context.Products.CountAsync(x => x.Name.Contains(s));

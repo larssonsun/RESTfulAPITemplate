@@ -66,8 +66,15 @@ namespace RESTfulAPISample.Api
 
 #elif (MSSQL)
 
-            services.AddDbContext<RESTfulAPISampleContext>(dcob => dcob.UseSqlServer(
-               Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")));
+            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
+                dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")
+
+#if (OBSOLETESQLSERVER)
+
+                , soa => soa.UseRowNumberForPaging()
+
+#endif
+            ));
 
 #endif
             var mappingConfig = new MapperConfiguration(ice =>

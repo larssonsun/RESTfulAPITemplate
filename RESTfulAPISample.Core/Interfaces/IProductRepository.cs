@@ -12,7 +12,7 @@ namespace RESTfulAPISample.Core.Interface
 
 #if (RESTFULAPIHELPER)
 
-        Task<PagedListBase<Product>> 
+        Task<PagedListBase<Product>>
 
 #else
 
@@ -20,7 +20,13 @@ namespace RESTfulAPISample.Core.Interface
 
 #endif
         GetProducts(ProductDTOParameters parm);
+
+#if (!OBSOLETESQLSERVER)
+
         IAsyncEnumerable<Product> GetProductsEachAsync();
+
+#endif
+
         Task<int> CountNameWithString(string s);
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);
         void DeleteProduct(Product product);

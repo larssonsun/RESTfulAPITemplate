@@ -3,21 +3,25 @@
     <ProjectReference Include="..\RESTfulAPISample.core\RESTfulAPISample.Core.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore" Version="2.2.6"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore" Version="3.1.2"/>
   </ItemGroup>
   <ItemGroup Condition="'$(DBINMEMORY)' == 'True' ">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2"/>
   </ItemGroup>
   <ItemGroup Condition="'$(MSSQL)' == 'True' ">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2"/>
+    <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2"/>
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <DefineConstants>$(DefineConstants);MSSQL;RESTFULAPIHELPER</DefineConstants>
+    <DefineConstants>$(DefineConstants);MSSQL;OBSOLETESQLSERVER;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>True</MSSQL>
     <DBINMEMORY>False</DBINMEMORY>
+    <OBSOLETESQLSERVER>True</OBSOLETESQLSERVER>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>

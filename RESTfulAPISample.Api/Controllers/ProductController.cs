@@ -274,6 +274,9 @@ namespace RESTfulAPISample.Api.Controller
         #endregion
 
         #region snippet_GetProductsEachAsync
+
+#if (!OBSOLETESQLSERVER)
+
         /// <summary>
         /// Get products asynchronously by product id
         /// </summary>
@@ -301,6 +304,9 @@ namespace RESTfulAPISample.Api.Controller
                 }
             }
         }
+
+#endif
+
         #endregion
 
         #region snippet_CreateProductAsync
