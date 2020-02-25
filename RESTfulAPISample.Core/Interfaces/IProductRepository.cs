@@ -9,7 +9,17 @@ namespace RESTfulAPISample.Core.Interface
     public interface IProductRepository
     {
         void AddProduct(Product product);
-        Task<PagedListBase<Product>> GetProducts(ProductDTOParameters parm);
+
+#if (RESTFULAPIHELPER)
+
+        Task<PagedListBase<Product>> 
+
+#else
+
+        Task<IEnumerable<Product>>
+
+#endif
+        GetProducts(ProductDTOParameters parm);
         IAsyncEnumerable<Product> GetProductsEachAsync();
         Task<int> CountNameWithString(string s);
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);

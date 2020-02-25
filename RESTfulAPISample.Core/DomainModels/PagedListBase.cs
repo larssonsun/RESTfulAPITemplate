@@ -8,26 +8,21 @@ using MessagePack;
 
 namespace RESTfulAPISample.Core.DomainModel
 {
-#if (DISTRIBUTEDCACHE)
+
+
+#if (RESTFULAPIHELPER)
+
+    #if (DISTRIBUTEDCACHE)
 
     [MessagePackObject(keyAsPropertyName: true)]
 
-#endif
-
-#if (RESTFULAPIHELPER)
+    #endif
 
     public class PagedListBase<T> : PaginatedList<T> where T : class
     {
         public PagedListBase(int pageIndex, int pageSize, int totalItemsCount, IEnumerable<T> data) : base(pageIndex, pageSize, totalItemsCount, data)
         {
         }
-    }
-
-#else
-
-    public interface PagedListBase<T> : IEnumerable<T>
-    {
-
     }
 
 #endif

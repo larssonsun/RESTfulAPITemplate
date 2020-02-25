@@ -11,10 +11,10 @@
 
     <!--  ↓ -->
 
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-    <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
+    <DefineConstants>$(DefineConstants);DISTRIBUTEDCACHE;RESTFULAPIHELPER</DefineConstants>
+    <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
-    <RESTFULAPIHELPER>False</RESTFULAPIHELPER>
+    <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Interfaces\**\IAuthenticateService.cs;
     Interfaces\**\IUserRepository.cs;

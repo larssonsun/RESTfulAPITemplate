@@ -110,7 +110,18 @@ namespace RESTfulAPISample.Infrastructure.Repository
             _context.Update(product);
         }
 
-        public async Task<PagedListBase<Product>> GetProducts(ProductDTOParameters parameters)
+        public async
+
+#if (RESTFULAPIHELPER)
+
+        Task<PagedListBase<Product>> 
+
+#else
+
+        Task<IEnumerable<Product>> 
+
+#endif
+        GetProducts(ProductDTOParameters parameters)
         {
             var query = _context.Products.AsQueryable();
 
@@ -150,7 +161,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
 #else
 
-            return (PagedListBase<Product>)data;
+            return data;
 
 #endif
         }

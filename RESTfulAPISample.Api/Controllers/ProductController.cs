@@ -43,9 +43,8 @@ namespace RESTfulAPISample.Api.Controller
 #endif
     public class ProductController : ControllerBase
     {
-        private readonly ILogger<ProductController> _logger;
 
-#if (LOCALMEMORYCACHE)    
+#if (LOCALMEMORYCACHE)
 
         private readonly IMemoryCache _cache;
 
@@ -55,57 +54,34 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-        private readonly IMapper _mapper;
-        private readonly LinkGenerator _generator;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IProductRepository _repository;
-
 #if (RESTFULAPIHELPER)
         
+        private readonly LinkGenerator _generator;
         private readonly IPropertyMappingContainer _propertyMappingContainer;
         private readonly ITypeHelperService _typeHelperService;
 
 #endif
 
+        private readonly ILogger<ProductController> _logger;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductRepository _repository;
+
+        public ProductController(ILogger<ProductController> logger, IMapper mapper, IUnitOfWork unitOfWork, IProductRepository repository
+
 #if (LOCALMEMORYCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IMemoryCache cache, IMapper mapper, LinkGenerator generator,
-            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer,
-            ITypeHelperService typeHelperService)
-        {
-            _logger = logger;
-            _cache = cache;
-            _mapper = mapper;
-            _generator = generator;
-            _unitOfWork = unitOfWork;
-            _repository = repository;
-            _propertyMappingContainer = propertyMappingContainer;
-            _typeHelperService = typeHelperService;
-        }
+        , IMemoryCache cache
 
 #elif (DISTRIBUTEDCACHE)
 
-        public ProductController(ILogger<ProductController> logger, IDistributedCache cache, IMapper mapper, LinkGenerator generator,
-            IUnitOfWork unitOfWork, IProductRepository repository, IPropertyMappingContainer propertyMappingContainer,
-            ITypeHelperService typeHelperService)
-        {
-            _logger = logger;
-            _cache = cache;
-            _mapper = mapper;
-            _generator = generator;
-            _unitOfWork = unitOfWork;
-            _repository = repository;
-            _propertyMappingContainer = propertyMappingContainer;
-            _typeHelperService = typeHelperService;
-        }
-#else
+        , IDistributedCache cache
 
-        public ProductController(ILogger<ProductController> logger, IMapper mapper, LinkGenerator generator, IUnitOfWork unitOfWork,
-        IProductRepository repository
+#endif
 
-#if (RESTFULAPIHELPER)     
+#if (RESTFULAPIHELPER)
         
-        , IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService
+        , LinkGenerator generator, IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService
         
 #endif
 
@@ -113,20 +89,23 @@ namespace RESTfulAPISample.Api.Controller
         {
             _logger = logger;
             _mapper = mapper;
-            _generator = generator;
             _unitOfWork = unitOfWork;
             _repository = repository;
 
+#if (LOCALMEMORYCACHE || DISTRIBUTEDCACHE)
+
+            _cache = cache;
+#endif
+
 #if (RESTFULAPIHELPER)
-            
+        
+            _generator = generator;
             _propertyMappingContainer = propertyMappingContainer;
             _typeHelperService = typeHelperService;
-
+        
 #endif
 
         }
-
-#endif
 
         #region snippet_GetProductsAsync
         /// <summary>
@@ -169,14 +148,19 @@ namespace RESTfulAPISample.Api.Controller
                 return BadRequest("Can't find the fields on DTO.");
             }
 
+            PagedListBase<Product> pagedProducts;
+#else
+
+            IEnumerable<Product> pagedProducts;
+
 #endif
 
-            PagedListBase<Product> pagedProducts;
+
 
 #if (LOCALMEMORYCACHE)
 
             var cacheKey = Request.QueryString.Value;
-            pagedProducts = await _cache.GetOrCreateAsync<PagedListBase<Product>>(cacheKey, async entry =>
+            pagedProducts = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 Console.WriteLine("--------------------not from cache-----------------------");
                 entry.Size = 2;
@@ -190,14 +174,26 @@ namespace RESTfulAPISample.Api.Controller
             var pagedProductsBytes = await _cache.GetAsync(cacheKey);
             if (pagedProductsBytes != null)
             {
-                pagedProducts = MessagePackSerializer.Deserialize<PagedListBase<Product>>(pagedProductsBytes);
+                pagedProducts = MessagePackSerializer.Deserialize<
+
+#if (RESTFULAPIHELPER)
+
+                PagedListBase<Product>
+
+#else
+
+                IEnumerable<Product>
+
+#endif
+
+                >(pagedProductsBytes);
             }
             else
             {
                 Console.WriteLine("--------------------not from cache-----------------------");
                 pagedProducts = await _repository.GetProducts(queryStrParams);
-                var productsResourceBytes = MessagePackSerializer.Serialize<PagedListBase<Product>>(pagedProducts);
-                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));            
+                var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
             }
 
@@ -237,7 +233,7 @@ namespace RESTfulAPISample.Api.Controller
 
         }
 
-        #endregion
+#endregion
 
         #region snippet_GetProductAsync   
         /// <summary>
