@@ -12,6 +12,7 @@ TODO：[√bn] pagination, resouce shaping, sorting(sqlserver2012+), filter(not 
 TODO：[√] dto validattion (fluent-validation)
 TODO：[√] finish CRUD, pagination, filter and sort, AsNoTracking
 TODO：[√] init DataSeed, TEST SQLServer 2008.
+TODO：get JWT Payload from JWT token
 TODO：NLog
 TODO：Dart
 
