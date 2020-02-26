@@ -9,10 +9,11 @@ TODO：[√b] FixAutoWrapperMiddleware 将CatchTheLastMiddleware中的isSwagger�
 TODO：[√b] FixAutoWrapperMiddleware 将CathcTheLastMiddleware中的设置HttpStatusCode为200改为可选项作为中间件的option
 TODO：[√b] the sqlserver 2012- ef sorting problem
 TODO：[√bn] pagination, resouce shaping, sorting(sqlserver2012+), filter(not in helper) to nuget package.
-TODO：[√] dto validattion (fluent-validation)
-TODO：[√] finish CRUD, pagination, filter and sort, AsNoTracking
+TODO：[√] dto validation (fluent-validation)
+TODO：[√] finish CRUD, pagination, filter and sort, some method should with "AsNoTracking"
 TODO：[√] init DataSeed, TEST SQLServer 2008.
-TODO：get JWT Payload from JWT token
+TODO：[√] get JWT Payload from JWT token
 TODO：NLog
+TODO：make the test proj for Larsson.RESTfulAPIHelper
 TODO：Dart
 
