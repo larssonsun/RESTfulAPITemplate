@@ -9,10 +9,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <!--  ↓ -->
-    <DefineConstants>$(DefineConstants);OBSOLETESQLSERVER;DISTRIBUTEDCACHE;RESTFULAPIHELPER</DefineConstants>
-    <OBSOLETESQLSERVER>True</OBSOLETESQLSERVER>
+    <DefineConstants>$(DefineConstants);DISTRIBUTEDCACHE;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
+    <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
     <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
-    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Interfaces\**\IAuthenticateService.cs;

@@ -23,14 +23,19 @@ namespace RESTfulAPISample.Api.Service
             var token = string.Empty;
             if (!_userService.IsValid(request))
                 return (false, null);
-                
+
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, request.Username)
+                new Claim("RESTfulAPISampleUserName", $"{request.Username}")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var jwtToken = new JwtSecurityToken(_tokenManagement.Issuer, _tokenManagement.Audience, claims, expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration), signingCredentials: credentials);
+            var jwtToken = new JwtSecurityToken(
+                issuer: _tokenManagement.Issuer,
+                audience: _tokenManagement.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
+                signingCredentials: credentials);
 
             token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 

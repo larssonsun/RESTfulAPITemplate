@@ -19,11 +19,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
      <!--  ↓ -->
-    <DefineConstants>$(DefineConstants);MSSQL;OBSOLETESQLSERVER;RESTFULAPIHELPER</DefineConstants>
-    <MSSQL>True</MSSQL>
-    <DBINMEMORY>False</DBINMEMORY>
-    <OBSOLETESQLSERVER>True</OBSOLETESQLSERVER>
-    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
+    <MSSQL>False</MSSQL>
+    <DBINMEMORY>True</DBINMEMORY>
+    <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
+    <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);Repositories\**\UserRepository.cs</DefaultItemExcludes>
