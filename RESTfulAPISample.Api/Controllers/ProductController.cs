@@ -258,8 +258,8 @@ namespace RESTfulAPISample.Api.Controller
         public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id, string fields)
         {
             var claims = HttpContext.User?.Claims;
-            var user = claims?.Where(x => x.Type == "RESTfulAPISampleUserName").Select(x => new { UserName = x.Value }).FirstOrDefault();
-            Console.WriteLine($"username from jwt is \"{user?.UserName}\"");
+            var username = claims.SingleOrDefault(x=>x.Type == "RESTfulAPISampleUserName")?.Value;
+            Console.WriteLine($"username from jwt is \"{username}\"");
 
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
