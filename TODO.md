@@ -13,7 +13,8 @@ TODO：[√] dto validation (fluent-validation)
 TODO：[√] finish CRUD, pagination, filter and sort, some method should with "AsNoTracking"
 TODO：[√] init DataSeed, TEST SQLServer 2008.
 TODO：[√] get JWT Payload from JWT token
-TODO：NLog
+TODO：[√] Serilog (console)
+TODO：Serilog (seq)
 TODO：make the test proj for Larsson.RESTfulAPIHelper
 TODO：Dart
 

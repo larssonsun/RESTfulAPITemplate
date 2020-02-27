@@ -78,6 +78,9 @@ namespace RESTfulAPISample.Api
             ));
 
 #endif
+
+            services.AddScoped<RESTfulAPISampleContextSeed>();
+
             var mappingConfig = new MapperConfiguration(ice =>
             {
                 ice.AddProfile(new MappingProfile());

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Infrastructure;
 using Serilog;
+using Serilog.Events;
 
 namespace RESTfulAPISample.Api
 {
@@ -16,26 +17,49 @@ namespace RESTfulAPISample.Api
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
 
-            Console.Title = "RESTfulAPISample";
-            using (var scope = host.Services.CreateScope())
+            Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
+
+            try
             {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try
-                {
-                    var salesContext = services.GetRequiredService<RESTfulAPISampleContext>();
-                    RESTfulAPISampleContextSeed.SeedAsync(salesContext, loggerFactory).Wait();
-                }
-                catch (Exception ex)
-                {
-                    var logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
-            }
+                Console.Title = "RESTfulAPISample";
 
-            host.Run();
+                Log.Information("Starting web host");
+                var host = CreateHostBuilder(args).Build();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    try
+                    {
+                        var seed = services.GetRequiredService<RESTfulAPISampleContextSeed>();
+                        seed.SeedAsync().Wait();
+
+                        // Add your own data seed here..
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "An error occurred seeding the DB.");
+                    }
+                }
+
+                host.Run();
+                return;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                return;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
