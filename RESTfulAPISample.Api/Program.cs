@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Infrastructure;
+using Serilog;
 
 namespace RESTfulAPISample.Api
 {
@@ -41,6 +42,12 @@ namespace RESTfulAPISample.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // Third-party log providers
+                    webBuilder.UseSerilog((context, logger) =>
+                    {
+                        logger.ReadFrom.Configuration(context.Configuration);
+                    });
+
                     webBuilder.UseStartup<Startup>();
                 });
     }

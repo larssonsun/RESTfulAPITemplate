@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using System.Text;
+using Serilog;
 #endif
 
 namespace RESTfulAPISample.Api
@@ -202,6 +203,8 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseSerilogRequestLogging();
 
 #if (ENABLERESPONSECACHE)
 
