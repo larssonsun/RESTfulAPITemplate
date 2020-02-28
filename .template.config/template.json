@@ -38,7 +38,7 @@
     "enable-global-response-handler-wrapper": {
       "type": "parameter",
       "dataType": "bool",
-      "defaultValue": "false",
+      "defaultValue": "true",
       "description": "Use the global HTTP exception handler and response wrapper"
     },
     "enable-swagger": {
@@ -50,7 +50,7 @@
     "enable-jwt-authentication": {
       "type": "parameter",
       "dataType": "bool",
-      "defaultValue": "false",
+      "defaultValue": "true",
       "description": "Use the JWT token for authentication"
     },
     "enable-response-cache": {
