@@ -9,9 +9,9 @@ using RESTfulAPISample.Infrastructure.EntityConfiguration;
 
 namespace RESTfulAPISample.Infrastructure
 {
-    public class RESTfulAPISampleContext : DbContext
+    public class DemoContext : DbContext
     {
-        public RESTfulAPISampleContext(DbContextOptions<RESTfulAPISampleContext> options)
+        public DemoContext(DbContextOptions<DemoContext> options)
             : base(options)
         {
         }

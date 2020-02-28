@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RESTfulAPISample.Infrastructure
 {
-    public class RESTfulAPISampleContextSeed
+    public class DemoContextSeed
     {
 
-        private ILogger<RESTfulAPISampleContextSeed> _logger;
-        private readonly RESTfulAPISampleContext _context;
+        private ILogger<DemoContextSeed> _logger;
+        private readonly DemoContext _context;
 
-        public RESTfulAPISampleContextSeed(ILogger<RESTfulAPISampleContextSeed> logger, RESTfulAPISampleContext context)
+        public DemoContextSeed(ILogger<DemoContextSeed> logger, DemoContext context)
         {
             _logger = logger;
             _context = context;

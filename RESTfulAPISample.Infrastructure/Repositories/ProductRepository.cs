@@ -16,7 +16,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly RESTfulAPISampleContext _context;
+        private readonly DemoContext _context;
 
 #if (RESTFULAPIHELPER)
 
@@ -26,13 +26,13 @@ namespace RESTfulAPISample.Infrastructure.Repository
 
 #if (RESTFULAPIHELPER)
 
-        public ProductRepository(RESTfulAPISampleContext context, IPropertyMappingContainer propertyMappingContainer)
+        public ProductRepository(DemoContext context, IPropertyMappingContainer propertyMappingContainer)
         {
             _context = context;
             _propertyMappingContainer = propertyMappingContainer;
 #else
 
-        public ProductRepository(RESTfulAPISampleContext context)
+        public ProductRepository(DemoContext context)
         {
             _context = context;
 

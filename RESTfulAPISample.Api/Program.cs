@@ -37,7 +37,7 @@ namespace RESTfulAPISample.Api
                     var services = scope.ServiceProvider;
                     try
                     {
-                        var seed = services.GetRequiredService<RESTfulAPISampleContextSeed>();
+                        var seed = services.GetRequiredService<DemoContextSeed>();
                         seed.SeedAsync().Wait();
 
                         // Add your own data seed here..

@@ -62,12 +62,12 @@ namespace RESTfulAPISample.Api
 
 #if (DBINMEMORY)
 
-            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
+            services.AddDbContext<DemoContext>(dcob =>
                 dcob.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
 
 #elif (MSSQL)
 
-            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
+            services.AddDbContext<DemoContext>(dcob =>
                 dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")
 
 #if (OBSOLETESQLSERVER)
@@ -79,7 +79,7 @@ namespace RESTfulAPISample.Api
 
 #endif
 
-            services.AddScoped<RESTfulAPISampleContextSeed>();
+            services.AddScoped<DemoContextSeed>();
 
             var mappingConfig = new MapperConfiguration(ice =>
             {

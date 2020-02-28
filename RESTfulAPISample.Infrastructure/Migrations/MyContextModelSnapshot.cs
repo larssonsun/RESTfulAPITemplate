@@ -6,11 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RESTfulAPISample.Infrastructure;
 
-namespace RESTfulAPISample.Infrastructure.RESTfulAPISample.Infrastructure.Migrations
+namespace RESTfulAPISample.Infrastructure.Migrations
 {
-    [DbContext(typeof(RESTfulAPISampleContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DemoContext))]
+    partial class DemoContextModelSnapshot : ModelSnapshot
     {
+        public DemoContextModelSnapshot()
+        {
+        }
+
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
