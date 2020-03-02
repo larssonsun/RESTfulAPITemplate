@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RESTfulAPISample.Infrastructure;
 
-namespace RESTfulAPISample.Infrastructure.RESTfulAPISample.Infrastructure.Migrations
+namespace RESTfulAPISample.Infrastructure.Migrations
 {
-    [DbContext(typeof(RESTfulAPISampleContext))]
+    [DbContext(typeof(DemoContext))]
     [Migration("20200102023624_[MigrationName]")]
     partial class MigrationName
     {

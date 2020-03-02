@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RESTfulAPISample.Infrastructure.RESTfulAPISample.Infrastructure.Migrations
+namespace RESTfulAPISample.Infrastructure.Migrations
 {
     public partial class MigrationName : Migration
     {

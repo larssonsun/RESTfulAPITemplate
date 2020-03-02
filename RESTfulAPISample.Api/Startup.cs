@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using System.Text;
+using Serilog;
 #endif
 
 namespace RESTfulAPISample.Api
@@ -61,12 +62,12 @@ namespace RESTfulAPISample.Api
 
 #if (DBINMEMORY)
 
-            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
+            services.AddDbContext<DemoContext>(dcob =>
                 dcob.UseInMemoryDatabase("RESTfulAPISampleMemoryDb"));
 
 #elif (MSSQL)
 
-            services.AddDbContext<RESTfulAPISampleContext>(dcob =>
+            services.AddDbContext<DemoContext>(dcob =>
                 dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPISampleDbConnStr")
 
 #if (OBSOLETESQLSERVER)
@@ -77,6 +78,9 @@ namespace RESTfulAPISample.Api
             ));
 
 #endif
+
+            services.AddScoped<DemoContextSeed>();
+
             var mappingConfig = new MapperConfiguration(ice =>
             {
                 ice.AddProfile(new MappingProfile());
@@ -202,6 +206,8 @@ namespace RESTfulAPISample.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseSerilogRequestLogging();
 
 #if (ENABLERESPONSECACHE)
 

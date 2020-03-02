@@ -6,9 +6,12 @@
   <ItemGroup>
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
     <PackageReference Condition="'$(DISTRIBUTEDCACHE)' == 'True'" Include="MessagePack" Version="2.1.90" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="Autowrapper.core" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.3.0-dev-00152" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
   </ItemGroup>
   <ItemGroup Condition="'$(ENABLEJWTAUTHENTICATION)' == 'True'">
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
@@ -19,14 +22,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- ↓ -->
-    <DefineConstants>$(DefineConstants);MSSQL;OBSOLETESQLSERVER;ENABLERESPONSECACHE;DISTRIBUTEDCACHE;ENABLESWAGGER;RESPONSEHANDLERWRAPPER;RESTFULAPIHELPER</DefineConstants>
+    <DefineConstants>$(DefineConstants);MSSQL;ENABLERESPONSECACHE;DISTRIBUTEDCACHE;ENABLEJWTAUTHENTICATION;ENABLESWAGGER;RESPONSEHANDLERWRAPPER;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>True</MSSQL>
     <DBINMEMORY>False</DBINMEMORY>
-    <OBSOLETESQLSERVER>True</OBSOLETESQLSERVER>
+    <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
     <ENABLERESPONSECACHE>True</ENABLERESPONSECACHE>
     <LOCALMEMORYCACHE>False</LOCALMEMORYCACHE>
     <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
-    <ENABLEJWTAUTHENTICATION>False</ENABLEJWTAUTHENTICATION>
+    <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <ENABLESWAGGER>True</ENABLESWAGGER>
     <RESPONSEHANDLERWRAPPER>True</RESPONSEHANDLERWRAPPER>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>

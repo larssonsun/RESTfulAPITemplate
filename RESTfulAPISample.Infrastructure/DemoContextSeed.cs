@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,9 +9,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RESTfulAPISample.Infrastructure
 {
-    public class RESTfulAPISampleContextSeed
+    public class DemoContextSeed
     {
-        public static async Task SeedAsync(RESTfulAPISampleContext context, ILoggerFactory loggerFactory, int retry = 0)
+
+        private ILogger<DemoContextSeed> _logger;
+        private readonly DemoContext _context;
+
+        public DemoContextSeed(ILogger<DemoContextSeed> logger, DemoContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
+        public async Task SeedAsync(int retry = 0)
         {
             int retryForAvailability = retry;
             try
@@ -19,13 +29,13 @@ namespace RESTfulAPISample.Infrastructure
 
 #if (MSSQL)
 
-                context.Database.Migrate();
+                _context.Database.Migrate();
 #endif
 
-                if (!context.Products.Any())
+                if (!_context.Products.Any())
                 {
                     var now = DateTime.Now;
-                    context.Products.AddRange(
+                    _context.Products.AddRange(
                         new Product
                         {
                             Name = "A Learning ASP.NET Core",
@@ -58,7 +68,8 @@ namespace RESTfulAPISample.Infrastructure
                             Description = "A best-selling book covering the fundamentals of C#",
                             CreateTime = now,
                         });
-                    await context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Seed data created.");
                 }
             }
             catch (Exception ex)
@@ -66,9 +77,8 @@ namespace RESTfulAPISample.Infrastructure
                 if (retryForAvailability < 10)
                 {
                     retryForAvailability++;
-                    var logger = loggerFactory.CreateLogger<RESTfulAPISampleContextSeed>();
-                    logger.LogError(ex.Message);
-                    await SeedAsync(context, loggerFactory, retryForAvailability);
+                    _logger.LogError(ex.Message);
+                    await SeedAsync(retryForAvailability);
                 }
             }
         }

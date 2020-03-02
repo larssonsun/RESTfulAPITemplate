@@ -3,8 +3,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RESTfulAPISample.Api.Resource;
 using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Interface;
 
 namespace RESTfulAPISample.Api.Controller

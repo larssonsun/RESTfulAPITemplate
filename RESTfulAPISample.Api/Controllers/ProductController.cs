@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -27,6 +28,7 @@ using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.Pagination;
 using Larsson.RESTfulAPIHelper.Shaping;
 #endif
+
 namespace RESTfulAPISample.Api.Controller
 {
     /// <summary>
@@ -123,7 +125,7 @@ namespace RESTfulAPISample.Api.Controller
 #if (ENABLEJWTAUTHENTICATION)
 
         [AllowAnonymous]
-        
+
 #endif
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -255,6 +257,10 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id, string fields)
         {
+            var claims = HttpContext.User?.Claims;
+            var username = claims.SingleOrDefault(x=>x.Type == "RESTfulAPISampleUserName")?.Value;
+            Console.WriteLine($"username from jwt is \"{username}\"");
+
             var result = await _repository.TryGetProduct(id);
             if (!result.hasProduct)
             {

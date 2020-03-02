@@ -19,5 +19,19 @@
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "System": "Information",
+        "Microsoft": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console"
+      }
+    ]
+  },
   "AllowedHosts": "*"
 }

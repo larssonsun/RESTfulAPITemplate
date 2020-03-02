@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Linq;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
@@ -20,19 +21,22 @@ namespace RESTfulAPISample.Api.Service
         }
         public (bool IsAuthenticated, string Token) IsAuthenticated(LoginRequest request)
         {
-            var token = string.Empty;
-            if (!_userService.IsValid(request))
+
+            var validateResult = _userService.IsValid(request);
+            if (!validateResult.IsValid)
                 return (false, null);
-                
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, request.Username)
-            };
+
+            var claims = validateResult.Payload?.Select(x => new Claim(x.Key, x.Value));
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var jwtToken = new JwtSecurityToken(_tokenManagement.Issuer, _tokenManagement.Audience, claims, expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration), signingCredentials: credentials);
+            var jwtToken = new JwtSecurityToken(
+                issuer: _tokenManagement.Issuer,
+                audience: _tokenManagement.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration),
+                signingCredentials: credentials);
 
-            token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
             return (true, token);
 
