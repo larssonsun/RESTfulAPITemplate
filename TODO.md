@@ -13,6 +13,7 @@ TODO：[√] dto validattion (fluent-validation)
 TODO：[√] finish CRUD, pagination, filter and sort, AsNoTracking
 TODO：[√] init DataSeed, TEST SQLServer 2008.
 TODO：get JWT Payload from JWT token
+TODO：BUG，some name of the proj should replace by others.
 TODO：NLog
 TODO：Dart
 
