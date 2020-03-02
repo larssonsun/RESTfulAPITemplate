@@ -132,7 +132,7 @@ namespace RESTfulAPISample.Api
                     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                 })
                 .AddFluentValidation(
-                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Startup>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
+                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Core.Entity.Entity>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
 
             // larsson：对链式验证进行短路“and”操作
