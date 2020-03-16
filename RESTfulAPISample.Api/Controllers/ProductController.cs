@@ -137,6 +137,15 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters queryStrParams)
         {
+            if (queryStrParams == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
 #if (RESTFULAPIHELPER)
 
