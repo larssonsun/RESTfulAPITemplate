@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\RESTfulAPISample.core\RESTfulAPISample.Core.csproj"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2"/>
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>

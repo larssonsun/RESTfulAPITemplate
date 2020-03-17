@@ -155,9 +155,7 @@
         },
         {
           "exclude": [
-            "**/[Ee]ntityConfigurations/**",
-            "**/[Mm]igrations/**"
-          ],
+            "**/RESTfulAPISample.EfMigration/**"          ],
           "condition": "(db-type == \"DbInMemory\")"
         },
         {
