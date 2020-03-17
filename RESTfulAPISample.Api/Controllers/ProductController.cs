@@ -170,7 +170,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (LOCALMEMORYCACHE)
 
-            var cacheKey = Request.QueryString.Value;
+            var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsAsync)}_{Request.QueryString.Value}";
             pagedProducts = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 Console.WriteLine("--------------------not from localmemory cache-----------------------");
@@ -181,7 +181,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #elif (DISTRIBUTEDCACHE)
 
-            var cacheKey = Request.QueryString.Value;
+            var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsAsync)}_{Request.QueryString.Value}";
             var pagedProductsBytes = await _cache.GetAsync(cacheKey);
             if (pagedProductsBytes != null)
             {
