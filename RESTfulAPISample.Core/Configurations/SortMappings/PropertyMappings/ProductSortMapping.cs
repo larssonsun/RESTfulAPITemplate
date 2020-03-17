@@ -4,11 +4,11 @@ using Larsson.RESTfulAPIHelper.SortAndQuery;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 
-namespace RESTfulAPISample.Core.PropertyMapping
+namespace RESTfulAPISample.Core.Configuration.SortMapping
 {
-    public class ProductPropertyMapping : PropertyMapping<ProductDTO, Product>
+    public class ProductSortMapping : PropertyMapping<ProductDTO, Product>
     {
-        public ProductPropertyMapping() :
+        public ProductSortMapping() :
             base(new Dictionary<string, List<MappedProperty>>(StringComparer.OrdinalIgnoreCase)
             {
                 [nameof(ProductDTO.FullName)] = new List<MappedProperty>

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using RESTfulAPISample.Core.DTO;
 
-namespace RESTfulAPISample.Core.DTO.Validator
+namespace RESTfulAPISample.Core.Validator
 {
     public class LoginRequestDTOValidator : AbstractValidator<LoginRequestDTO>
     {

@@ -4,7 +4,7 @@ using Larsson.RESTfulAPIHelper.Interface;
 using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 
-namespace SISDW.Server.Core.DTO.Validator
+namespace SISDW.Server.Core.Validator
 {
     public class ProjectQueryDTOValidator : AbstractValidator<ProductQueryDTO>
     {

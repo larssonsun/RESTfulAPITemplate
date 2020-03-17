@@ -1,12 +1,13 @@
 using AutoMapper;
 using RESTfulAPISample.Core.DomainModel;
+using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Entity;
 
-namespace RESTfulAPISample.Core.DTO.Configurations
+namespace RESTfulAPISample.Core.Configuration.PropertyMapping
 {
-    public class MappingProfile : Profile
+    public class PropertyMappings : Profile
     {
-        public MappingProfile()
+        public PropertyMappings()
         {
 
 #if (ENABLEJWTAUTHENTICATION)

@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RESTfulAPISample.Core.DTO.Configurations;
+using RESTfulAPISample.Core.Configuration.PropertyMapping;
 using RESTfulAPISample.Core.Interface;
 using RESTfulAPISample.Infrastructure;
 using RESTfulAPISample.Infrastructure.Repository;
 #if (RESTFULAPIHELPER) 
 using Larsson.RESTfulAPIHelper;
-using RESTfulAPISample.Core.PropertyMapping;
+using RESTfulAPISample.Core.Configuration.SortMapping;
 #endif
 #if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
@@ -90,14 +90,14 @@ namespace RESTfulAPISample.Api
                 // autoMapper: Mapping null strings to string.Empty during mapping
                 ice.ValueTransformers.Add<string>(tf => tf ?? string.Empty);
 
-                ice.AddProfile(new MappingProfile());
+                ice.AddProfile(new PropertyMappings());
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
 #if (RESTFULAPIHELPER)
 
-            services.AddRESTfulAPIHelper(rho => rho.Register<ProductPropertyMapping>());
+            services.AddRESTfulAPIHelper(rho => rho.Register<ProductSortMapping>());
 
 #endif
 

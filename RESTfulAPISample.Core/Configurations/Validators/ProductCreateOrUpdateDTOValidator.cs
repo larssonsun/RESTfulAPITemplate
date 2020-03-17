@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
+using RESTfulAPISample.Core.DTO;
 using RESTfulAPISample.Core.Interface;
 
-namespace RESTfulAPISample.Core.DTO.Validator
+namespace RESTfulAPISample.Core.Validator
 {
     public class ProductCreateOrUpdateDTOValidator<T> : AbstractValidator<T> where T : ProductCreateOrUpdateDTO
     {
