@@ -137,7 +137,7 @@ namespace RESTfulAPISample.Api
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
-                })
+                }) // json return from controll action will be format with camel type.
                 .AddFluentValidation(
                     fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Core.Entity.Entity>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
