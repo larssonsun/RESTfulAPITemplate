@@ -45,18 +45,18 @@ namespace RESTfulAPISample.Api.Controller
             }
 
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null
-
             if (!ModelState.IsValid)
             {
-                return new UnprocessableEntityObjectResult(ModelState); // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
+                // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
+                return new UnprocessableEntityObjectResult(ModelState);
             }
 
             var loginRequest = _mapper.Map<LoginRequest>(request);
 
-            var (isAuth, token) = _auth.IsAuthenticated(loginRequest);
+            var (isAuth, result) = _auth.IsAuthenticated(loginRequest);
             if (isAuth)
             {
-                return Ok(token);
+                return Ok(result);
             }
 
             return BadRequest("Invalid Request");

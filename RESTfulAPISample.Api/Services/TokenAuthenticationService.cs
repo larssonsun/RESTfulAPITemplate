@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPISample.Core.DomainModel;
 using RESTfulAPISample.Core.Interface;
+using RESTfulAPISample.Core.DTO;
 
 namespace RESTfulAPISample.Api.Service
 {
@@ -19,7 +20,7 @@ namespace RESTfulAPISample.Api.Service
             _userService = userService;
             _tokenManagement = tokenManagement.Value;
         }
-        public (bool IsAuthenticated, string Token) IsAuthenticated(LoginRequest request)
+        public (bool IsAuthenticated, LoginResultDTO Token) IsAuthenticated(LoginRequest request)
         {
 
             var validateResult = _userService.IsValid(request);
@@ -38,7 +39,9 @@ namespace RESTfulAPISample.Api.Service
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
-            return (true, token);
+            validateResult.result.Token = token;
+
+            return (true, validateResult.result);
 
         }
     }
