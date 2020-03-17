@@ -19,7 +19,7 @@ namespace RESTfulAPISample.Core.Interface
         Task<IEnumerable<Product>>
 
 #endif
-        GetProducts(ProductDTOParameters parm);
+        GetProducts(ProductQuery parm);
 
 #if (!OBSOLETESQLSERVER)
 

@@ -85,7 +85,7 @@ namespace RESTfulAPISample.Infrastructure.Repository
         Task<IEnumerable<Product>> 
 
 #endif
-        GetProducts(ProductDTOParameters parameters)
+        GetProducts(ProductQuery parameters)
         {
             var query = _context.Products.AsQueryable();
 

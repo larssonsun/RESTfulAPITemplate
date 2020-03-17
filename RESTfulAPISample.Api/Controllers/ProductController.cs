@@ -113,7 +113,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <summary>
         /// Get Products
         /// </summary>
-        /// <param name="queryStrParams">The params for filter and page products</param>
+        /// <param name="productQueryDTO">The params for filter and page products</param>
         /// <returns>products</returns>
         /// <response code="200">Returns the target products</response>
         /// <response code="304">Server-side data is not modified</response>
@@ -135,9 +135,9 @@ namespace RESTfulAPISample.Api.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductDTOParameters queryStrParams)
+        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductQueryDTO productQueryDTO)
         {
-            if (queryStrParams == null)
+            if (productQueryDTO == null)
             {
                 return BadRequest();
             }
@@ -149,16 +149,6 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (RESTFULAPIHELPER)
 
-            if (!_propertyMappingContainer.ValidMappingExistsFor<ProductDTO, Product>(queryStrParams.OrderBy))
-            {
-                return BadRequest("Can't find the fields for sorting.");
-            }
-
-            if (!_typeHelperService.TypeHasProperties<ProductDTO>(queryStrParams.Fields))
-            {
-                return BadRequest("Can't find the fields on DTO.");
-            }
-
             PagedListBase<Product> pagedProducts;
 #else
 
@@ -166,7 +156,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #endif
 
-
+            var projectQuery = _mapper.Map<ProductQuery>(productQueryDTO);
 
 #if (LOCALMEMORYCACHE)
 
@@ -202,7 +192,7 @@ namespace RESTfulAPISample.Api.Controller
             else
             {
                 Console.WriteLine("--------------------not from distributed cache-----------------------");
-                pagedProducts = await _repository.GetProducts(queryStrParams);
+                pagedProducts = await _repository.GetProducts(projectQuery);
                 var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
@@ -210,17 +200,17 @@ namespace RESTfulAPISample.Api.Controller
 
 #else
 
-            pagedProducts = await _repository.GetProducts(queryStrParams);
+            pagedProducts = await _repository.GetProducts(projectQuery);
 
 #endif
 
 #if (RESTFULAPIHELPER)
 
             var filterProps = new Dictionary<string, object>();
-            filterProps.Add("name", queryStrParams.Name);
-            filterProps.Add("description", queryStrParams.Description);
+            filterProps.Add("name", projectQuery.Name);
+            filterProps.Add("description", projectQuery.Description);
 
-            Response.SetPaginationHead(pagedProducts, queryStrParams, filterProps,
+            Response.SetPaginationHead(pagedProducts, projectQuery, filterProps,
                 values => _generator.GetUriByAction(HttpContext, controller: "Product", action: "GetProducts", values: values),
                 meta => JsonSerializer.Serialize(meta, new JsonSerializerOptions
                 {
@@ -235,7 +225,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (RESTFULAPIHELPER)
 
-            return Ok(mappedProducts.ToDynamicIEnumerable(queryStrParams.Fields));
+            return Ok(mappedProducts.ToDynamicIEnumerable(projectQuery.Fields));
 #else
 
             return Ok(mappedProducts);

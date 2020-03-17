@@ -1,9 +1,9 @@
 ﻿#if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Pagination;
 #endif
-namespace RESTfulAPISample.Core.DomainModel
+namespace RESTfulAPISample.Core.DTO
 {
-    public class ProductDTOParameters 
+    public class ProductQueryDTO
 
 #if (RESTFULAPIHELPER)
 

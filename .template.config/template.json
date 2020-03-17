@@ -188,7 +188,7 @@
         {
           "exclude": [
             "**/PropertyMappings/**",
-            "**/Entities/Entity.cs"
+            "**/DTOs/**/ProjectQueryDTOValidator.cs"
           ],
           "condition": "(enable-larsson-restfulapi-helper != \"true\")"
         }

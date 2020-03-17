@@ -14,7 +14,7 @@ namespace RESTfulAPISample.Core.DTO.Configurations
             CreateMap<LoginRequestDTO, LoginRequest>();
 
 #endif
-
+            CreateMap<ProductQueryDTO, ProductQuery>();
             CreateMap<Product, ProductDTO>().ForMember(
                 dto => dto.FullName,
                 opt => opt.MapFrom(entity => $"{entity.Name} {entity.Description}"));

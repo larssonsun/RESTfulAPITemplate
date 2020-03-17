@@ -21,7 +21,7 @@
     DomainModels\**\TokenManagement.cs;</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(RESTFULAPIHELPER)' == 'False' ">$(DefaultItemExcludes);
     PropertyMappings\**;
-    Entities\**\Entity.cs;</DefaultItemExcludes>
+    DTOs\**\ProjectQueryDTOValidator.cs;</DefaultItemExcludes>
     <!-- ↑  -->
   </PropertyGroup>
 
