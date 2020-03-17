@@ -25,7 +25,6 @@
     <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
-    <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(MSSQL)' == 'True' ">$(DefaultItemExcludes);DemoContextSeed.cs;</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);Repositories\**\UserRepository.cs</DefaultItemExcludes>
     <!-- ↑  -->

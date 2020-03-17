@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RESTfulAPISample.Core.Entity;
 
-#if (!DBINMEMORY)
-
-using RESTfulAPISample.Infrastructure.EntityConfiguration;
-
-#endif
-
 namespace RESTfulAPISample.Infrastructure
 {
     public class DemoContext : DbContext
@@ -22,8 +16,7 @@ namespace RESTfulAPISample.Infrastructure
 
 #if (!DBINMEMORY)
 
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
-
+            modelBuilder.Entity<Product>(e => e.ToTable("My_Product"));
 #endif
         }
 

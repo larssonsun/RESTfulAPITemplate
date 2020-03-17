@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RESTfulAPISample.EfMigration.Demo
+namespace RESTfulAPISample.EfMigration.Migrations
 {
-    public partial class MigrationName : Migration
+    public partial class _1st_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
