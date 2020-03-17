@@ -155,8 +155,16 @@
         },
         {
           "exclude": [
-            "**/RESTfulAPISample.EfMigration/**"          ],
+            "**/RESTfulAPISample.EfMigration/**",
+            "**/RESTfulAPISample.Infrastructure/EntityConfigurations/**"
+          ],
           "condition": "(db-type == \"DbInMemory\")"
+        },
+        {
+          "exclude": [
+            "**/RESTfulAPISample.Infrastructure/DemoContextSeed.cs/**"
+          ],
+          "condition": "(db-type == \"MsSQL\")"
         },
         {
           "exclude": [

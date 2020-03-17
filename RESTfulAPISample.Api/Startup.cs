@@ -79,7 +79,11 @@ namespace RESTfulAPISample.Api
 
 #endif
 
+#if (DBINMEMORY)
+
             services.AddScoped<DemoContextSeed>();
+
+#endif
 
             var mappingConfig = new MapperConfiguration(ice =>
             {

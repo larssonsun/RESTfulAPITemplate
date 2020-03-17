@@ -3,11 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using RESTfulAPISample.Core.Entity;
+using Microsoft.EntityFrameworkCore;
 
-namespace RESTfulAPISample.Infrastructure
+
+namespace RESTfulAPISample.EfMigration.Demo
 {
     public class DemoContextSeed
     {
+
         private ILogger<DemoContextSeed> _logger;
         private readonly DemoContext _context;
 
@@ -22,6 +25,8 @@ namespace RESTfulAPISample.Infrastructure
             int retryForAvailability = retry;
             try
             {
+                _context.Database.Migrate();
+
                 if (!_context.Products.Any())
                 {
                     var now = DateTime.Now;
@@ -73,5 +78,4 @@ namespace RESTfulAPISample.Infrastructure
             }
         }
     }
-
 }

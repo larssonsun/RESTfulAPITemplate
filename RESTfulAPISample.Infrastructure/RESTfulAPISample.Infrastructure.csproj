@@ -18,7 +18,7 @@
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-     <!--  ↓ -->
+    <!--  ↓ -->
     <DefineConstants>$(DefineConstants);MSSQL;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>True</MSSQL>
     <DBINMEMORY>False</DBINMEMORY>
@@ -26,6 +26,7 @@
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(DBINMEMORY)' == 'True' ">$(DefaultItemExcludes);Migrations\**\*;EntityConfigurations\**\*</DefaultItemExcludes>
+    <DefaultItemExcludes Condition="'$(MSSQL)' == 'True' ">$(DefaultItemExcludes);DemoContextSeed.cs;</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);Repositories\**\UserRepository.cs</DefaultItemExcludes>
     <!-- ↑  -->
   </PropertyGroup>

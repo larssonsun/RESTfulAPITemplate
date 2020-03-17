@@ -32,6 +32,8 @@ namespace RESTfulAPISample.Api
                 Log.Information("Starting web host");
                 var host = CreateHostBuilder(args).Build();
 
+#if (DBINMEMORY)
+
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
@@ -47,6 +49,8 @@ namespace RESTfulAPISample.Api
                         Log.Error(ex, "An error occurred seeding the DB.");
                     }
                 }
+
+#endif
 
                 host.Run();
                 return;
