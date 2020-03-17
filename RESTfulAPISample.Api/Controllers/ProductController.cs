@@ -59,8 +59,6 @@ namespace RESTfulAPISample.Api.Controller
 #if (RESTFULAPIHELPER)
 
         private readonly LinkGenerator _generator;
-        private readonly IPropertyMappingContainer _propertyMappingContainer;
-        private readonly ITypeHelperService _typeHelperService;
 
 #endif
 
@@ -83,7 +81,7 @@ namespace RESTfulAPISample.Api.Controller
 
 #if (RESTFULAPIHELPER)
 
-        , LinkGenerator generator, IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService
+        , LinkGenerator generator
 
 #endif
 
@@ -102,8 +100,6 @@ namespace RESTfulAPISample.Api.Controller
 #if (RESTFULAPIHELPER)
 
             _generator = generator;
-            _propertyMappingContainer = propertyMappingContainer;
-            _typeHelperService = typeHelperService;
 
 #endif
 
