@@ -20,8 +20,8 @@
     DomainModels\**\LoginRequest.cs;
     DomainModels\**\TokenManagement.cs;</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(RESTFULAPIHELPER)' == 'False' ">$(DefaultItemExcludes);
-    PropertyMappings\**;
-    DTOs\**\ProjectQueryDTOValidator.cs;</DefaultItemExcludes>
+    Configurations\SortMappings\**;
+    Configurations\Validators\ProjectQueryDTOValidator.cs;</DefaultItemExcludes>
     <!-- ↑  -->
   </PropertyGroup>
 

@@ -187,8 +187,8 @@
         },
         {
           "exclude": [
-            "**/PropertyMappings/**",
-            "**/DTOs/**/ProjectQueryDTOValidator.cs"
+            "**/Configurations/SortMappings/**",
+            "**/Configurations/Validators/ProjectQueryDTOValidator.cs"
           ],
           "condition": "(enable-larsson-restfulapi-helper != \"true\")"
         }
