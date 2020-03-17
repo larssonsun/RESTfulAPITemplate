@@ -33,7 +33,7 @@ namespace RESTfulAPISample.Api.Controller
         /// <response code="400">If authorization verification is not passed</response>
         /// <response code="422">DTO LoginRequestDTO failed to pass the model validation</response>
         [AllowAnonymous]
-        [HttpPost("request-token")]
+        [HttpPost("token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]

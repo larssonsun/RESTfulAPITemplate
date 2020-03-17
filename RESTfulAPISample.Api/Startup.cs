@@ -87,6 +87,9 @@ namespace RESTfulAPISample.Api
 
             var mappingConfig = new MapperConfiguration(ice =>
             {
+                // autoMapper: Mapping null strings to string.Empty during mapping
+                ice.ValueTransformers.Add<string>(tf => tf ?? string.Empty);
+
                 ice.AddProfile(new MappingProfile());
             });
             IMapper mapper = mappingConfig.CreateMapper();
