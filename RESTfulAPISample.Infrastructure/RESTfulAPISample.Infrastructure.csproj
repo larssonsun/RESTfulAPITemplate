@@ -19,9 +19,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <!--  ↓ -->
-    <DefineConstants>$(DefineConstants);MSSQL;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
-    <MSSQL>True</MSSQL>
-    <DBINMEMORY>False</DBINMEMORY>
+    <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
+    <MSSQL>False</MSSQL>
+    <DBINMEMORY>True</DBINMEMORY>
     <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>

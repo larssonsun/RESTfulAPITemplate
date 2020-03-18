@@ -27,6 +27,7 @@ using RESTfulAPISample.Core.Interface;
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.Pagination;
 using Larsson.RESTfulAPIHelper.Shaping;
+using Larsson.RESTfulAPIHelper.Caching;
 #endif
 
 namespace RESTfulAPISample.Api.Controller
@@ -168,31 +169,29 @@ namespace RESTfulAPISample.Api.Controller
 #elif (DISTRIBUTEDCACHE)
 
             var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsAsync)}_{Request.QueryString.Value}";
-            var pagedProductsBytes = await _cache.GetAsync(cacheKey);
-            if (pagedProductsBytes != null)
-            {
-                pagedProducts = MessagePackSerializer.Deserialize<
 
 #if (RESTFULAPIHELPER)
 
-                PagedListBase<Product>
+            pagedProducts = await _cache.CreateOrGetCacheAsync(cacheKey,
+                async () => await _repository.GetProducts(projectQuery),
+                options => options.SetSlidingExpiration(TimeSpan.FromSeconds(15)));
 
 #else
-
-                IEnumerable<Product>
-
-#endif
-
-                >(pagedProductsBytes);
+            var pagedProductsBytes = await _cache.GetAsync(cacheKey);
+            if (pagedProductsBytes != null)
+            {
+                pagedProducts = MessagePackSerializer.Deserialize<IEnumerable<Product>>(pagedProductsBytes);
             }
             else
             {
-                Console.WriteLine("--------------------not from distributed cache-----------------------");
+                Console.WriteLine("--------------------not from distributed cache no RESTfulAPIHelper-----------------------");
                 pagedProducts = await _repository.GetProducts(projectQuery);
                 var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
             }
+
+#endif
 
 #else
 
@@ -253,7 +252,7 @@ namespace RESTfulAPISample.Api.Controller
         public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id, string fields)
         {
             var claims = HttpContext.User?.Claims;
-            var username = claims.SingleOrDefault(x=>x.Type == "RESTfulAPISampleUserName")?.Value;
+            var username = claims.SingleOrDefault(x => x.Type == "RESTfulAPISampleUserName")?.Value;
             Console.WriteLine($"username from jwt is \"{username}\"");
 
             var result = await _repository.TryGetProduct(id);
