@@ -1,11 +1,11 @@
 {
   "author": "Larsson SUN",
   "classifications": [
-    "Web/WebAPI"
+    "Web/WebAPI/RESTfulAPI"
   ],
-  "name": "ASP.NET Core Web API for Larsson",
+  "name": "ASP.NET Core RESTfulAPI Template by Larsson",
   "identity": "ASPNETCoreWebAPIforLarsson",
-  "shortName": "webapil",
+  "shortName": "restful-api-l",
   "tags": {
     "language": "C#",
     "type": "project"
