@@ -8,7 +8,7 @@
     <Authors>Larsson</Authors>
     <Description>Templates to use when creating an application for RESTfulAPI.</Description>
     <PackageTags>dotnet-new;templates;restfulapi</PackageTags>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.1;netcoreapp3.1</TargetFramework>
 
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
