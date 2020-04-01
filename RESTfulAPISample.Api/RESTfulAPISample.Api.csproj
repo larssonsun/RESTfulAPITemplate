@@ -21,14 +21,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- ↓ -->
-    <PackageType>Template</PackageType>
-    <PackageVersion>1.0.0</PackageVersion>
-    <PackageId>Larsson.NetCore.Template.RESTfulAPI</PackageId>
-    <Title>RESTfulAPI Template</Title>
-    <Authors>Larsson</Authors>
-    <Description>ASP.NET Core RESTfulAPI Template by Larsson.</Description>
-    <PackageTags>dotnet-new;templates;restfulapi</PackageTags>
-
     <DefineConstants>$(DefineConstants);DBINMEMORY;ENABLERESPONSECACHE;DISTRIBUTEDCACHE;ENABLEJWTAUTHENTICATION;ENABLESWAGGER;RESPONSEHANDLERWRAPPER;RESTFULAPIHELPER</DefineConstants>
     <MSSQL>False</MSSQL>
     <DBINMEMORY>True</DBINMEMORY>
