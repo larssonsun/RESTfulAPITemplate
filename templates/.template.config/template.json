@@ -150,7 +150,8 @@
             "**/.[Vv]scode/**",
             "**/[Bb]in/**",
             "**/*[pP]roperties**/*",
-            "**/*[aA]ppsettings**/*.json"
+            "**/*[aA]ppsettings**/*.json",
+            "RESTfulAPITemplate.csproj"
           ]
         },
         {
