@@ -1,0 +1,198 @@
+{
+  "author": "Larsson SUN",
+  "classifications": [
+    "Web/WebAPI/RESTfulAPI"
+  ],
+  "name": "ASP.NET Core RESTfulAPI Template by Larsson",
+  "identity": "ASPNETCoreWebAPIforLarsson",
+  "shortName": "restful-api-l",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "RESTfulAPITemplate",
+  "preferNameDirectory": true,
+  "symbols": {
+    "delete-sth-1": {
+      "type": "parameter",
+      "defaultValue": "",
+      "replaces": "↓ -->"
+    },
+    "delete-sth-2": {
+      "type": "parameter",
+      "defaultValue": "",
+      "replaces": "<!-- ↑"
+    },
+    "enable-support-for-obsolete-sql-server": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false",
+      "description": "Use EF2.x that supports versions earlier than SQLServer 2012"
+    },
+    "enable-larsson-restfulapi-helper": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Use the Larsson.RESTfulAPIHelper for sorting, pagination, resource shaping"
+    },
+    "enable-global-response-handler-wrapper": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Use the global HTTP exception handler and response wrapper"
+    },
+    "enable-swagger": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false",
+      "description": "Use the swagger tools"
+    },
+    "enable-jwt-authentication": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Use the JWT token for authentication"
+    },
+    "enable-response-cache": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false",
+      "description": "Use The response cache"
+    },
+    "cache-type": {
+      "type": "parameter",
+      "dataType": "choice",
+      "choices": [
+        {
+          "choice": "LocalMemoryCache",
+          "description": "caching in local memory"
+        },
+        {
+          "choice": "DistributedCache",
+          "description": "Distributed caching (default in memory)"
+        }
+      ],
+      "description": "The cache type to use"
+    },
+    "db-type": {
+      "type": "parameter",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "DbInMemory",
+          "description": "Database in local memory"
+        },
+        {
+          "choice": "MsSQL",
+          "description": "Database in Microsoft SQL Server"
+        }
+      ],
+      "defaultValue": "DbInMemory",
+      "description": "The database type to use"
+    },
+    "OBSOLETESQLSERVER": {
+      "type": "computed",
+      "value": "(enable-support-for-obsolete-sql-server == \"true\")"
+    },
+    "RESTFULAPIHELPER": {
+      "type": "computed",
+      "value": "(enable-larsson-restfulapi-helper == \"true\")"
+    },
+    "RESPONSEHANDLERWRAPPER": {
+      "type": "computed",
+      "value": "(enable-global-response-handler-wrapper == \"true\")"
+    },
+    "ENABLESWAGGER": {
+      "type": "computed",
+      "value": "(enable-swagger == \"true\")"
+    },
+    "ENABLEJWTAUTHENTICATION": {
+      "type": "computed",
+      "value": "(enable-jwt-authentication == \"true\")"
+    },
+    "ENABLERESPONSECACHE": {
+      "type": "computed",
+      "value": "(enable-response-cache == \"true\")"
+    },
+    "LOCALMEMORYCACHE": {
+      "type": "computed",
+      "value": "(cache-type == \"LocalMemoryCache\")"
+    },
+    "DISTRIBUTEDCACHE": {
+      "type": "computed",
+      "value": "(cache-type == \"DistributedCache\")"
+    },
+    "DBINMEMORY": {
+      "type": "computed",
+      "value": "(db-type == \"DbInMemory\")"
+    },
+    "MSSQL": {
+      "type": "computed",
+      "value": "(db-type == \"MsSQL\")"
+    }
+  },
+  "sources": [
+    {
+      "rename": {
+        "appsettings_": "appsettings.json",
+        "appsettings.Development_": "appsettings.Development.json"
+      },
+      "modifiers": [
+        {
+          "exclude": [
+            "testRec.cs",
+            "TODO.md",
+            "README.md",
+            "LICENSE",
+            ".gitignore",
+            "RESTfulAPITemplate.code-workspace",
+            "**/.[Gg]it/**",
+            "**/.[Vv]scode/**",
+            "**/[Bb]in/**",
+            "**/*[pP]roperties**/*",
+            "**/*[aA]ppsettings**/*.json"
+          ]
+        },
+        {
+          "exclude": [
+            "**/RESTfulAPITemplate.EfMigration/**",
+            "**/RESTfulAPITemplate.Infrastructure/EntityConfigurations/**"
+          ],
+          "condition": "(db-type == \"DbInMemory\")"
+        },
+        {
+          "exclude": [
+            "**/RESTfulAPITemplate.Infrastructure/DemoContextSeed.cs/**"
+          ],
+          "condition": "(db-type == \"MsSQL\")"
+        },
+        {
+          "exclude": [
+            "**/Repositories/UserRepository.cs",
+            "**/Interfaces/IAuthenticateService.cs",
+            "**/Interfaces/IUserRepository.cs",
+            "**/DomainModels/LoginRequest.cs",
+            "**/DomainModels/TokenManagement.cs",
+            "**/Services/TokenAuthenticationService.cs",
+            "**/Controllers/AuthenticationController.cs"
+          ],
+          "condition": "(enable-jwt-authentication != \"true\")"
+        },
+        {
+          "exclude": [
+            "**/Middlewares/FixAutoWrapperMiddleware.cs",
+            "**/Middlewares/FixAutoWrapperOptions.cs"
+          ],
+          "condition": "(enable-global-response-handler-wrapper != \"true\")"
+        },
+        {
+          "exclude": [
+            "**/Configurations/SortMappings/**",
+            "**/Configurations/Validators/ProjectQueryDTOValidator.cs"
+          ],
+          "condition": "(enable-larsson-restfulapi-helper != \"true\")"
+        }
+      ]
+    }
+  ]
+}
