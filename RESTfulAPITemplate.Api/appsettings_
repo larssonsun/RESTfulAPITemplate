@@ -1,0 +1,37 @@
+{
+  "ConnectionStrings": {
+    "RESTfulAPITemplateDbConnStr": ""
+  },
+  "TokenManagement": {
+    "Secret": "RESTfulAPITemplateSecretTheMinimsizeIs16",
+    "Issuer": "RESTfulAPITemplateIssuer",
+    "Audience": "RESTfulAPITemplateSecretAudience",
+    "AccessExpiration": 30,
+    "RefreshExpiration": 60
+  },
+  "Publics": {
+    "SwaggerStartsWithSegments": "swagger"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "System": "Information",
+        "Microsoft": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console"
+      }
+    ]
+  },
+  "AllowedHosts": "*"
+}

@@ -10,7 +10,7 @@
     "language": "C#",
     "type": "project"
   },
-  "sourceName": "RESTfulAPISample",
+  "sourceName": "RESTfulAPITemplate",
   "preferNameDirectory": true,
   "symbols": {
     "delete-sth-1": {
@@ -145,7 +145,7 @@
             "README.md",
             "LICENSE",
             ".gitignore",
-            "RESTfulAPISample.code-workspace",
+            "RESTfulAPITemplate.code-workspace",
             "**/.[Gg]it/**",
             "**/.[Vv]scode/**",
             "**/[Bb]in/**",
@@ -155,14 +155,14 @@
         },
         {
           "exclude": [
-            "**/RESTfulAPISample.EfMigration/**",
-            "**/RESTfulAPISample.Infrastructure/EntityConfigurations/**"
+            "**/RESTfulAPITemplate.EfMigration/**",
+            "**/RESTfulAPITemplate.Infrastructure/EntityConfigurations/**"
           ],
           "condition": "(db-type == \"DbInMemory\")"
         },
         {
           "exclude": [
-            "**/RESTfulAPISample.Infrastructure/DemoContextSeed.cs/**"
+            "**/RESTfulAPITemplate.Infrastructure/DemoContextSeed.cs/**"
           ],
           "condition": "(db-type == \"MsSQL\")"
         },
