@@ -5,7 +5,7 @@ English | [简体中文](./README-zh.md)
 ## Dependence
 * .netcore 3.1
 
-## Installation (All instructions use .NET-CLI, the same below)
+## Installation (All instructions use .NET-CLI or PowerShell, the same below)
 ```
 dotnet new --install Larsson.Template.RESTfulAPI
 ```
@@ -49,9 +49,10 @@ demo
 └─templateUseDemo.Infrastructure - Infrastructure Project
     └─Repositories - Data repositories
 ```
-Go to the * templateUseDemo.Api * directory and run the project
+Go to the *templateUseDemo.Api* directory and run the project
 ```
 > cd templateUseDemo.Api
+> dotnet restore
 > dotnet run
 ```
 The console gets the following results indicating success
@@ -145,7 +146,7 @@ demoForDb
     └─Repositories
 ```
 
-Go to the directory of the project*emplateUseDemoForDb.EfMigration*and modify the database connection in the configuration file*appsettings.json*
+Go to the directory of the project*templateUseDemoForDb.EfMigration*and modify the database connection in the configuration file*appsettings.json*
 ```
 > cd templateUseDemoForDb.EfMigration
 > notepad appsettings.json
@@ -170,9 +171,10 @@ Several seed data are added (if this is the first execution)
 [10:23:40 DBG] 'DemoContext' disposed.
 [10:23:40 INF]**Data migration completed.**
 ```
-Ctrl + C to stop. Then enter the api project*templateUseDemoForDb.Api*and modify the database connection in the configuration file*appsettings.json*(same as just now)
+Then enter the api project*templateUseDemoForDb.Api*and modify the database connection in the configuration file*appsettings.json*(same as just now)
 Then run the api project
 ```
+> dotnet restore
 > dotnet run
 ```
 Wait for a while and get the following result indicating success

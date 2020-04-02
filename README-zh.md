@@ -5,7 +5,7 @@
 ## 依赖
 * .netcore 3.1
 
-## 安装（本说明均使用.NET-CLI，下同）
+## 安装（本说明均使用.NET-CLI或者PowerShell，下同）
 ```
 > dotnet new --install Larsson.Template.RESTfulAPI
 ```
@@ -52,6 +52,7 @@ demo
 进入*templateUseDemo.Api*目录，运行项目
 ```
 > cd templateUseDemo.Api
+> dotnet restore
 > dotnet run
 ```
 控制台得到如下结果表示成功
@@ -144,7 +145,7 @@ demoForDb
     └─Repositories
 ```
 
-进入项目*emplateUseDemoForDb.EfMigration*的目录并修改配置文件*appsettings.json*中的数据库连接
+进入项目*templateUseDemoForDb.EfMigration*的目录并修改配置文件*appsettings.json*中的数据库连接
 ```
 > cd templateUseDemoForDb.EfMigration
 > notepad appsettings.json
@@ -158,6 +159,7 @@ demoForDb
 ```
 运行数据库迁移项目
 ```
+> dotnet restore
 > dotnet run
 ```
 稍等片刻，得到如下结果表示成功（没有任何错误或者警告的话）
@@ -169,9 +171,10 @@ demoForDb
 [10:23:40 DBG] 'DemoContext' disposed.
 [10:23:40 INF] **Data migration completed.**
 ```
-Ctrl+C停止。再进入api项目*templateUseDemoForDb.Api*并修改配置文件*appsettings.json*中的数据库连接（与刚才相同）
+再进入api项目*templateUseDemoForDb.Api*并修改配置文件*appsettings.json*中的数据库连接（与刚才相同）
 然后运行api项目
 ```
+> dotnet restore
 > dotnet run
 ```
 稍等片刻，得到如下结果表示成功
