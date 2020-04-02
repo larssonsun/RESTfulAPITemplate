@@ -1,10 +1,10 @@
 # RESTfulAPITemplate
-English | [简体中文](./README-zh.md)
+简体中文 | [English](./README.md)
 > 基于.NET-CLI的项目模板，协助搭建符合客制化要求的项目脚手架
 ## 依赖
 * .netcore 3.1
 
-## 安装
+## 安装（本说明均使用.NET-CLI，下同）
 ```
 > dotnet new --install Larsson.Template.RESTfulAPI
 ```
@@ -17,7 +17,7 @@ Templates|Short Name|Language|Tags
 -- | -- | -- | --
 ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfulAPI
 ## 快速开始
-新建一个目录，比如*demo*，在目录中使用.Net命令行工具
+新建一个目录，比如*demo*，在该目录中执行
 ```
 > mkdir demo
 > cd demo
@@ -27,7 +27,7 @@ ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfu
 ```
 The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfully.
 ```
-您将在demo下得到如下结构的项目脚手架（这里只列出关键文件及目录，下同）
+您将在*demo*下得到如下结构的项目脚手架（这里只列出关键文件及目录，下同）
 
 demo
 ├─templateUseDemo.Api - *API服务项目*
@@ -89,15 +89,19 @@ demo
 * MsSQL         - MS-SQLServer
 * Default: DbInMemory
 ## 数据库迁移及DataSeed
-> 如果需要使用MS-SQLServer作为数据库存储媒介，则需要注意以下内容
+> 如果需要使用`MS-SQLServer`作为数据库存储媒介，则需要注意以下内容
 
-使用.Net命令行工具新建一个目录并创建项目
+新建目录并在该目录中创建带MS-SQLServer数据库的项目
 ```
 > mkdir demoForDb
 > cd demoForDb
 > dotnet new restful-api-l -o . -n templateUseDemoForDb -dt MSSQL -esfoss true
 ```
-您将在demoForDb下得到如下结构的项目脚手架（多了一个迁移项目）
+执行成功
+```
+The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfully.
+```
+您将在目录*demoForDb*下得到如下结构的项目脚手架（多了一个迁移项目）
 
 demoForDb
 ├─templateUseDemoForDb.Api
@@ -131,7 +135,7 @@ demoForDb
 ```json
 ...
 "ConnectionStrings": {
-  "templateUseDemoForDbDbConnStr": "你的数据库连接字符串"
+  "templateUseDemoForDbDbConnStr": "（修改为你的数据库连接字符串）"
 },
 ...
 ```
@@ -139,14 +143,14 @@ demoForDb
 ```
 > dotnet run
 ```
-稍等片刻，得到如下结果表示成功
+稍等片刻，得到如下结果表示成功（没有任何错误或者警告的话）
 ```
-[16:44:40 INF] Now listening on: http://localhost:5000
-[16:44:40 INF] Now listening on: https://localhost:5001
-[16:44:40 INF] Application started. Press Ctrl+C to shut down.
-[16:44:40 INF] Hosting environment: Production
-[16:44:40 INF] Content root path: xxxxx\templateUseDemoForDb.EfMigration
-[16:44:40 DBG] Hosting started
+...
+若干种子数据被添加（如果是第一次执行的话）
+...
+[10:23:40 INF] Seed data created.
+[10:23:40 DBG] 'DemoContext' disposed.
+[10:23:40 INF] **Data migration completed.**
 ```
 Ctrl+C停止。再进入api项目*templateUseDemoForDb.Api*并修改配置文件*appsettings.json*中的数据库连接（与刚才相同）
 然后运行api项目
@@ -155,14 +159,14 @@ Ctrl+C停止。再进入api项目*templateUseDemoForDb.Api*并修改配置文件
 ```
 稍等片刻，得到如下结果表示成功
 ```
-16:50:07 INF] Now listening on: http://localhost:5000
-16:50:07 INF] Now listening on: https://localhost:5001
-16:50:07 INF] Application started. Press Ctrl+C to shut down.
-16:50:07 INF] Hosting environment: Production
-16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
+[16:50:07 INF] Now listening on: http://localhost:5000
+[16:50:07 INF] Now listening on: https://localhost:5001
+[16:50:07 INF] Application started. Press Ctrl+C to shut down.
+[16:50:07 INF] Hosting environment: Production
+[16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
 ```
 
-## 协议
+## 本模板项目遵循协议
 [Apache License 2.0](https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
 
 Copyright (c) 2020-present Larssonsun

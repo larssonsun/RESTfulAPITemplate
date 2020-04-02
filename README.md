@@ -1,167 +1,172 @@
 # RESTfulAPITemplate
-English | [简体中文](./README-zh.md)
-> 基于.NET-CLI的项目模板，协助搭建符合客制化要求的项目脚手架
-## 依赖
+English | [Simplified Chinese] (./ README-zh.md)
+> Project template based on .NET-CLI to help build project scaffolding that meets custom requirements
+## Dependence
 * .netcore 3.1
 
-## 安装
-```
-> dotnet new --install Larsson.Template.RESTfulAPI
-```
-验证模板的安装
-```
-> dotnet new --list
-```
-如果如下模板被新增则标识安装成功
-Templates|Short Name|Language|Tags
--- | -- | -- | --
-ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfulAPI
-## 快速开始
-新建一个目录，比如*demo*，在目录中使用.Net命令行工具
-```
+## Installation (All instructions use .NET-CLI, the same below)
+`` `
+dotnet new --install Larsson.Template.RESTfulAPI
+`` `
+Verify template installation
+`` `
+dotnet new --list
+`` `
+If the following template is added, the installation is successful.
+Templates | Short Name | Language | Tags
+-|-|-|-
+ASP.NET Core RESTfulAPI Template by Larsson | restful-api-l | [C #] | Web / WebAPI / RESTfulAPI
+## Quick start
+Create a new directory, such as * demo *, execute in this directory
+`` `
 > mkdir demo
 > cd demo
-> dotnet new restful-api-l -o . -n templateUseDemo
-```
-您将在demo下得到如下结构的项目脚手架（这里只列出关键文件及目录，下同）
+> dotnet new restful-api-l -o. -n templateUseDemo
+`` `
+If successful, will prompt
+`` `
+The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfully.
+`` `
+You will get the following structure of the project scaffolding under * demo * (here only the key files and directories are listed, the same below)
 
 demo
-├─templateUseDemo.Api - *API服务项目*
-│  ├─Controllers - *控制器*
-│  ├─Middlewares - *中间件*
-│  └─Services - *外部服务，如JWT生成器（本模板为本地实现，实际可使用`IndentityServer4`等验证框架）*
-│  └─appsettings.json - *配置文件*
-├─templateUseDemo.Core - *核心项目*
-│  ├─Configurations - *模型配置*
-│  │  ├─PropertyMappings - *DTO与实例模型映射(依赖[`AutoMapper`](https://automapper.org/))*
-│  │  ├─SortMappings - *DTO中排序属性与模型的若干属性映射(依赖[`Larsson.RESTfulAPIHelper`](https://github.com/larssonsun/Larsson.RESTfulAPIHelper))*
-│  │  └─Validators - *DTO验证(依赖[`FluentValidation`](https://fluentvalidation.net/))*
-│  ├─DomainModels - *其他领域模型*
-│  ├─DTOs - *DTO*
-│  ├─Entities - *实例模型*
-│  └─Interfaces - *接口*
-└─templateUseDemo.Infrastructure - *基础设施项目*
-    └─Repositories - *数据仓储*
+├─templateUseDemo.Api-* API service items *
+│ ├─Controllers-* Controller *
+│ ├─Middlewares-* Middlewares *
+│ └─Services-* External services, such as JWT generator (this template is a local implementation, you can actually use the authentication framework such as `IndentityServer4`) *
+│ └─appsettings.json-* Configuration file *
+├─templateUseDemo.Core-* Core project *
+│ ├─Configurations-* Model configuration *
+│ │ ├─PropertyMappings-* DTO and instance model mapping (depending on [`AutoMapper`] (https://automapper.org/)) *
+│ │ ├─SortMappings-* DTO's sorting attributes and some attribute mapping of the model (depending on [`Larsson.RESTfulAPIHelper`] (https://github.com/larssonsun/Larsson.RESTfulAPIHelper)) *
+│ │ └─Validators-* DTO validation (depends on [`FluentValidation`] (https://fluentvalidation.net/)) *
+│ ├─DomainModels-* Other domain models *
+│ ├─DTOs-* DTO *
+│ ├─Entities-* db model *
+│ └─Interfaces-* Interface *
+└─templateUseDemo.Infrastructure-* Infrastructure Project *
+    └─Repositories-* Data Warehouse *
 
-## 参数
-*-esfoss|--enable-support-for-obsolete-sql-server*
-* 使用EF2.x以便使EF支持SQL Server 2012之前版本的数据库的翻页查询（ROW_NUMBER()），请查看 [issue](https://github.com/dotnet/efcore/issues/13959)。
-* bool - Optional
+## parameter
+* -esfoss | --enable-support-for-obsolete-sql-server *
+* Use EF2.x to enable EF to support page turning query (ROW_NUMBER ()) for databases before SQL Server 2012, please see [issue] (https://github.com/dotnet/efcore/issues/13959).
+* bool-Optional
 * Default: false / (*) true
 
-*-elrh|--enable-larsson-restfulapi-helper*
-* 使用 `Larsson.RESTfulAPIHelper` 来简化结果数据局的排序，分页，塑形操作。
-* bool - Optional
+* -elrh | --enable-larsson-restfulapi-helper *
+* Use `Larsson.RESTfulAPIHelper` to simplify sorting, pagination, and shaping of the result data bureau.
+* bool-Optional
 * Default: true
 
-*-egrhw|--enable-global-response-handler-wrapper*
-* 使用全局HTTP异常处理程序和响应包装器，例如给statuscode为200的response附加body。详见[`AutoWrapper`](https://github.com/proudmonkey/AutoWrapper)
-* bool - Optional
+* -egrhw | --enable-global-response-handler-wrapper *
+* Use global HTTP exception handlers and response wrappers, such as attaching a body to a response with a statuscode of 200. See [`AutoWrapper`] for details (https://github.com/proudmonkey/AutoWrapper)
+* bool-Optional
 * Default: true
 
-*-es|--enable-swagger*
-* 集成swagger
-* bool - Optional
+* -es | --enable-swagger *
+* Integrated swagger
+* bool-Optional
 * Default: false / (*) true
 
-*-eja|--enable-jwt-authentication*
-* 使用脚手架预设的验证方式（JWT）
-* bool - Optional
+* -eja | --enable-jwt-authentication *
+* Use scaffolding preset verification method (JWT)
+* bool-Optional
 * Default: true
 
-*-erc|--enable-response-cache*
-* 使用HTTP响应缓存
-* bool - Optional
+* -erc | --enable-response-cache *
+* Use HTTP response cache
+* bool-Optional
 * Default: false / (*) true
 
-*-ct|--cache-type*
-* 预制缓存示例
-* LocalMemoryCache    - 本地内存缓存
-* DistributedCache    - 分布式缓存 (默认是本地内存，需要可自己集成redis)
+* -ct | --cache-type *
+* Pre-made cache example
+* LocalMemoryCache-local memory cache
+* DistributedCache-distributed cache (default is local memory, you need to integrate redis yourself)
 
-*-dt|--db-type*
-* 使用的数据库类型
-* DbInMemory    - 内存数据库
-* MsSQL         - MS-SQLServer
+* -dt | --db-type *
+* Type of database used
+* DbInMemory-In-memory database
+* MsSQL-MS-SQLServer
 * Default: DbInMemory
-## 数据库迁移及DataSeed
-> 如果需要使用MS-SQLServer作为数据库存储媒介，则需要注意以下内容
+## Database Migration and DataSeed
+> If you need to use `MS-SQLServer` as the database storage medium, you need to pay attention to the following
 
-使用.Net命令行工具新建一个目录并创建项目
-```
+Create a new directory and create a project with MS-SQLServer database in the directory
+`` `
 > mkdir demoForDb
 > cd demoForDb
-> dotnet new restful-api-l -o . -n templateUseDemoForDb -dt MSSQL -esfoss true
-```
-您将在demoForDb下得到如下结构的项目脚手架（多了一个迁移项目）
+> dotnet new restful-api-l -o. -n templateUseDemoForDb -dt MSSQL -esfoss true
+`` `
+execution succeed
+`` `
+The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfully.
+`` `
+You will get a project scaffolding with the following structure under the directory * demoForDb * (an additional migration project)
 
 demoForDb
 ├─templateUseDemoForDb.Api
-│  ├─Controllers
-│  ├─Middlewares
-│  └─Services
-│  └─appsettings.json
+│ ├─Controllers
+│ ├─Middlewares
+│ └─Services
+│ └─appsettings.json
 ├─templateUseDemoForDb.Core
-│  ├─Configurations
-│  │  ├─PropertyMappings
-│  │  ├─SortMappings
-│  │  └─Validators
-│  ├─DomainModels
-│  ├─DTOs
-│  ├─Entities
-│  └─Interfaces
-├─templateUseDemoForDb.EfMigration - *数据库迁移项目*
-│  ├─DbContext - *数据库上下文*
-│  ├─EntityConfigurations - *使用Fluent API方式配置模型映射（从DBcontext中独立出来）*
-│  └─Migrations - *迁移文件（由迁移自动生成）*
-│  └─appsettings.json - *配置文件(数据库连接部分需与API一致)*
-│  └─DemoContextSeed.cs - *数据种子文件（提供示例数据）*
+│ ├─Configurations
+│ │ ├─PropertyMappings
+│ │ ├─SortMappings
+│ │ └─Validators
+│ ├─DomainModels
+│ ├─DTOs
+│ ├─Entities
+│ └─Interfaces
+├─templateUseDemoForDb.EfMigration-* Database migration project *
+│ ├─DbContext-* Database context *
+│ ├─EntityConfigurations-* Use Fluent API to configure model mapping (independent from DBcontext) *
+│ └─Migrations-* Migration files (automatically generated by migration) *
+│ └─appsettings.json-* Configuration file (the database connection part must be consistent with the API) *
+│ └─DemoContextSeed.cs-* Data seed file (provide sample data) *
 └─templateUseDemoForDb.Infrastructure
-    └─Repositories
+    └─Repositories
 
-进入项目*emplateUseDemoForDb.EfMigration*的目录（数据库迁移项目）
-```
-cd templateUseDemoForDb.EfMigration
-```
-修改配置文件*appsettings.json*中的数据库连接
-```
+Go to the directory of the project * emplateUseDemoForDb.EfMigration * and modify the database connection in the configuration file * appsettings.json *
+`` `
+> cd templateUseDemoForDb.EfMigration
 > notepad appsettings.json
-```
-```json
+`` `
+`` `json
 ...
 "ConnectionStrings": {
-  "templateUseDemoForDbDbConnStr": "你的数据库连接字符串"
+  "templateUseDemoForDbDbConnStr": "(Modify to your database connection string)"
 },
 ...
-```
-运行数据库迁移项目
-```
+`` `
+Run the database migration project
+`` `
 > dotnet run
-```
-稍等片刻，得到如下结果表示成功
-```
-[16:44:40 INF] Now listening on: http://localhost:5000
-[16:44:40 INF] Now listening on: https://localhost:5001
-[16:44:40 INF] Application started. Press Ctrl+C to shut down.
-[16:44:40 INF] Hosting environment: Production
-[16:44:40 INF] Content root path: xxxxx\templateUseDemoForDb.EfMigration
-[16:44:40 DBG] Hosting started
-```
-Ctrl+C停止。再进入api项目*templateUseDemoForDb.Api*并修改配置文件*appsettings.json*中的数据库连接（与刚才相同）
-然后运行api项目
-```
+`` `
+Wait for a while and get the following result to indicate success (without any errors or warnings)
+`` `
+...
+Several seed data are added (if this is the first execution)
+...
+[10:23:40 INF] Seed data created.
+[10:23:40 DBG] 'DemoContext' disposed.
+[10:23:40 INF] ** Data migration completed. **
+`` `
+Ctrl + C to stop. Then enter the api project * templateUseDemoForDb.Api * and modify the database connection in the configuration file * appsettings.json * (same as just now)
+Then run the api project
+`` `
 > dotnet run
-```
-稍等片刻，得到如下结果表示成功
-```
-16:50:07 INF] Now listening on: http://localhost:5000
-16:50:07 INF] Now listening on: https://localhost:5001
-16:50:07 INF] Application started. Press Ctrl+C to shut down.
-16:50:07 INF] Hosting environment: Production
-16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
-```
+`` `
+Wait for a while and get the following result indicating success
+`` `
+[16:50:07 INF] Now listening on: http: // localhost: 5000
+[16:50:07 INF] Now listening on: https: // localhost: 5001
+[16:50:07 INF] Application started. Press Ctrl + C to shut down.
+[16:50:07 INF] Hosting environment: Production
+[16:50:07 INF] Content root path: xxxxx \ templateusedemofordb.api
+`` `
 
-## 协议
-[Apache License 2.0](https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
+## This template project follows the agreement
+[Apache License 2.0] (https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
 
 Copyright (c) 2020-present Larssonsun
