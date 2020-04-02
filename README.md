@@ -49,7 +49,19 @@ demo
 └─templateUseDemo.Infrastructure - Infrastructure Project
     └─Repositories - Data repositories
 ```
-
+Go to the * templateUseDemo.Api * directory and run the project
+```
+> cd templateUseDemo.Api
+> dotnet run
+```
+The console gets the following results indicating success
+```
+[11:29:29 INF] Now listening on: http: // localhost: 5000
+[11:29:29 INF] Now listening on: https: // localhost: 5001
+[11:29:29 INF] Application started. Press Ctrl + C to shut down.
+[11:29:29 INF] Hosting environment: Production
+[11:29:29 INF] Content root path: xxxx \ demo \ templateUseDemo.Api
+```
 ## parameter
 *-esfoss | --enable-support-for-obsolete-sql-server*
 * Use EF2.x to enable EF to support page turning query (ROW_NUMBER ()) for databases before SQL Server 2012, please see [issue] (https://github.com/dotnet/efcore/issues/13959).

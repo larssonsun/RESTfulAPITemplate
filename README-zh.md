@@ -49,7 +49,19 @@ demo
 └─templateUseDemo.Infrastructure - 基础设施项目
     └─Repositories - 数据仓储
 ```
-
+进入*templateUseDemo.Api*目录，运行项目
+```
+> cd templateUseDemo.Api
+> dotnet run
+```
+控制台得到如下结果表示成功
+```
+[11:29:29 INF] Now listening on: http://localhost:5000
+[11:29:29 INF] Now listening on: https://localhost:5001
+[11:29:29 INF] Application started. Press Ctrl+C to shut down.
+[11:29:29 INF] Hosting environment: Production
+[11:29:29 INF] Content root path: xxxx\demo\templateUseDemo.Api
+```
 ## 参数
 *-esfoss|--enable-support-for-obsolete-sql-server*
 * 使用EF2.x以便使EF支持SQL Server 2012之前版本的数据库的翻页查询（ROW_NUMBER()），请查看 [issue](https://github.com/dotnet/efcore/issues/13959)。
