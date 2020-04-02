@@ -2,8 +2,18 @@
 简体中文 | [English](./README.md)
 
 > 基于.NET-CLI的项目模板，协助搭建符合客制化要求的REST风格的WEBAPI项目脚手架
+
 ## 依赖
 * .netcore 3.1
+
+## 脚手架中集成第三方类库
+* [Automapper](https://automapper.org/)
+* [FluentValidation](https://fluentvalidation.net/)
+* [Serilog](https://serilog.net/)
+* [Autowrapper](https://github.com/proudmonkey/AutoWrapper)
+* [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [Marvin.Cache.Headers](https://github.com/KevinDockx/HttpCacheHeaders)
+* [Larsson.RESTfulAPIHelper](https://github.com/larssonsun/Larsson.RESTfulAPIHelper)
 
 ## 安装（本说明均在PowerShell或者Cmder下使用.NET-CLI进行，下同）
 ```
