@@ -1,4 +1,4 @@
-# Larsson.Template.RESTfulAPI
+# RESTfulAPITemplate
 English | [简体中文](./README-zh.md)
 > 基于.NET-CLI的项目模板，协助搭建符合客制化要求的项目脚手架
 ## 依赖
