@@ -1,5 +1,5 @@
 # RESTfulAPITemplate
-English | [Simplified Chinese] (./ README-zh.md)
+Chinese | [English](./README.md)
 > Project template based on .NET-CLI to help build project scaffolding that meets custom requirements
 ## Dependence
 * .netcore 3.1
@@ -29,6 +29,7 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 `` `
 You will get the following structure of the project scaffolding under * demo * (here only the key files and directories are listed, the same below)
 
+`` `
 demo
 ├─templateUseDemo.Api-* API service items *
 │ ├─Controllers-* Controller *
@@ -42,10 +43,11 @@ demo
 │ │ └─Validators-* DTO validation (depends on [`FluentValidation`] (https://fluentvalidation.net/)) *
 │ ├─DomainModels-* Other domain models *
 │ ├─DTOs-* DTO *
-│ ├─Entities-* db model *
+│ ├─Entities-* Example model *
 │ └─Interfaces-* Interface *
 └─templateUseDemo.Infrastructure-* Infrastructure Project *
     └─Repositories-* Data Warehouse *
+`` `
 
 ## parameter
 * -esfoss | --enable-support-for-obsolete-sql-server *
@@ -103,6 +105,7 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 `` `
 You will get a project scaffolding with the following structure under the directory * demoForDb * (an additional migration project)
 
+`` `
 demoForDb
 ├─templateUseDemoForDb.Api
 │ ├─Controllers
@@ -126,6 +129,7 @@ demoForDb
 │ └─DemoContextSeed.cs-* Data seed file (provide sample data) *
 └─templateUseDemoForDb.Infrastructure
     └─Repositories
+`` `
 
 Go to the directory of the project * emplateUseDemoForDb.EfMigration * and modify the database connection in the configuration file * appsettings.json *
 `` `

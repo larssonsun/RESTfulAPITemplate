@@ -29,6 +29,7 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 ```
 您将在*demo*下得到如下结构的项目脚手架（这里只列出关键文件及目录，下同）
 
+```
 demo
 ├─templateUseDemo.Api - *API服务项目*
 │  ├─Controllers - *控制器*
@@ -46,6 +47,7 @@ demo
 │  └─Interfaces - *接口*
 └─templateUseDemo.Infrastructure - *基础设施项目*
     └─Repositories - *数据仓储*
+```
 
 ## 参数
 *-esfoss|--enable-support-for-obsolete-sql-server*
@@ -103,6 +105,7 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 ```
 您将在目录*demoForDb*下得到如下结构的项目脚手架（多了一个迁移项目）
 
+```
 demoForDb
 ├─templateUseDemoForDb.Api
 │  ├─Controllers
@@ -126,6 +129,7 @@ demoForDb
 │  └─DemoContextSeed.cs - *数据种子文件（提供示例数据）*
 └─templateUseDemoForDb.Infrastructure
     └─Repositories
+```
 
 进入项目*emplateUseDemoForDb.EfMigration*的目录并修改配置文件*appsettings.json*中的数据库连接
 ```
