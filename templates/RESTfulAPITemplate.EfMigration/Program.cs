@@ -22,7 +22,7 @@ namespace RESTfulAPITemplate.EfMigration
 
             try
             {
-                Console.Title = "testDbMemory";
+                Console.Title = "RESTfulAPITemplate";
 
                 Log.Information("Starting web host");
                 var host = CreateHostBuilder(args).Build();
@@ -40,10 +40,12 @@ namespace RESTfulAPITemplate.EfMigration
                     catch (Exception ex)
                     {
                         Log.Error(ex, "An error occurred seeding the DB.");
+                        return;
                     }
                 }
 
                 // host.Run();
+                Log.Information("Data migration completed.");
                 return;
             }
             catch (Exception ex)

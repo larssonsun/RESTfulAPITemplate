@@ -23,6 +23,10 @@ ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfu
 > cd demo
 > dotnet new restful-api-l -o . -n templateUseDemo
 ```
+如成功，会提示
+```
+The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfully.
+```
 您将在demo下得到如下结构的项目脚手架（这里只列出关键文件及目录，下同）
 
 demo

@@ -162,7 +162,7 @@
         },
         {
           "exclude": [
-            "**/RESTfulAPITemplate.Infrastructure/DemoContextSeed.cs/**"
+            "**/RESTfulAPITemplate.Infrastructure/DemoContextSeed.cs"
           ],
           "condition": "(db-type == \"MsSQL\")"
         },
