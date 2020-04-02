@@ -1,5 +1,5 @@
 # RESTfulAPITemplate
-简体中文 | [English](./README.md)
+简体中文|[English](./README.md)
 > 基于.NET-CLI的项目模板，协助搭建符合客制化要求的项目脚手架
 ## 依赖
 * .netcore 3.1
@@ -31,22 +31,22 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 
 ```
 demo
-├─templateUseDemo.Api - *API服务项目*
-│  ├─Controllers - *控制器*
-│  ├─Middlewares - *中间件*
-│  └─Services - *外部服务，如JWT生成器（本模板为本地实现，实际可使用`IndentityServer4`等验证框架）*
-│  └─appsettings.json - *配置文件*
-├─templateUseDemo.Core - *核心项目*
-│  ├─Configurations - *模型配置*
-│  │  ├─PropertyMappings - *DTO与实例模型映射
-│  │  ├─SortMappings - *DTO中排序属性与模型的若干属性映射
-│  │  └─Validators - *DTO验证
-│  ├─DomainModels - *其他领域模型*
-│  ├─DTOs - *DTO*
-│  ├─Entities - *实例模型*
-│  └─Interfaces - *接口*
-└─templateUseDemo.Infrastructure - *基础设施项目*
-    └─Repositories - *数据仓储*
+├─templateUseDemo.Api - API服务项目
+│  ├─Controllers - 控制器
+│  ├─Middlewares - 中间件
+│  └─Services - 外部服务，如JWT生成器（本模板为本地实现，实际可使用`IndentityServer4`等验证框架）
+│  └─appsettings.json - 配置文
+├─templateUseDemo.Core - 核心项目
+│  ├─Configurations - 模型配置
+│  │  ├─PropertyMappings - DTO与实例模型映射
+│  │  ├─SortMappings - DTO中排序属性与模型的若干属性映射
+│  │  └─Validators - DTO验证
+│  ├─DomainModels - 其他领域模型
+│  ├─DTOs - DTO
+│  ├─Entities - 实例模型
+│  └─Interfaces - 接口
+└─templateUseDemo.Infrastructure - 基础设施项目
+    └─Repositories - 数据仓储
 ```
 
 ## 参数
@@ -121,12 +121,12 @@ demoForDb
 │  ├─DTOs
 │  ├─Entities
 │  └─Interfaces
-├─templateUseDemoForDb.EfMigration - *数据库迁移项目*
-│  ├─DbContext - *数据库上下文*
-│  ├─EntityConfigurations - *使用Fluent API方式配置模型映射（从DBcontext中独立出来）*
-│  └─Migrations - *迁移文件（由迁移自动生成）*
-│  └─appsettings.json - *配置文件(数据库连接部分需与API一致)*
-│  └─DemoContextSeed.cs - *数据种子文件（提供示例数据）*
+├─templateUseDemoForDb.EfMigration - 数据库迁移项目
+│  ├─DbContext - 数据库上下文
+│  ├─EntityConfigurations - 使用Fluent API方式配置模型映射（从DBcontext中独立出来）
+│  └─Migrations - 迁移文件（由迁移自动生成）
+│  └─appsettings.json - 配置文件(数据库连接部分需与API一致)
+│  └─DemoContextSeed.cs - 数据种子文件（提供示例数据）
 └─templateUseDemoForDb.Infrastructure
     └─Repositories
 ```
