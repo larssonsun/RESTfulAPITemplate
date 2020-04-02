@@ -43,7 +43,7 @@ namespace RESTfulAPITemplate.EfMigration
                     }
                 }
 
-                host.Run();
+                // host.Run();
                 return;
             }
             catch (Exception ex)
