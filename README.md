@@ -195,6 +195,33 @@ Wait for a while and get the following result indicating success
 [16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
 ```
 
+## Test interface
+Send using postman or directly using the browser
+```
+# GET
+http://localhost:5000/product?pageSize=2&pageIndex=0&orderBy=fullname&fields=id,name,description
+```
+Get similar json return table success
+``` json
+{
+    "statusCode": 200,
+    "message": "Request successful.",
+    "isError": false,
+    "result": [
+        {
+            "id": "16735bcb-03ba-4468-ac0d-a0792d7299ad",
+            "name": "A Learning ASP.NET Core",
+            "description": "C best-selling book covering the fundamentals of ASP.NET Core"
+        },
+        {
+            "id": "7c48a0f2-b790-4db2-bd68-8e62a03ae09e",
+            "name": "C Learning .NET Core",
+            "description": "D best-selling book covering the fundamentals of .NET Core"
+        }
+    ]
+}
+```
+
 ## This template project follows the agreement
 [Apache License 2.0](https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
 

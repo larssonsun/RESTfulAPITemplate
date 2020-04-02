@@ -196,6 +196,32 @@ demoForDb
 [16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
 ```
 
+## 测试接口
+使用postman或者直接使用浏览器发送
+```
+# GET
+http://localhost:5000/product?pageSize=2&pageIndex=0&orderBy=fullname&fields=id,name,description
+```
+得到类似的json返回表式成功
+``` json
+{
+    "statusCode": 200,
+    "message": "Request successful.",
+    "isError": false,
+    "result": [
+        {
+            "id": "16735bcb-03ba-4468-ac0d-a0792d7299ad",
+            "name": "A Learning ASP.NET Core",
+            "description": "C best-selling book covering the fundamentals of ASP.NET Core"
+        },
+        {
+            "id": "7c48a0f2-b790-4db2-bd68-8e62a03ae09e",
+            "name": "C Learning .NET Core",
+            "description": "D best-selling book covering the fundamentals of .NET Core"
+        }
+    ]
+}
+```
 ## 本模板项目遵循协议
 [Apache License 2.0](https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
 
