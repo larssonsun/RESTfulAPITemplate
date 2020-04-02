@@ -3,7 +3,7 @@ English | [简体中文](./README-zh.md)
 
 > Project template based on .NET-CLI to help build RESTful web api project scaffolding that meets custom requirements
 ## Dependence
-*.netcore 3.1
+* .netcore 3.1
 
 ## Installation (All instructions use .NET-CLI, the same below)
 ```
@@ -18,7 +18,7 @@ Templates | Short Name | Language | Tags
 -|-|-|-
 ASP.NET Core RESTfulAPI Template by Larsson | restful-api-l | [C #] | Web / WebAPI / RESTfulAPI
 ## Quick start
-Create a new directory, such as*demo*, execute in this directory
+Create a new directory, such as *demo*, and use the template to create a new project in this directory
 ```
 > mkdir demo
 > cd demo

@@ -18,7 +18,7 @@ Templates|Short Name|Language|Tags
 -- | -- | -- | --
 ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfulAPI
 ## 快速开始
-新建一个目录，比如*demo*，在该目录中执行
+新建一个目录，比如*demo*，并在该目录中使用模板新建一个项目
 ```
 > mkdir demo
 > cd demo
