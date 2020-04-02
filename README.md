@@ -6,13 +6,13 @@ English | [简体中文](./README-zh.md)
 * .netcore 3.1
 
 ## Integrate third-party class libraries in scaffolding
-* [Automapper] (https://automapper.org/)
-* [FluentValidation] (https://fluentvalidation.net/)
-* [Serilog] (https://serilog.net/)
-* [Autowrapper] (https://github.com/proudmonkey/AutoWrapper)
-* [Swashbuckle.AspNetCore] (https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
-* [Marvin.Cache.Headers] (https://github.com/KevinDockx/HttpCacheHeaders)
-* [Larsson.RESTfulAPIHelper] (https://github.com/larssonsun/Larsson.RESTfulAPIHelper)
+* [Automapper](https://automapper.org/)
+* [FluentValidation](https://fluentvalidation.net/)
+* [Serilog](https://serilog.net/)
+* [Autowrapper](https://github.com/proudmonkey/AutoWrapper)
+* [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [Marvin.Cache.Headers](https://github.com/KevinDockx/HttpCacheHeaders)
+* [Larsson.RESTfulAPIHelper](https://github.com/larssonsun/Larsson.RESTfulAPIHelper)
 
 ## Installation (These instructions are performed in PowerShell or Cmder using .NET-CLI, the same below)
 ```
