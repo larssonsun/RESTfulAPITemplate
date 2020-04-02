@@ -1,6 +1,6 @@
 # RESTfulAPITemplate
 简体中文 | [English](./README.md)
-> 基于.NET-CLI的项目模板，协助搭建符合客制化要求的项目脚手架
+> 基于.NET-CLI的项目模板，协助搭建符合客制化要求的REST风格的WEBAPI项目脚手架
 ## 依赖
 * .netcore 3.1
 

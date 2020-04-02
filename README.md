@@ -1,6 +1,6 @@
 # RESTfulAPITemplate
 English | [简体中文](./README-zh.md)
-> Project template based on .NET-CLI to help build project scaffolding that meets custom requirements
+> Project template based on .NET-CLI to help build RESTful web api project scaffolding that meets custom requirements
 ## Dependence
 *.netcore 3.1
 
