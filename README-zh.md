@@ -23,7 +23,7 @@
 ```
 > dotnet new --list
 ```
-如果如下模板被新增则标识安装成功
+如果如下模板被新增则表示安装成功
 Templates|Short Name|Language|Tags
 -- | -- | -- | --
 ASP.NET Core RESTfulAPI Template by Larsson|restful-api-l|[C#]|Web/WebAPI/RESTfulAPI

@@ -74,7 +74,7 @@ The console gets the following results indicating success
 ```
 ## parameter
 *-esfoss | --enable-support-for-obsolete-sql-server*
-* Use EF2.x to enable EF to support page turning query (ROW_NUMBER ()) for databases before SQL Server 2012, please see [issue] (https://github.com/dotnet/efcore/issues/13959).
+* Use EF2.x to enable EF to support page turning query (ROW_NUMBER ()) for databases before SQL Server 2012, please see [issue](https://github.com/dotnet/efcore/issues/13959).
 * bool-Optional
 * Default: false / (*) true
 
@@ -84,7 +84,7 @@ The console gets the following results indicating success
 * Default: true
 
 *-egrhw | --enable-global-response-handler-wrapper*
-* Use global HTTP exception handlers and response wrappers, such as attaching a body to a response with a statuscode of 200. See [`AutoWrapper`] for details (https://github.com/proudmonkey/AutoWrapper)
+* Use global HTTP exception handlers and response wrappers, such as attaching a body to a response with a statuscode of 200. See [`AutoWrapper`](https://github.com/proudmonkey/AutoWrapper) for details
 * bool-Optional
 * Default: true
 
@@ -188,14 +188,14 @@ Then run the api project
 ```
 Wait for a while and get the following result indicating success
 ```
-[16:50:07 INF] Now listening on: http: // localhost: 5000
-[16:50:07 INF] Now listening on: https: // localhost: 5001
+[16:50:07 INF] Now listening on: http://localhost:5000
+[16:50:07 INF] Now listening on: https://localhost:5001
 [16:50:07 INF] Application started. Press Ctrl + C to shut down.
 [16:50:07 INF] Hosting environment: Production
-[16:50:07 INF] Content root path: xxxxx \ templateusedemofordb.api
+[16:50:07 INF] Content root path: xxxxx\templateusedemofordb.api
 ```
 
 ## This template project follows the agreement
-[Apache License 2.0] (https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
+[Apache License 2.0](https://github.com/larssonsun/RESTfulAPITemplate/blob/master/LICENSE) license.
 
 Copyright (c) 2020-present Larssonsun
