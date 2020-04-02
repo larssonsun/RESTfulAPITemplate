@@ -5,7 +5,7 @@
 ## 依赖
 * .netcore 3.1
 
-## 安装（本说明均使用.NET-CLI或者PowerShell，下同）
+## 安装（本说明均在PowerShell或者Cmder下使用.NET-CLI进行，下同）
 ```
 > dotnet new --install Larsson.Template.RESTfulAPI
 ```

@@ -5,7 +5,7 @@ English | [简体中文](./README-zh.md)
 ## Dependence
 * .netcore 3.1
 
-## Installation (All instructions use .NET-CLI or PowerShell, the same below)
+## Installation (These instructions are performed in PowerShell or Cmder using .NET-CLI, the same below)
 ```
 dotnet new --install Larsson.Template.RESTfulAPI
 ```
