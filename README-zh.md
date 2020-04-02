@@ -38,9 +38,9 @@ demo
 │  └─appsettings.json - *配置文件*
 ├─templateUseDemo.Core - *核心项目*
 │  ├─Configurations - *模型配置*
-│  │  ├─PropertyMappings - *DTO与实例模型映射(依赖[`AutoMapper`](https://automapper.org/))*
-│  │  ├─SortMappings - *DTO中排序属性与模型的若干属性映射(依赖[`Larsson.RESTfulAPIHelper`](https://github.com/larssonsun/Larsson.RESTfulAPIHelper))*
-│  │  └─Validators - *DTO验证(依赖[`FluentValidation`](https://fluentvalidation.net/))*
+│  │  ├─PropertyMappings - *DTO与实例模型映射
+│  │  ├─SortMappings - *DTO中排序属性与模型的若干属性映射
+│  │  └─Validators - *DTO验证
 │  ├─DomainModels - *其他领域模型*
 │  ├─DTOs - *DTO*
 │  ├─Entities - *实例模型*
