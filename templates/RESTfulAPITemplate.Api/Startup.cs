@@ -32,6 +32,9 @@ using RESTfulAPITemplate.Core.DomainModel;
 using System.Text;
 using Serilog;
 #endif
+#if (SCETIAAUTHENTICATION)
+using RESTfulAPITemplate.Infrastructure.Util;
+#endif
 
 namespace RESTfulAPITemplate.Api
 {
@@ -52,7 +55,15 @@ namespace RESTfulAPITemplate.Api
 
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
 
+            #if (SCETIAAUTHENTICATION)
+
+            services.AddScoped<IUserRepository, ScetiaUserRepository>();
+
+            #else
+
             services.AddScoped<IUserRepository, UserRepository>();
+            
+            #endif
 
 #endif
 
@@ -76,6 +87,15 @@ namespace RESTfulAPITemplate.Api
 
 #endif
             ));
+
+#endif
+
+#if (SCETIAAUTHENTICATION)
+
+            services.AddDbContext<ScetiaIndentityContext>(dcob => dcob.UseSqlServer(Configuration.GetConnectionString("ScetiaIdentityDbConnStr")
+                , soa => soa.UseRowNumberForPaging()));
+            
+            services.AddScoped<IScetiaIndentityUtil, ScetiaIndentityUtil>();
 
 #endif
 

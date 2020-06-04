@@ -1,6 +1,7 @@
 {
   "ConnectionStrings": {
-    "RESTfulAPITemplateDbConnStr": ""
+    "RESTfulAPITemplateDbConnStr": "",
+    "ScetiaIdentityDbConnStr": ""
   },
   "TokenManagement": {
     "Secret": "RESTfulAPITemplateSecretTheMinimsizeIs16",
@@ -11,6 +12,9 @@
   },
   "Publics": {
     "SwaggerStartsWithSegments": "swagger"
+  },
+  "MachineKey": {
+    "DecryptionKey": ""
   },
   "Logging": {
     "LogLevel": {

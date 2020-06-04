@@ -90,6 +90,12 @@
       "defaultValue": "DbInMemory",
       "description": "The database type to use"
     },
+    "enable-scetia-authentication": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false",
+      "description": "Enabled the login module for scetia users"
+    },
     "OBSOLETESQLSERVER": {
       "type": "computed",
       "value": "(enable-support-for-obsolete-sql-server == \"true\")"
@@ -129,6 +135,10 @@
     "MSSQL": {
       "type": "computed",
       "value": "(db-type == \"MsSQL\")"
+    },
+    "SCETIAAUTHENTICATION": {
+      "type": "computed",
+      "value": "(enable-scetia-authentication == \"true\")"
     }
   },
   "sources": [
@@ -191,6 +201,23 @@
             "**/Configurations/Validators/ProjectQueryDTOValidator.cs"
           ],
           "condition": "(enable-larsson-restfulapi-helper != \"true\")"
+        },
+        {
+          "exclude": [
+            "**/Entities/AspnetMembership.cs",
+            "**/Entities/AspnetUsers.cs",
+            "**/Interfaces/IScetiaIndentityUtil.cs",
+            "**/Repositories/ScetiaUserRepository.cs",
+            "**/Utils/ScetiaIndentityUtil.cs",
+            "**/Utils/ScetiaIndentityContext.cs"
+          ],
+          "condition": "(enable-scetia-authentication == \"false\")"
+        },
+        {
+          "exclude": [
+            "**/Repositories/UserRepository.cs"
+          ],
+          "condition": "(enable-scetia-authentication == \"true\")"
         }
       ]
     }

@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using RESTfulAPITemplate.Core.DomainModel;
 using RESTfulAPITemplate.Core.Interface;
 using RESTfulAPITemplate.Core.DTO;
+using System.Threading.Tasks;
 
 namespace RESTfulAPITemplate.Api.Service
 {
@@ -20,10 +21,10 @@ namespace RESTfulAPITemplate.Api.Service
             _userService = userService;
             _tokenManagement = tokenManagement.Value;
         }
-        public (bool IsAuthenticated, LoginResultDTO Token) IsAuthenticated(LoginRequest request)
+        public async Task<(bool IsAuthenticated, LoginResultDTO Token)> IsAuthenticated(LoginRequest request)
         {
 
-            var validateResult = _userService.IsValid(request);
+            var validateResult = await _userService.IsValidAsync(request);
             if (!validateResult.IsValid)
                 return (false, null);
 

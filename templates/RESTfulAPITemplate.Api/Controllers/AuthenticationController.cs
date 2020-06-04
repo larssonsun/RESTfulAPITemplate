@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace RESTfulAPITemplate.Api.Controller
             this._auth = auth;
             this._mapper = mapper;
         }
-        
+
         /// <summary>
         /// Get JWT Token
         /// </summary>
@@ -37,7 +38,7 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public ActionResult RequestToken([FromBody] LoginRequestDTO request)
+        public async Task<ActionResult> RequestToken([FromBody] LoginRequestDTO request)
         {
             if (request == null)
             {
@@ -53,7 +54,7 @@ namespace RESTfulAPITemplate.Api.Controller
 
             var loginRequest = _mapper.Map<LoginRequest>(request);
 
-            var (isAuth, result) = _auth.IsAuthenticated(loginRequest);
+            var (isAuth, result) = await _auth.IsAuthenticated(loginRequest);
             if (isAuth)
             {
                 return Ok(result);

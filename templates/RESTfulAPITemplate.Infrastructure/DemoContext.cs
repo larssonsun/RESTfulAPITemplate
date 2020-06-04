@@ -16,7 +16,8 @@ namespace RESTfulAPITemplate.Infrastructure
 
 #if (!DBINMEMORY)
 
-            modelBuilder.Entity<Product>(e => e.ToTable("My_Product"));
+            modelBuilder.Entity<Product>(e => e.ToTable("My_Product").HasKey(t => t.Id));
+
 #endif
         }
 
