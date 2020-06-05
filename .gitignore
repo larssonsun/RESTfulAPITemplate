@@ -351,3 +351,4 @@ appsettings*.json
 test*.*
 Properties/
 wwwroot/temp*
+*.gitignore

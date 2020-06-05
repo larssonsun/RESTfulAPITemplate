@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.3</PackageVersion>
     <PackageId>Larsson.Template.RESTfulAPI</PackageId>
     <Title>Larsson.Template.RESTfulAPI</Title>
     <Authors>Larsson</Authors>
