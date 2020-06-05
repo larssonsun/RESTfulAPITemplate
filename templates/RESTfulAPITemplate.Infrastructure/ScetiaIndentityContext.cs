@@ -16,13 +16,8 @@ namespace RESTfulAPITemplate.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-#if (!DBINMEMORY)
-
             modelBuilder.Entity<AspnetMembership>(e => e.ToTable("aspnet_Membership").HasKey(e => e.UserId));
             modelBuilder.Entity<AspnetUsers>(e => e.ToTable("aspnet_users").HasKey(e => e.UserId));
-            
-#endif
-
         }
 
         public virtual DbSet<AspnetMembership> AspnetMembership { get; set; }

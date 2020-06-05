@@ -10,7 +10,7 @@
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6"/>
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2"/>
   </ItemGroup>
-  <ItemGroup Condition="'$(MSSQL)' == 'True' ">
+  <ItemGroup Condition="'$(MSSQL)' == 'True' OR '$(SCETIAAUTHENTICATION)' == 'True' ">
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6"/>
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2"/>
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'False'" Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2"/>

@@ -98,7 +98,7 @@
     },
     "OBSOLETESQLSERVER": {
       "type": "computed",
-      "value": "(enable-support-for-obsolete-sql-server == \"true\" || enable-scetia-authentication == \"true\")"
+      "value": "(enable-support-for-obsolete-sql-server == \"true\")"
     },
     "RESTFULAPIHELPER": {
       "type": "computed",
@@ -134,7 +134,7 @@
     },
     "MSSQL": {
       "type": "computed",
-      "value": "(db-type == \"MsSQL\" || enable-scetia-authentication == \"true\" || enable-support-for-obsolete-sql-server == \"true\")"
+      "value": "(db-type == \"MsSQL\" || enable-support-for-obsolete-sql-server == \"true\")"
     },
     "SCETIAAUTHENTICATION": {
       "type": "computed",
@@ -165,8 +165,7 @@
         },
         {
           "exclude": [
-            "**/RESTfulAPITemplate.EfMigration/**",
-            "**/RESTfulAPITemplate.Infrastructure/EntityConfigurations/**"
+            "**/RESTfulAPITemplate.EfMigration/**"
           ],
           "condition": "(db-type == \"DbInMemory\")"
         },

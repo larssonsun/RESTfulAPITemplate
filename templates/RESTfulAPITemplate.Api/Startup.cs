@@ -86,6 +86,7 @@ namespace RESTfulAPITemplate.Api
                 , soa => soa.UseRowNumberForPaging()
 
 #endif
+
             ));
 
 #endif
@@ -93,7 +94,14 @@ namespace RESTfulAPITemplate.Api
 #if (SCETIAAUTHENTICATION)
 
             services.AddDbContext<ScetiaIndentityContext>(dcob => dcob.UseSqlServer(Configuration.GetConnectionString("ScetiaIdentityDbConnStr")
-                , soa => soa.UseRowNumberForPaging()));
+
+#if (OBSOLETESQLSERVER)
+
+                , soa => soa.UseRowNumberForPaging()
+
+#endif
+
+            ));
             
             services.AddScoped<IScetiaIndentityUtil, ScetiaIndentityUtil>();
 
