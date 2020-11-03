@@ -208,7 +208,7 @@
             "**/Interfaces/IScetiaIndentityUtil.cs",
             "**/Repositories/ScetiaUserRepository.cs",
             "**/Utils/ScetiaIndentityUtil.cs",
-            "**/Utils/ScetiaIndentityContext.cs"
+            "**/ScetiaIndentityContext.cs"
           ],
           "condition": "(enable-scetia-authentication == \"false\")"
         },
