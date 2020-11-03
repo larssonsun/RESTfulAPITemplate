@@ -11,6 +11,7 @@ using RESTfulAPITemplate.Core.Configuration.PropertyMapping;
 using RESTfulAPITemplate.Core.Interface;
 using RESTfulAPITemplate.Infrastructure;
 using RESTfulAPITemplate.Infrastructure.Repository;
+using Serilog;
 #if (RESTFULAPIHELPER) 
 using Larsson.RESTfulAPIHelper;
 using RESTfulAPITemplate.Core.Configuration.SortMapping;
@@ -30,7 +31,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RESTfulAPITemplate.Core.DomainModel;
 using System.Text;
-using Serilog;
 #endif
 #if (SCETIAAUTHENTICATION)
 using RESTfulAPITemplate.Infrastructure.Util;
