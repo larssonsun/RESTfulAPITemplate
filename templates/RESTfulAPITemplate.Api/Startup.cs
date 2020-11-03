@@ -55,15 +55,15 @@ namespace RESTfulAPITemplate.Api
 
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
 
-            #if (SCETIAAUTHENTICATION)
+#if (SCETIAAUTHENTICATION)
 
             services.AddScoped<IUserRepository, ScetiaUserRepository>();
 
-            #else
+#else
 
             services.AddScoped<IUserRepository, UserRepository>();
             
-            #endif
+#endif
 
 #endif
 
@@ -78,7 +78,14 @@ namespace RESTfulAPITemplate.Api
 
 #elif (MSSQL)
 
-            services.AddDbContext<DemoContext>(dcob =>
+            services.AddDbContext<DemoContext>(dcob => 
+            {
+
+#if (ROWNUMBERINEF3)
+                
+                dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, Scetia.App.Server.Extention.SqlServer2008QueryTranslationPostprocessorFactory>();
+
+#endif
                 dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPITemplateDbConnStr")
 
 #if (OBSOLETESQLSERVER)
@@ -87,7 +94,8 @@ namespace RESTfulAPITemplate.Api
 
 #endif
 
-            ));
+            );
+            });
 
 #endif
 
@@ -102,7 +110,7 @@ namespace RESTfulAPITemplate.Api
 #endif
 
             ));
-            
+
             services.AddScoped<IScetiaIndentityUtil, ScetiaIndentityUtil>();
 
 #endif

@@ -29,6 +29,12 @@
       "defaultValue": "false",
       "description": "Use EF2.x that supports versions earlier than SQLServer 2012"
     },
+    "enable-rownumber-pagination-in-ef3": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "true",
+      "description": "Use RowNumnber() Pagination in EF3.x"
+    },
     "enable-larsson-restfulapi-helper": {
       "type": "parameter",
       "dataType": "bool",
@@ -139,6 +145,10 @@
     "SCETIAAUTHENTICATION": {
       "type": "computed",
       "value": "(enable-scetia-authentication == \"true\")"
+    },
+    "ROWNUMBERINEF3": {
+      "type": "computed",
+      "value": "(enable-rownumber-pagination-in-ef3 == \"true\")"
     }
   },
   "sources": [
@@ -217,7 +227,14 @@
             "**/Repositories/UserRepository.cs"
           ],
           "condition": "(enable-scetia-authentication == \"true\")"
+        },
+        {
+          "exclude": [
+            "**/Extentions/SqlServer2008QueryTranslationPostprocessorFactory.cs"
+          ],
+          "condition": "(enable-rownumber-pagination-in-ef3 == \"false\")"
         }
+        
       ]
     }
   ]
