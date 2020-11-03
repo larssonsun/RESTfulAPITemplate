@@ -74,6 +74,11 @@ demo
 [11:29:29 INF] Content root path: xxxx\demo\templateUseDemo.Api
 ```
 ## 参数
+*-erpie|--enable-rownumber-pagination-in-ef3*
+* 在EF3.x中使用ROW_NUMBER()方式进行分页查询（自定义扩展替代EF3.X中的方法）
+* bool - Optional
+* Default: true / (*) true
+
 *-esfoss|--enable-support-for-obsolete-sql-server*
 * 使用EF2.x以便使EF支持SQL Server 2012之前版本的数据库的翻页查询（ROW_NUMBER()），请查看 [issue](https://github.com/dotnet/efcore/issues/13959)。
 * bool - Optional

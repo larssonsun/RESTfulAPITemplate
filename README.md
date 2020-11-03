@@ -73,6 +73,11 @@ The console gets the following results indicating success
 [11:29:29 INF] Content root path: xxxx \ demo \ templateUseDemo.Api
 ```
 ## parameter
+*-erpie|--enable-rownumber-pagination-in-ef3*
+* Use ROW_NUMBER() in EF3.x for paging query (custom extension replaces the method in EF3.X)
+* bool - Optional
+* Default: true / (*) false
+
 *-esfoss | --enable-support-for-obsolete-sql-server*
 * Use EF2.x to enable EF to support page turning query (ROW_NUMBER ()) for databases before SQL Server 2012, please see [issue](https://github.com/dotnet/efcore/issues/13959).
 * bool-Optional
