@@ -7,13 +7,13 @@
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />
     <PackageReference Condition="'$(ENABLESWAGGER)' == 'True'" Include="Swashbuckle.AspNetCore" Version="5.0.0" />
     <PackageReference Condition="'$(RESPONSEHANDLERWRAPPER)' == 'True'" Include="Autowrapper.core" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.3.0-dev-00152" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
   </ItemGroup>
   <ItemGroup Condition="'$(ENABLEJWTAUTHENTICATION)' == 'True'">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
   <PropertyGroup>
