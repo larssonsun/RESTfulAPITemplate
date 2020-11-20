@@ -38,6 +38,11 @@ namespace RESTfulAPITemplate.Middleware
 
                         await _next.Invoke(context);
 
+                        if (context.Response.StatusCode == 204 || context.Response.StatusCode == 304)
+                        {
+                            return;
+                        }
+
                         newBodyStream.Seek(0, SeekOrigin.Begin);
                         var responseBody = await new StreamReader(newBodyStream).ReadToEndAsync();
                         newBodyStream.Seek(0, SeekOrigin.Begin);

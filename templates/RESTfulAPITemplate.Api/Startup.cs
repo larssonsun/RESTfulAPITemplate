@@ -268,7 +268,12 @@ namespace RESTfulAPITemplate.Api
                 fasa.SwaggerStartsWithSegments = "/" + Configuration["Publics:SwaggerStartsWithSegments"];
             });
 
-            app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions { ShowStatusCode = true });
+            app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions
+            {
+                ShowStatusCode = true,
+                UseApiProblemDetailsException = true,
+                ShowIsErrorFlagForSuccessfulResponse = true
+            });
 
             if (env.IsDevelopment())
             {
