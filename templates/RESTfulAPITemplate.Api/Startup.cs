@@ -172,10 +172,11 @@ namespace RESTfulAPITemplate.Api
             services.AddControllers(mo => mo.ReturnHttpNotAcceptable = true)
                 .AddNewtonsoftJson(options =>
                 {
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss.fff";
                     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                 }) // json return from controll action will be format with camel type.
                 .AddFluentValidation(
-                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Core.Entity.Entity>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
+                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Core.Interface.IUnitOfWork>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
 
             // larsson：对链式验证进行短路“and”操作

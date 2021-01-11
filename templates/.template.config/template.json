@@ -78,6 +78,7 @@
           "description": "Distributed caching (default in memory)"
         }
       ],
+      "defaultValue": "DistributedCache",
       "description": "The cache type to use"
     },
     "db-type": {
@@ -232,7 +233,7 @@
           "exclude": [
             "**/Extentions/SqlServer2008QueryTranslationPostprocessorFactory.cs"
           ],
-          "condition": "(enable-rownumber-pagination-in-ef3 == \"false\")"
+          "condition": "(enable-rownumber-pagination-in-ef3 == \"false\" || db-type == \"DbInMemory\")"
         }
         
       ]
