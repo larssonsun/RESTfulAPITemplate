@@ -272,8 +272,9 @@ namespace RESTfulAPITemplate.Api
             app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions
             {
                 ShowStatusCode = true,
-                UseApiProblemDetailsException = true,
-                ShowIsErrorFlagForSuccessfulResponse = true
+                ShowIsErrorFlagForSuccessfulResponse = true,
+
+                UseApiProblemDetailsException = true
             });
 
             if (env.IsDevelopment())

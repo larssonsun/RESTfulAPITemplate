@@ -8,10 +8,11 @@
   },
   "Serilog": {
     "MinimumLevel": {
-      "Default": "Debug",
+      "Default": "Information",
       "Override": {
         "System": "Information",
-        "Microsoft": "Information"
+        "Microsoft": "Information",
+        "Microsoft.Hosting.Lifetime": "Information"
       }
     },
     "WriteTo": [
@@ -19,5 +20,5 @@
         "Name": "Console"
       }
     ]
-  }
+  },
 }

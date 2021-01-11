@@ -27,13 +27,21 @@
     "MinimumLevel": {
       "Default": "Debug",
       "Override": {
-        "System": "Information",
-        "Microsoft": "Information"
+        "System": "Debug",
+        "Microsoft": "Debug",
+        "Microsoft.Hosting.Lifetime": "Debug"
       }
     },
     "WriteTo": [
       {
         "Name": "Console"
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "log.txt",
+          "rollingInterval": "Day"
+        }
       }
     ]
   },

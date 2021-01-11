@@ -15,10 +15,11 @@ namespace RESTfulAPITemplate.Api
 {
     public class Program
     {
+        private static readonly bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
         public static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile(isDevelopment ? "appsettings.Development.json" : "appsettings.json")
             .Build();
 
             Log.Logger = new LoggerConfiguration()
@@ -73,7 +74,11 @@ namespace RESTfulAPITemplate.Api
                     // Third-party log providers
                     webBuilder.UseSerilog((context, logger) =>
                     {
-                        logger.ReadFrom.Configuration(context.Configuration);
+                        var configuration = new ConfigurationBuilder()
+                        .AddJsonFile(isDevelopment ? "appsettings.Development.json" : "appsettings.json")
+                        .Build();
+
+                        logger.ReadFrom.Configuration(configuration);
                     });
 
                     webBuilder.UseStartup<Startup>();
