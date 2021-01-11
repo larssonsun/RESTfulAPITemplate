@@ -83,7 +83,7 @@ namespace RESTfulAPITemplate.Api
 
 #if (ROWNUMBERINEF3)
                 
-                dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, Scetia.App.Server.Extention.SqlServer2008QueryTranslationPostprocessorFactory>();
+                dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, RESTfulAPITemplate.Api.Controller.Extension.SqlServer2008QueryTranslationPostprocessorFactory>();
 
 #endif
                 dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPITemplateDbConnStr")

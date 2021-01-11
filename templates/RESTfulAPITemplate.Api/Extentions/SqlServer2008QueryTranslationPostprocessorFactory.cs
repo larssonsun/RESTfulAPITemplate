@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Scetia.App.Server.Extention
+namespace RESTfulAPITemplate.Api.Controller.Extension
 {
 
     //Use it as `optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();`

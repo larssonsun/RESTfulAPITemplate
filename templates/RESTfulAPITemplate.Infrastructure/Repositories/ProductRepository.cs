@@ -44,7 +44,7 @@ namespace RESTfulAPITemplate.Infrastructure.Repository
 
         public IAsyncEnumerable<Product> GetProductsEachAsync() =>
             _context.Products.OrderBy(p => p.Name).AsNoTracking().AsAsyncEnumerable();
-            
+
 #endif
         public async Task<int> CountNameWithString(string s)
         {
@@ -56,6 +56,13 @@ namespace RESTfulAPITemplate.Infrastructure.Repository
             var result = await _context.Products.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
 
             return (result != null, result);
+        }
+
+        public async Task<(bool hasProduct, IEnumerable<Product> products)> TryGetProjectsByIds(IEnumerable<Guid> ids)
+        {
+            var result = await _context.Products.AsNoTracking().Where(x => ids.Contains(x.Id)).ToListAsync();
+
+            return (result == null ? false : result.Count() == ids.Count(), result);
         }
 
         public void AddProduct(Product product)

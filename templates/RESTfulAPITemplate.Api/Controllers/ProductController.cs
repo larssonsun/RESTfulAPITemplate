@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using RESTfulAPITemplate.Api.Controller.Extension;
 #if (ENABLEJWTAUTHENTICATION)
 using Microsoft.AspNetCore.Authorization;
 #endif
@@ -273,6 +274,57 @@ namespace RESTfulAPITemplate.Api.Controller
         }
         #endregion
 
+        #region snippet_GetProductsByIdsAsync   
+        /// <summary>
+        /// Get products by productIds
+        /// </summary>
+        /// <param name="ids">productIds</param>
+        /// <returns>products</returns>
+        /// <response code="200">Returns the target products</response>
+        /// <response code="304">Client-side data is up to date</response>
+        /// <response code="400">The product to be created is null</response>
+        /// <response code="401">Authorization verification is not passed</response>
+        /// <response code="404">Did not get any product</response>
+        /// <response code="406">Server does not support the media-type specified in the request</response>
+        /// <response code="422">DTO productCreateDTO failed to pass the model validation</response>
+        [HttpGet("s/{ids}", Name = nameof(GetProductsByIds))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status304NotModified)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByIds([ModelBinder(BinderType = typeof(MyArrayModelBinder))] IEnumerable<Guid> ids)
+        {
+            if (ids == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
+            var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsByIds)}_{string.Join(';', ids.OrderBy(x => x))}";
+
+            var result = await _cache.CreateOrGetCacheAsync(cacheKey,
+                async () => await _repository.TryGetProjectsByIds(ids),
+                options => options.SetAbsoluteExpiration(TimeSpan.FromSeconds(5)));
+
+            if (!result.hasProduct)
+            {
+                return NotFound();
+            }
+
+            var mappedproducts = _mapper.Map<IEnumerable<ProductDTO>>(result.products);
+
+            return Ok(mappedproducts);
+        }
+        #endregion
+
+
         #region snippet_GetProductsEachAsync
 
 #if (!OBSOLETESQLSERVER)
@@ -331,7 +383,7 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody]ProductCreateDTO productCreateDTO)
+        public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody] ProductCreateDTO productCreateDTO)
         {
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
 
@@ -424,7 +476,7 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateProductAsync(Guid productId, [FromBody]ProductUpdateDTO productUpdateDTO)
+        public async Task<IActionResult> UpdateProductAsync(Guid productId, [FromBody] ProductUpdateDTO productUpdateDTO)
         {
             if (productUpdateDTO == null)
             {
@@ -505,7 +557,8 @@ namespace RESTfulAPITemplate.Api.Controller
             _mapper.Map(productUpdateDTO, result.product);
             _repository.UpdateProduct(result.product);
 
-            if (!await _unitOfWork.SaveAsync())
+            var saveResult = await _unitOfWork.SaveUnableNoEffectAsync();
+            if (!saveResult.Succeed)
             {
                 return StatusCode(500, "Patching product field.");
             }

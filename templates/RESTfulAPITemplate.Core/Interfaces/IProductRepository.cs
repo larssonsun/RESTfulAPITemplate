@@ -31,6 +31,6 @@ namespace RESTfulAPITemplate.Core.Interface
         Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);
         void DeleteProduct(Product product);
         void UpdateProduct(Product product);
-
+        Task<(bool hasProduct, IEnumerable<Product> products)> TryGetProjectsByIds(IEnumerable<Guid> ids);
     }
 }

@@ -24,5 +24,18 @@ namespace RESTfulAPITemplate.Infrastructure
             }
 
         }
+
+        public async Task<(bool Succeed, bool IsNoEffect)> SaveUnableNoEffectAsync()
+        {
+            try
+            {
+                var i = await _myContext.SaveChangesAsync();
+                return (true, i == 0);
+            }
+            catch
+            {
+                return (false, false);
+            }
+        }
     }
 }
