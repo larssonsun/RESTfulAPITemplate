@@ -35,6 +35,9 @@ using System.Text;
 #if (SCETIAAUTHENTICATION)
 using RESTfulAPITemplate.Infrastructure.Util;
 #endif
+#if (ENABLECONSUL)
+using RESTfulAPITemplate.Api.Controller.Extension;
+#endif
 
 namespace RESTfulAPITemplate.Api
 {
@@ -78,11 +81,11 @@ namespace RESTfulAPITemplate.Api
 
 #elif (MSSQL)
 
-            services.AddDbContext<DemoContext>(dcob => 
+            services.AddDbContext<DemoContext>(dcob =>
             {
 
 #if (ROWNUMBERINEF3)
-                
+
                 dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, RESTfulAPITemplate.Api.Controller.Extension.SqlServer2008QueryTranslationPostprocessorFactory>();
 
 #endif
@@ -248,7 +251,7 @@ namespace RESTfulAPITemplate.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
 
             app.UseSerilogRequestLogging();
@@ -314,6 +317,13 @@ namespace RESTfulAPITemplate.Api
             {
                 endpoints.MapControllers();
             });
+
+#if (ENABLECONSUL)
+
+            app.RegisterConsul(Configuration, lifetime);
+
+#endif
+
         }
     }
 }

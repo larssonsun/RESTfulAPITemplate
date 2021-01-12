@@ -103,6 +103,12 @@
       "defaultValue": "false",
       "description": "Enabled the login module for scetia users"
     },
+    "enable-consul": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false",
+      "description": "Use the consul for mico-serv discover services"
+    },
     "OBSOLETESQLSERVER": {
       "type": "computed",
       "value": "(enable-support-for-obsolete-sql-server == \"true\")"
@@ -150,6 +156,10 @@
     "ROWNUMBERINEF3": {
       "type": "computed",
       "value": "(enable-rownumber-pagination-in-ef3 == \"true\")"
+    },
+    "ENABLECONSUL": {
+      "type": "computed",
+      "value": "(enable-consul == \"true\")"
     }
   },
   "sources": [
@@ -233,8 +243,14 @@
             "**/Extentions/SqlServer2008QueryTranslationPostprocessorFactory.cs"
           ],
           "condition": "(enable-rownumber-pagination-in-ef3 == \"false\" || db-type == \"DbInMemory\")"
+        },
+        {
+          "exclude": [
+            "**/Extentions/RegisterConsulExt.cs",
+            "**/Controllers/HealthCheckController.cs"
+          ],
+          "condition": "(enable-consul == \"false\")"
         }
-        
       ]
     }
   ]

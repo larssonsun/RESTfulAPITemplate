@@ -119,6 +119,12 @@ demo
 * DbInMemory    - 内存数据库
 * MsSQL         - MS-SQLServer
 * Default: DbInMemory
+
+*-ec|--enable-consul*
+* 使用Consul作为微服务发现
+* bool - Optional
+* Default: false / (*) true
+
 ## 数据库迁移及DataSeed
 > 如果需要使用`MS-SQLServer`作为数据库存储媒介，则需要注意以下内容
 

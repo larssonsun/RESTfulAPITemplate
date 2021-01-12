@@ -119,6 +119,11 @@ The console gets the following results indicating success
 * MsSQL-MS-SQLServer
 * Default: DbInMemory
 
+*-ec | --enable-consul*
+* Use Consul as a microservice discovery
+* bool - Optional
+* Default: false / (*) true
+
 ## Database Migration and DataSeed
 > If you need to use `MS-SQLServer` as the database storage medium, you need to pay attention to the following
 

@@ -10,6 +10,18 @@
     "AccessExpiration": 30,
     "RefreshExpiration": 60
   },
+  "ConsulSetting": {
+    "ServiceName": "ServiceNameInConcul",
+    "ServiceIP": "",
+    "ServicePort": "",
+    "ServiceHealthCheck": "/healthcheck",
+    "ConsulAddress": ""
+  },
+  "RabbitMQServers": {
+    "HostName": "",
+    "UserName": "",
+    "PassWord": ""
+  },
   "Publics": {
     "SwaggerStartsWithSegments": "swagger"
   },
