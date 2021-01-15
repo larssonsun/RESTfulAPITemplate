@@ -36,32 +36,27 @@ namespace RESTfulAPITemplate.EfMigration.Demo
                             Name = "A Learning ASP.NET Core",
                             Description = "C best-selling book covering the fundamentals of ASP.NET Core",
                             IsOnSale = true,
-                            CreateTime = now.AddDays(1),
                         },
                         new Product
                         {
                             Name = "D Learning EF Core 2",
                             Description = "A best-selling book covering the fundamentals of C#",
                             IsOnSale = true,
-                            CreateTime = now,
                         },
                         new Product
                         {
                             Name = "D Learning EF Core 3",
                             Description = "B best-selling book covering the fundamentals of .NET Standard",
-                            CreateTime = now.AddDays(2),
                         },
                         new Product
                         {
                             Name = "C Learning .NET Core",
                             Description = "D best-selling book covering the fundamentals of .NET Core",
-                            CreateTime = now.AddDays(13),
                         },
                         new Product
                         {
                             Name = "Learning C#",
                             Description = "A best-selling book covering the fundamentals of C#",
-                            CreateTime = now,
                         });
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("Seed data created.");

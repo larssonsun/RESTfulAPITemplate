@@ -1,4 +1,11 @@
 {
+  "ConsulSetting": {
+    "ServiceName": "ServiceNameInConcul",
+    "ServiceIP": "localhost",
+    "ServicePort": "5000",
+    "ServiceHealthCheck": "/healthcheck",
+    "ConsulAddress": "http://localhost:8500"
+  },
   "Logging": {
     "LogLevel": {
       "Default": "Information",

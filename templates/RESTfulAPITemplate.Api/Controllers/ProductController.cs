@@ -24,6 +24,8 @@ using RESTfulAPITemplate.Core.DTO;
 using RESTfulAPITemplate.Core.DomainModel;
 using RESTfulAPITemplate.Core.Entity;
 using RESTfulAPITemplate.Core.Interface;
+using RESTfulAPITemplate.Core.Specification;
+using RESTfulAPITemplate.Core.Specification.Filter;
 #if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.Pagination;
@@ -111,7 +113,7 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <summary>
         /// Get Products
         /// </summary>
-        /// <param name="productQueryDTO">The params for filter and page products</param>
+        /// <param name="productFilterDTO">The params for filter and page products</param>
         /// <returns>products</returns>
         /// <response code="200">Returns the target products</response>
         /// <response code="304">Server-side data is not modified</response>
@@ -133,9 +135,9 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductQueryDTO productQueryDTO)
+        public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductFilterDTO productFilterDTO)
         {
-            if (productQueryDTO == null)
+            if (productFilterDTO == null)
             {
                 return BadRequest();
             }
@@ -145,26 +147,19 @@ namespace RESTfulAPITemplate.Api.Controller
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-#if (RESTFULAPIHELPER)
+            IEnumerable<Product> products;
 
-            PagedListBase<Product> pagedProducts;
-#else
-
-            IEnumerable<Product> pagedProducts;
-
-#endif
-
-            var projectQuery = _mapper.Map<ProductQuery>(productQueryDTO);
+            var projectFilter = _mapper.Map<ProductFilter>(productFilterDTO);
 
 #if (LOCALMEMORYCACHE)
 
             var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsAsync)}_{Request.QueryString.Value}";
             pagedProducts = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                Console.WriteLine("--------------------not from localmemory cache-----------------------");
                 entry.Size = 2;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
-                return await _repository.GetProducts(queryStrParams);
+                return await _repository.ListWithOrderAsync<ProductDTO>(new ProductFilterPaginatedSpecification(projectFilter), 
+                    projectFilter.OrderBy);
             });
 
 #elif (DISTRIBUTEDCACHE)
@@ -173,8 +168,9 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #if (RESTFULAPIHELPER)
 
-            pagedProducts = await _cache.CreateOrGetCacheAsync(cacheKey,
-                async () => await _repository.GetProducts(projectQuery),
+            products = await _cache.CreateOrGetCacheAsync(cacheKey,
+                async () => await _repository.ListWithOrderAsync<ProductDTO>(new ProductSpec(projectFilter),
+                    projectFilter.OrderBy),
                 options => options.SetSlidingExpiration(TimeSpan.FromSeconds(15)));
 
 #else
@@ -185,8 +181,8 @@ namespace RESTfulAPITemplate.Api.Controller
             }
             else
             {
-                Console.WriteLine("--------------------not from distributed cache no RESTfulAPIHelper-----------------------");
-                pagedProducts = await _repository.GetProducts(projectQuery);
+                pagedProducts = await _repository.ListWithOrderAsync<ProductDTO>(new ProductFilterPaginatedSpecification(projectFilter), 
+                    projectFilter.OrderBy);
                 var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
@@ -196,17 +192,19 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #else
 
-            pagedProducts = await _repository.GetProducts(projectQuery);
+            pagedProducts = await _repository.GetProducts(projectFilter);
 
 #endif
 
 #if (RESTFULAPIHELPER)
 
             var filterProps = new Dictionary<string, object>();
-            filterProps.Add("name", projectQuery.Name);
-            filterProps.Add("description", projectQuery.Description);
+            filterProps.Add("name", projectFilter.Name);
+            filterProps.Add("description", projectFilter.Description);
 
-            Response.SetPaginationHead(pagedProducts, projectQuery, filterProps,
+            var pagedProducts = new PagedListBase<Product>(productFilterDTO.PageIndex, productFilterDTO.PageSize, products.Count(), products);
+
+            Response.SetPaginationHead(pagedProducts, projectFilter, filterProps,
                 values => _generator.GetUriByAction(HttpContext, controller: "Product", action: "GetProducts", values: values),
                 meta => JsonSerializer.Serialize(meta, new JsonSerializerOptions
                 {
@@ -217,11 +215,11 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #endif
 
-            var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(pagedProducts);
+            var mappedProducts = _mapper.Map<IEnumerable<ProductDTO>>(products);
 
 #if (RESTFULAPIHELPER)
 
-            return Ok(mappedProducts.ToDynamicIEnumerable(projectQuery.Fields));
+            return Ok(mappedProducts.ToDynamicIEnumerable(projectFilter.Fields));
 #else
 
             return Ok(mappedProducts);
@@ -256,15 +254,15 @@ namespace RESTfulAPITemplate.Api.Controller
             var username = claims.SingleOrDefault(x => x.Type == "RESTfulAPITemplateUserName")?.Value;
             Console.WriteLine($"username from jwt is \"{username}\"");
 
-            var result = await _repository.TryGetProduct(id);
-            if (!result.hasProduct)
+            var result = await _repository.TryGetByIdAsNoTrackingAsync(id);
+            if (!result.has)
             {
                 return NotFound();
             }
 
 #if (RESTFULAPIHELPER)
 
-            return Ok(_mapper.Map<ProductDTO>(result.product).ToDynamic(fields));
+            return Ok(_mapper.Map<ProductDTO>(result.entity).ToDynamic(fields));
 
 #else
 
@@ -310,20 +308,19 @@ namespace RESTfulAPITemplate.Api.Controller
             var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsByIds)}_{string.Join(';', ids.OrderBy(x => x))}";
 
             var result = await _cache.CreateOrGetCacheAsync(cacheKey,
-                async () => await _repository.TryGetProjectsByIds(ids),
+                async () => await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids)),
                 options => options.SetAbsoluteExpiration(TimeSpan.FromSeconds(5)));
 
-            if (!result.hasProduct)
+            if (!result.has)
             {
                 return NotFound();
             }
 
-            var mappedproducts = _mapper.Map<IEnumerable<ProductDTO>>(result.products);
+            var mappedproducts = _mapper.Map<IEnumerable<ProductDTO>>(result.entities);
 
             return Ok(mappedproducts);
         }
         #endregion
-
 
         #region snippet_GetProductsEachAsync
 
@@ -398,7 +395,7 @@ namespace RESTfulAPITemplate.Api.Controller
             }
 
             var product = _mapper.Map<Product>(productCreateDTO);
-            _repository.AddProduct(product);
+            _repository.Add(product);
             {
                 if (!await _unitOfWork.SaveAsync())
                 {
@@ -435,13 +432,13 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteProductAsync(Guid productId)
         {
-            var result = await _repository.TryGetProduct(productId);
-            if (!result.hasProduct)
+            var result = await _repository.TryGetByIdAsNoTrackingAsync(productId);
+            if (!result.has)
             {
                 return NotFound();
             }
 
-            _repository.DeleteProduct(result.product);
+            _repository.Delete(result.entity);
             if (!await _unitOfWork.SaveAsync())
             {
                 return StatusCode(500, "Delere product failed.");
@@ -488,14 +485,14 @@ namespace RESTfulAPITemplate.Api.Controller
                 return new UnprocessableEntityObjectResult(ModelState); // larsson：如果要自定义422之外的响应则需要新建一个类继承UnprocessableEntityObjectResult
             }
 
-            var result = await _repository.TryGetProduct(productId);
-            if (!result.hasProduct)
+            var result = await _repository.TryGetByIdAsNoTrackingAsync(productId);
+            if (!result.has)
             {
                 return NotFound();
             }
 
-            _mapper.Map(productUpdateDTO, result.product);
-            _repository.UpdateProduct(result.product);
+            _mapper.Map(productUpdateDTO, result.entity);
+            _repository.Update(result.entity);
 
             if (!await _unitOfWork.SaveAsync())
             {
@@ -539,13 +536,13 @@ namespace RESTfulAPITemplate.Api.Controller
                 return BadRequest();
             }
 
-            var result = await _repository.TryGetProduct(productId);
-            if (!result.hasProduct)
+            var result = await _repository.TryGetByIdAsNoTrackingAsync(productId);
+            if (!result.has)
             {
                 return NotFound();
             }
 
-            var productUpdateDTO = _mapper.Map<ProductUpdateDTO>(result.product);
+            var productUpdateDTO = _mapper.Map<ProductUpdateDTO>(result.entity);
             patchDoc.ApplyTo(productUpdateDTO, ModelState);
 
             TryValidateModel(productUpdateDTO);
@@ -554,8 +551,8 @@ namespace RESTfulAPITemplate.Api.Controller
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            _mapper.Map(productUpdateDTO, result.product);
-            _repository.UpdateProduct(result.product);
+            _mapper.Map(productUpdateDTO, result.entity);
+            _repository.Update(result.entity);
 
             var saveResult = await _unitOfWork.SaveUnableNoEffectAsync();
             if (!saveResult.Succeed)

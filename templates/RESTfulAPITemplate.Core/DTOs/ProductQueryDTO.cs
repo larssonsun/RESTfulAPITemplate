@@ -3,7 +3,7 @@ using Larsson.RESTfulAPIHelper.Pagination;
 #endif
 namespace RESTfulAPITemplate.Core.DTO
 {
-    public class ProductQueryDTO
+    public class ProductFilterDTO
 
 #if (RESTFULAPIHELPER)
 

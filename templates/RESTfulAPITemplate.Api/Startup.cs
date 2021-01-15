@@ -76,12 +76,12 @@ namespace RESTfulAPITemplate.Api
 
 #if (DBINMEMORY)
 
-            services.AddDbContext<DemoContext>(dcob =>
+            services.AddDbContext<ProductContext>(dcob =>
                 dcob.UseInMemoryDatabase("RESTfulAPITemplateMemoryDb"));
 
 #elif (MSSQL)
 
-            services.AddDbContext<DemoContext>(dcob =>
+            services.AddDbContext<ProductContext>(dcob =>
             {
 
 #if (ROWNUMBERINEF3)

@@ -6,7 +6,7 @@ using RESTfulAPITemplate.Core.Entity;
 
 namespace SISDW.Server.Core.Validator
 {
-    public class ProjectQueryDTOValidator : AbstractValidator<ProductQueryDTO>
+    public class ProjectQueryDTOValidator : AbstractValidator<ProductFilterDTO>
     {
         public ProjectQueryDTOValidator(IPropertyMappingContainer propertyMappingContainer, ITypeHelperService typeHelperService)
         {

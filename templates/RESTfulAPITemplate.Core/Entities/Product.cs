@@ -13,12 +13,12 @@ namespace RESTfulAPITemplate.Core.Entity
 
 
 
-    public class Product
+    public class Product : BaseEntity<Guid>
     {
-        public Guid Id { get; set; }
+        // public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsOnSale { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateTime { get; private set; } = DateTime.Now;
     }
 }

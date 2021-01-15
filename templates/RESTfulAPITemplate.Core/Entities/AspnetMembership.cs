@@ -12,13 +12,6 @@ namespace RESTfulAPITemplate.Core.Entity
 #endif
 
     public partial class AspnetMembership
-
-#if (RESTFULAPIHELPER)
-
-    // : Entity
-
-#endif
-
     {
         public Guid ApplicationId { get; set; }
         public Guid UserId { get; set; }

@@ -2,6 +2,7 @@ using AutoMapper;
 using RESTfulAPITemplate.Core.DomainModel;
 using RESTfulAPITemplate.Core.DTO;
 using RESTfulAPITemplate.Core.Entity;
+using RESTfulAPITemplate.Core.Specification.Filter;
 
 namespace RESTfulAPITemplate.Core.Configuration.PropertyMapping
 {
@@ -15,7 +16,7 @@ namespace RESTfulAPITemplate.Core.Configuration.PropertyMapping
             CreateMap<LoginRequestDTO, LoginRequest>();
 
 #endif
-            CreateMap<ProductQueryDTO, ProductQuery>();
+            CreateMap<ProductFilterDTO, ProductFilter>();
             CreateMap<Product, ProductDTO>().ForMember(
                 dto => dto.FullName,
                 opt => opt.MapFrom(entity => $"{entity.Name} {entity.Description}"));

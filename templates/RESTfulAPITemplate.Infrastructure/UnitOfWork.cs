@@ -5,9 +5,9 @@ namespace RESTfulAPITemplate.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DemoContext _myContext;
+        private readonly ProductContext _myContext;
 
-        public UnitOfWork(DemoContext myContext)
+        public UnitOfWork(ProductContext myContext)
         {
             _myContext = myContext;
         }

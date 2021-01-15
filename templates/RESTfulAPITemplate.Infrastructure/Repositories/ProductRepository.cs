@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ardalis.Specification;
 #if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.SortAndQuery;
@@ -14,9 +15,9 @@ using RESTfulAPITemplate.Core.Interface;
 
 namespace RESTfulAPITemplate.Infrastructure.Repository
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : EfRepository<Product>, IProductRepository
     {
-        private readonly DemoContext _context;
+        private readonly ProductContext _context;
 
 #if (RESTFULAPIHELPER)
 
@@ -26,13 +27,13 @@ namespace RESTfulAPITemplate.Infrastructure.Repository
 
 #if (RESTFULAPIHELPER)
 
-        public ProductRepository(DemoContext context, IPropertyMappingContainer propertyMappingContainer)
+        public ProductRepository(ProductContext context, IPropertyMappingContainer propertyMappingContainer) : base(context, propertyMappingContainer)
         {
             _context = context;
             _propertyMappingContainer = propertyMappingContainer;
 #else
 
-        public ProductRepository(DemoContext context)
+        public ProductRepository(ProductContext context) : base(context, propertyMappingContainer)
         {
             _context = context;
 
@@ -49,92 +50,6 @@ namespace RESTfulAPITemplate.Infrastructure.Repository
         public async Task<int> CountNameWithString(string s)
         {
             return await _context.Products.CountAsync(x => x.Name.Contains(s));
-        }
-
-        public async Task<(bool hasProduct, Product product)> TryGetProduct(Guid id)
-        {
-            var result = await _context.Products.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
-
-            return (result != null, result);
-        }
-
-        public async Task<(bool hasProduct, IEnumerable<Product> products)> TryGetProjectsByIds(IEnumerable<Guid> ids)
-        {
-            var result = await _context.Products.AsNoTracking().Where(x => ids.Contains(x.Id)).ToListAsync();
-
-            return (result == null ? false : result.Count() == ids.Count(), result);
-        }
-
-        public void AddProduct(Product product)
-        {
-            product.CreateTime = DateTime.Now;
-            _context.Products.Add(product);
-        }
-
-        public void DeleteProduct(Product product)
-        {
-            _context.Products.Remove(product);
-        }
-
-        public void UpdateProduct(Product product)
-        {
-            _context.Update(product);
-        }
-
-        public async
-
-#if (RESTFULAPIHELPER)
-
-        Task<PagedListBase<Product>>
-
-#else
-
-        Task<IEnumerable<Product>> 
-
-#endif
-        GetProducts(ProductQuery parameters)
-        {
-            var query = _context.Products.AsQueryable();
-
-            if (!string.IsNullOrEmpty(parameters.Name))
-            {
-                var name = parameters.Name.Trim().ToLowerInvariant();
-                query = query.Where(x => x.Name.ToLowerInvariant() == name);
-            }
-
-            if (!string.IsNullOrEmpty(parameters.Description))
-            {
-                var description = parameters.Description.Trim().ToLowerInvariant();
-                query = query.Where(x => x.Description.ToLowerInvariant().Contains(description));
-            }
-
-#if (RESTFULAPIHELPER)
-
-            query = query.ApplySort(parameters.OrderBy, _propertyMappingContainer.Resolve<ProductDTO, Product>());
-
-#endif
-
-            var count = await query.CountAsync();
-            var data = await query
-
-#if (RESTFULAPIHELPER)
-
-                .Skip(parameters.PageSize * parameters.PageIndex)
-                .Take(parameters.PageSize)
-
-#endif
-
-                .AsNoTracking().ToListAsync();
-
-#if (RESTFULAPIHELPER)
-
-            return new PagedListBase<Product>(parameters.PageIndex, parameters.PageSize, count, data);
-
-#else
-
-            return data;
-
-#endif
         }
     }
 }

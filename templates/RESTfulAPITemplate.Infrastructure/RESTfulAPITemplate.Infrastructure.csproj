@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\RESTfulAPITemplate.core\RESTfulAPITemplate.Core.csproj"/>
+    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="'$(OBSOLETESQLSERVER)' == 'True'" Include="Microsoft.EntityFrameworkCore" Version="2.2.6"/>

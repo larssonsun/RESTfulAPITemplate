@@ -6,21 +6,8 @@ using RESTfulAPITemplate.Core.Entity;
 
 namespace RESTfulAPITemplate.Core.Interface
 {
-    public interface IProductRepository
+    public interface IProductRepository : IAsyncRepository<Product>
     {
-        void AddProduct(Product product);
-
-#if (RESTFULAPIHELPER)
-
-        Task<PagedListBase<Product>>
-
-#else
-
-        Task<IEnumerable<Product>>
-
-#endif
-        GetProducts(ProductQuery parm);
-
 #if (!OBSOLETESQLSERVER)
 
         IAsyncEnumerable<Product> GetProductsEachAsync();
@@ -28,9 +15,5 @@ namespace RESTfulAPITemplate.Core.Interface
 #endif
 
         Task<int> CountNameWithString(string s);
-        Task<(bool hasProduct, Product product)> TryGetProduct(Guid id);
-        void DeleteProduct(Product product);
-        void UpdateProduct(Product product);
-        Task<(bool hasProduct, IEnumerable<Product> products)> TryGetProjectsByIds(IEnumerable<Guid> ids);
     }
 }

@@ -3,9 +3,9 @@ using RESTfulAPITemplate.Core.Entity;
 
 namespace RESTfulAPITemplate.Infrastructure
 {
-    public class DemoContext : DbContext
+    public class ProductContext : DbContext
     {
-        public DemoContext(DbContextOptions<DemoContext> options)
+        public ProductContext(DbContextOptions<ProductContext> options)
             : base(options)
         {
         }
