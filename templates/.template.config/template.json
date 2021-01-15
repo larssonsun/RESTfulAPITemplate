@@ -216,6 +216,12 @@
         },
         {
           "exclude": [
+            "**/DTOs/BaseFilterDTO.cs"
+          ],
+          "condition": "(enable-larsson-restfulapi-helper == \"true\")"
+        },
+        {
+          "exclude": [
             "**/Configurations/SortMappings/**",
             "**/Configurations/Validators/ProjectQueryDTOValidator.cs"
           ],
