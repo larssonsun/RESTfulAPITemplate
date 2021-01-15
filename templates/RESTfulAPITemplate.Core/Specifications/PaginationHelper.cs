@@ -9,13 +9,13 @@ namespace RESTfulAPITemplate.Core.Specification
 
         public static int CalculateTake(int pageSize)
         {
-            return pageSize <= 0 ? DefaultPageSize : pageSize;
+            return pageSize < 0 ? DefaultPageSize : pageSize;
         }
         public static int CalculateSkip(int pageSize, int page)
         {
-            page = page <= 0 ? DefaultPage : page;
+            page = page < 0 ? DefaultPage : page;
 
-            return CalculateTake(pageSize) * (page - 1);
+            return CalculateTake(pageSize) * page;
         }
 
         public static int CalculateTake(BaseFilter baseFilter)

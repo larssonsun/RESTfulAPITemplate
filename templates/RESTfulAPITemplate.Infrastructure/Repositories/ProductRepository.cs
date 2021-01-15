@@ -33,7 +33,7 @@ namespace RESTfulAPITemplate.Infrastructure.Repository
             _propertyMappingContainer = propertyMappingContainer;
 #else
 
-        public ProductRepository(ProductContext context) : base(context, propertyMappingContainer)
+        public ProductRepository(ProductContext context) : base(context)
         {
             _context = context;
 

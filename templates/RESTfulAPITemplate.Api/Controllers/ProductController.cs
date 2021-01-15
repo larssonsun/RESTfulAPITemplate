@@ -177,13 +177,13 @@ namespace RESTfulAPITemplate.Api.Controller
             var pagedProductsBytes = await _cache.GetAsync(cacheKey);
             if (pagedProductsBytes != null)
             {
-                pagedProducts = MessagePackSerializer.Deserialize<IEnumerable<Product>>(pagedProductsBytes);
+                products = MessagePackSerializer.Deserialize<IEnumerable<Product>>(pagedProductsBytes);
             }
             else
             {
-                pagedProducts = await _repository.ListWithOrderAsync<ProductDTO>(new ProductFilterPaginatedSpecification(projectFilter), 
+                products = await _repository.ListWithOrderAsync<ProductDTO>(new ProductSpec(projectFilter), 
                     projectFilter.OrderBy);
-                var productsResourceBytes = MessagePackSerializer.Serialize(pagedProducts);
+                var productsResourceBytes = MessagePackSerializer.Serialize(products);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
                 await _cache.SetAsync(cacheKey, productsResourceBytes, options);
             }
@@ -266,7 +266,7 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #else
 
-            return Ok(_mapper.Map<ProductDTO>(result.product));
+            return Ok(_mapper.Map<ProductDTO>(result.entity));
 
 #endif
         }
@@ -307,9 +307,30 @@ namespace RESTfulAPITemplate.Api.Controller
 
             var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsByIds)}_{string.Join(';', ids.OrderBy(x => x))}";
 
-            var result = await _cache.CreateOrGetCacheAsync(cacheKey,
+            (bool has, IEnumerable<Product> entities) result;
+
+#if(RESTFULAPIHELPER)
+
+            result = await _cache.CreateOrGetCacheAsync(cacheKey,
                 async () => await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids)),
                 options => options.SetAbsoluteExpiration(TimeSpan.FromSeconds(5)));
+
+#else
+
+            var resultBytes = await _cache.GetAsync(cacheKey);
+            if (resultBytes != null)
+            {
+                result = MessagePackSerializer.Deserialize<(bool has, IEnumerable<Product> entities)>(resultBytes);
+            }
+            else
+            {
+                result = await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids));
+                var resultResourceBytes = MessagePackSerializer.Serialize(result);
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
+                await _cache.SetAsync(cacheKey, resultResourceBytes, options);
+            }
+
+#endif
 
             if (!result.has)
             {

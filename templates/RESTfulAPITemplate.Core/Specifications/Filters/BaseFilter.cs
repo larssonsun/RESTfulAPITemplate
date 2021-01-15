@@ -11,5 +11,13 @@ namespace RESTfulAPITemplate.Core.Specification.Filter
 : PaginationBase
 
 #endif
-    { }
+    {
+#if (!RESTFULAPIHELPER)
+
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public string OrderBy { get; set; }
+
+#endif
+    }
 }
