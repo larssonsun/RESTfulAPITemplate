@@ -8,6 +8,9 @@ namespace RESTfulAPITemplate.Core.DTO
 #if (RESTFULAPIHELPER)
 
     : PaginationBase
+#else
+
+    : BaseFilterDTO
 
 #endif
 
