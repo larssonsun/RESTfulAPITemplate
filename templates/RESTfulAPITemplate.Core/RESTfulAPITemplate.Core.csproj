@@ -10,9 +10,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <!--  ↓ -->
-    <DefineConstants>$(DefineConstants);DISTRIBUTEDCACHE;ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
+    <DefineConstants>$(DefineConstants);ENABLEJWTAUTHENTICATION;RESTFULAPIHELPER</DefineConstants>
     <OBSOLETESQLSERVER>False</OBSOLETESQLSERVER>
-    <DISTRIBUTEDCACHE>True</DISTRIBUTEDCACHE>
+    <DISTRIBUTEDCACHE>False</DISTRIBUTEDCACHE>
     <ENABLEJWTAUTHENTICATION>True</ENABLEJWTAUTHENTICATION>
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);

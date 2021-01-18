@@ -154,11 +154,11 @@ namespace RESTfulAPITemplate.Api.Controller
 #if (LOCALMEMORYCACHE)
 
             var cacheKey = $"{nameof(ProductController)}_{nameof(GetProductsAsync)}_{Request.QueryString.Value}";
-            pagedProducts = await _cache.GetOrCreateAsync(cacheKey, async entry =>
+            products = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 entry.Size = 2;
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(15));
-                return await _repository.ListWithOrderAsync<ProductDTO>(new ProductFilterPaginatedSpecification(projectFilter), 
+                return await _repository.ListWithOrderAsync<ProductDTO>(new ProductSpec(projectFilter),
                     projectFilter.OrderBy);
             });
 
@@ -309,13 +309,16 @@ namespace RESTfulAPITemplate.Api.Controller
 
             (bool has, IEnumerable<Product> entities) result;
 
-#if(RESTFULAPIHELPER)
+#if (DISTRIBUTEDCACHE)
+
+    
+    #if (RESTFULAPIHELPER)
 
             result = await _cache.CreateOrGetCacheAsync(cacheKey,
                 async () => await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids)),
                 options => options.SetAbsoluteExpiration(TimeSpan.FromSeconds(5)));
 
-#else
+    #else
 
             var resultBytes = await _cache.GetAsync(cacheKey);
             if (resultBytes != null)
@@ -326,9 +329,19 @@ namespace RESTfulAPITemplate.Api.Controller
             {
                 result = await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids));
                 var resultResourceBytes = MessagePackSerializer.Serialize(result);
-                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(15));
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
                 await _cache.SetAsync(cacheKey, resultResourceBytes, options);
             }
+    #endif
+
+#else
+
+            result = await _cache.GetOrCreateAsync(cacheKey, async entry =>
+            {
+                entry.Size = 2;
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(5));
+                return await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids));
+            });
 
 #endif
 
