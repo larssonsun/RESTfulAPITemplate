@@ -15,11 +15,11 @@
   },
   "Serilog": {
     "MinimumLevel": {
-      "Default": "Information",
+      "Default": "Debug",
       "Override": {
-        "System": "Information",
-        "Microsoft": "Information",
-        "Microsoft.Hosting.Lifetime": "Information"
+        "System": "Debug",
+        "Microsoft": "Debug",
+        "Microsoft.Hosting.Lifetime": "Debug"
       }
     },
     "WriteTo": [

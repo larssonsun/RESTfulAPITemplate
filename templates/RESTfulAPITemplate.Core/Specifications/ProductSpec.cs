@@ -16,7 +16,7 @@ namespace RESTfulAPITemplate.Core.Specification
                 Query.Where(x => x.Name == filter.Name);
 
             if (!string.IsNullOrEmpty(filter.Description))
-                Query.Where(x => x.Description.ToLowerInvariant().Contains(filter.Description));
+                Query.Where(x => x.Description.ToLower().Contains(filter.Description));
         }
     }
 }
