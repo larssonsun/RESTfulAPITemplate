@@ -110,6 +110,9 @@ namespace RESTfulAPITemplate.Api.Controller
         }
 
         #region snippet_GetProductsAsync
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Get Products
         /// </summary>
@@ -120,6 +123,16 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status304NotModified)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+
+#endif
+
         [HttpGet]
 
 #if (ENABLEJWTAUTHENTICATION)
@@ -128,13 +141,6 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #endif
 
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status304NotModified)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<ProductDTO>> GetProductsAsync([FromQuery] ProductFilterDTO productFilterDTO)
         {
             if (productFilterDTO == null)
@@ -231,6 +237,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_GetProductAsync   
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Get product by productId
         /// </summary>
@@ -242,12 +251,15 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet("{id}", Name = nameof(GetProductAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+
+#endif
+
+        [HttpGet("{id}", Name = nameof(GetProductAsync))]
         public async Task<ActionResult<ProductDTO>> GetProductAsync(Guid id, string fields)
         {
             var claims = HttpContext.User?.Claims;
@@ -273,6 +285,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_GetProductsByIdsAsync   
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Get products by productIds
         /// </summary>
@@ -285,7 +300,6 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
         /// <response code="422">DTO productCreateDTO failed to pass the model validation</response>
-        [HttpGet("s/{ids}", Name = nameof(GetProductsByIds))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -293,6 +307,10 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+
+#endif
+
+        [HttpGet("s/{ids}", Name = nameof(GetProductsByIds))]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByIds([ModelBinder(BinderType = typeof(MyArrayModelBinder))] IEnumerable<Guid> ids)
         {
             if (ids == null)
@@ -311,14 +329,14 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #if (DISTRIBUTEDCACHE)
 
-    
-    #if (RESTFULAPIHELPER)
+
+#if (RESTFULAPIHELPER)
 
             result = await _cache.CreateOrGetCacheAsync(cacheKey,
                 async () => await _repository.TryListAsNoTrackingAsync(new ProductIdsSpec(ids)),
                 options => options.SetAbsoluteExpiration(TimeSpan.FromSeconds(5)));
 
-    #else
+#else
 
             var resultBytes = await _cache.GetAsync(cacheKey);
             if (resultBytes != null)
@@ -332,7 +350,7 @@ namespace RESTfulAPITemplate.Api.Controller
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(5));
                 await _cache.SetAsync(cacheKey, resultResourceBytes, options);
             }
-    #endif
+#endif
 
 #else
 
@@ -360,6 +378,8 @@ namespace RESTfulAPITemplate.Api.Controller
 
 #if (!OBSOLETESQLSERVER)
 
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Get products asynchronously by product id
         /// </summary>
@@ -369,12 +389,15 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="401">Authorization verification is not passed</response>
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
-        [HttpGet("async")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status304NotModified)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+
+#endif
+
+        [HttpGet("async")]
         public async IAsyncEnumerable<ProductDTO> GetProductsEachAsync() // larsson：IAsyncEnumerable 是 net core 3 中 c#8.0 的新特性
         {
             var products = _repository.GetProductsEachAsync();
@@ -393,6 +416,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_CreateProductAsync
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Create a product
         /// </summary>
@@ -405,8 +431,6 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="415">Server cannot accept the media-type of the incoming data.</response>
         /// <response code="422">DTO productCreateDTO failed to pass the model validation</response>
         /// <response code="500">Adding product service side failed</response>
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)] // 格式数据请求使用[Consumes]，若没有该属性，则直接识别请求头中的Content-Type，也就是[Consumes]可以省略，只要Content-Type为你需要的就能进行数据的模型绑定 // larsson：实际上asp.net core 默认就是json
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -414,6 +438,11 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+#endif
+
+        [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)] // 格式数据请求使用[Consumes]，若没有该属性，则直接识别请求头中的Content-Type，也就是[Consumes]可以省略，只要Content-Type为你需要的就能进行数据的模型绑定 // larsson：实际上asp.net core 默认就是json
         public async Task<ActionResult<ProductDTO>> CreateProductAsync([FromBody] ProductCreateDTO productCreateDTO)
         {
             // larsson：这里必须startup中设置禁用自动400响应，SuppressModelStateInvalidFilter = true。否则Model验证失败后这里的ProductResource永远是null而无法返回422
@@ -448,6 +477,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_DeleteProductAsync
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Delete a product
         /// </summary>
@@ -458,12 +490,15 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="404">Did not get any product</response>
         /// <response code="406">Server does not support the media-type specified in the request</response>
         /// <response code="500">Deleting product service side failed</response>
-        [HttpDelete("{productId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+#endif
+
+        [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProductAsync(Guid productId)
         {
             var result = await _repository.TryGetByIdAsNoTrackingAsync(productId);
@@ -484,6 +519,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_UpdateProductAsync
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Update a product
         /// </summary>
@@ -498,7 +536,6 @@ namespace RESTfulAPITemplate.Api.Controller
         /// <response code="415">Server cannot accept the media-type of the incoming data.</response>
         /// <response code="422">DTO productUpdateDTO failed to pass the model validation</response>
         /// <response code="500">Updating product service side failed</response>
-        [HttpPut("{productId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -507,6 +544,9 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#endif
+
+        [HttpPut("{productId}")]
         public async Task<IActionResult> UpdateProductAsync(Guid productId, [FromBody] ProductUpdateDTO productUpdateDTO)
         {
             if (productUpdateDTO == null)
@@ -538,6 +578,9 @@ namespace RESTfulAPITemplate.Api.Controller
         #endregion
 
         #region snippet_PartiallyUpdateProductAsync
+
+#if (ENABLESWAGGER)
+
         /// <summary>
         /// Partially Update a product
         /// </summary>
@@ -560,6 +603,9 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+#endif
+
         [HttpPatch("{productId}")]
         public async Task<IActionResult> PartiallyUpdateProductAsync(Guid productId, [FromBody] Microsoft.AspNetCore.JsonPatch.JsonPatchDocument<ProductUpdateDTO> patchDoc)
         {
