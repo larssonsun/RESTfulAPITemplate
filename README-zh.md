@@ -167,8 +167,8 @@ demoForDb
 │  └─DemoContextSeed.cs - 数据种子文件（提供示例数据）
 │
 └─templateUseDemoForDb.Infrastructure - 基础设施层
-│  ├─Repositories - 仓储
-│  └─Utils - 基础设施服务
+   ├─Repositories - 仓储
+   └─Utils - 基础设施服务
 ```
 
 进入项目*templateUseDemoForDb.EfMigration*的目录并修改配置文件*appsettings.json*中的数据库连接

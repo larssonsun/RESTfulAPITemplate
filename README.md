@@ -166,8 +166,8 @@ demoForDb
 │ └─DemoContextSeed.cs - data seed file (provide sample data)
 │
 └─templateUseDemoForDb.Infrastructure - Infrastructure layer
-│ ├─Repositories - storage
-│ └─Utils - Infrastructure Services
+  ├─Repositories - storage
+  └─Utils - Infrastructure Services
 ```
 
 Go to the directory of the project*templateUseDemoForDb.EfMigration*and modify the database connection in the configuration file*appsettings.json*
