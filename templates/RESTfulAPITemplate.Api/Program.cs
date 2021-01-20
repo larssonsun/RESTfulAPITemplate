@@ -11,7 +11,7 @@ using RESTfulAPITemplate.Infrastructure;
 using Serilog;
 using Serilog.Events;
 
-namespace RESTfulAPITemplate.Api
+namespace RESTfulAPITemplate.App
 {
     public class Program
     {

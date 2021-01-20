@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace RESTfulAPITemplate.Core.Interface
+namespace RESTfulAPITemplate.Core.SeedWork
 {
     public interface IUnitOfWork
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
-namespace RESTfulAPITemplate.Api.Controller.Extension
+namespace RESTfulAPITemplate.App.Controller.Extension
 {
     public class MyArrayModelBinder : IModelBinder
     {

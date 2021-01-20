@@ -1,4 +1,4 @@
-﻿namespace RESTfulAPITemplate.Core.DTO
+﻿namespace RESTfulAPITemplate.App.Model
 {
     public class ProductCreateOrUpdateDTO
     {

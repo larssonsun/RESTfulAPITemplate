@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RESTfulAPITemplate.Core.SeedWork;
 #if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
 using Larsson.RESTfulAPIHelper.SortAndQuery;

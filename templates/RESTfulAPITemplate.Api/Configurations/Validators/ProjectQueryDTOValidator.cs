@@ -1,7 +1,7 @@
 using System;
 using FluentValidation;
 using Larsson.RESTfulAPIHelper.Interface;
-using RESTfulAPITemplate.Core.DTO;
+using RESTfulAPITemplate.App.Model;
 using RESTfulAPITemplate.Core.Entity;
 
 namespace SISDW.Server.Core.Validator

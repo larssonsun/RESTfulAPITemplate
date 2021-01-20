@@ -7,7 +7,7 @@ using Larsson.RESTfulAPIHelper.Pagination;
 using MessagePack;
 #endif
 
-namespace RESTfulAPITemplate.Core.DomainModel
+namespace RESTfulAPITemplate.Core.SeedWork
 {
 
 

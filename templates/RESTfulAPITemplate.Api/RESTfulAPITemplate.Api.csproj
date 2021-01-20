@@ -2,6 +2,9 @@
   <ItemGroup>
     <ProjectReference Include="..\RESTfulAPITemplate.core\RESTfulAPITemplate.core.csproj" />
     <ProjectReference Include="..\RESTfulAPITemplate.infrastructure\RESTfulAPITemplate.Infrastructure.csproj" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.6.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="'$(ENABLERESPONSECACHE)' == 'True'" Include="Marvin.Cache.Headers" Version="4.1.0" />

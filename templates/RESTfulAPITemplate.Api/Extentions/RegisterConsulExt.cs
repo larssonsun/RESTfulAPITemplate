@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Consul;
 
-namespace RESTfulAPITemplate.Api.Controller.Extension
+namespace RESTfulAPITemplate.App.Controller.Extension
 {
     public static class RegisterConsulExt
     {

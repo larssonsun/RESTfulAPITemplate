@@ -7,14 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RESTfulAPITemplate.Core.Configuration.PropertyMapping;
+using RESTfulAPITemplate.App.Configuration.PropertyMapping;
 using RESTfulAPITemplate.Core.Interface;
 using RESTfulAPITemplate.Infrastructure;
 using RESTfulAPITemplate.Infrastructure.Repository;
+using RESTfulAPITemplate.Core.SeedWork;
 using Serilog;
 #if (RESTFULAPIHELPER) 
 using Larsson.RESTfulAPIHelper;
-using RESTfulAPITemplate.Core.Configuration.SortMapping;
+using RESTfulAPITemplate.App.Configuration.SortMapping;
 #endif
 #if (RESPONSEHANDLERWRAPPER)
 using AutoWrapper;
@@ -26,20 +27,21 @@ using System.IO;
 using System;
 #endif
 #if (ENABLEJWTAUTHENTICATION)
-using RESTfulAPITemplate.Api.Service;
+using RESTfulAPITemplate.App.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using RESTfulAPITemplate.Core.DomainModel;
+using RESTfulAPITemplate.App.Model;
 using System.Text;
 #endif
 #if (SCETIAAUTHENTICATION)
 using RESTfulAPITemplate.Infrastructure.Util;
+using RESTfulAPITemplate.Core.Service;
 #endif
 #if (ENABLECONSUL)
-using RESTfulAPITemplate.Api.Controller.Extension;
+using RESTfulAPITemplate.App.Controller.Extension;
 #endif
 
-namespace RESTfulAPITemplate.Api
+namespace RESTfulAPITemplate.App
 {
     public class Startup
     {
@@ -56,15 +58,16 @@ namespace RESTfulAPITemplate.Api
 
 #if (ENABLEJWTAUTHENTICATION)
 
-            services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
-
 #if (SCETIAAUTHENTICATION)
 
-            services.AddScoped<IUserRepository, ScetiaUserRepository>();
+            services.AddScoped<IAuthenticationService, TokenAuthenticationService>();
+            services.AddScoped<IScetiaUserService, ScetiaUserService>();
+            services.AddScoped<IScetiaUserRepository, ScetiaUserRepository>();
+            services.AddScoped<IScetiaIndentityUtil, ScetiaIndentityUtil>();
 
 #else
 
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthenticationService, DefaultAuthenticationService>();
             
 #endif
 
@@ -86,7 +89,7 @@ namespace RESTfulAPITemplate.Api
 
 #if (ROWNUMBERINEF3)
 
-                dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, RESTfulAPITemplate.Api.Controller.Extension.SqlServer2008QueryTranslationPostprocessorFactory>();
+                dcob.ReplaceService<Microsoft.EntityFrameworkCore.Query.IQueryTranslationPostprocessorFactory, RESTfulAPITemplate.App.Controller.Extension.SqlServer2008QueryTranslationPostprocessorFactory>();
 
 #endif
                 dcob.UseSqlServer(Configuration.GetConnectionString("RESTfulAPITemplateDbConnStr")
@@ -113,8 +116,6 @@ namespace RESTfulAPITemplate.Api
 #endif
 
             ));
-
-            services.AddScoped<IScetiaIndentityUtil, ScetiaIndentityUtil>();
 
 #endif
 
@@ -179,7 +180,7 @@ namespace RESTfulAPITemplate.Api
                     options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
                 }) // json return from controll action will be format with camel type.
                 .AddFluentValidation(
-                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<Core.Interface.IUnitOfWork>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
+                    fvmc => fvmc.RegisterValidatorsFromAssemblyContaining<App.Model.BaseFilterDTO>().RunDefaultMvcValidationAfterFluentValidationExecutes = false
                 ); // dto validattion
 
             // larsson：对链式验证进行短路“and”操作
@@ -187,8 +188,8 @@ namespace RESTfulAPITemplate.Api
 
 #if (ENABLEJWTAUTHENTICATION)
 
-            services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
-            var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
+            services.Configure<TokenManagementConf>(Configuration.GetSection("tokenManagement"));
+            var token = Configuration.GetSection("tokenManagement").Get<TokenManagementConf>();
             services.AddAuthentication(ao =>
             {
                 ao.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

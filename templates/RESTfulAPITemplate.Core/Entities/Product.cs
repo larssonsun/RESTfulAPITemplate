@@ -1,6 +1,7 @@
 ﻿using System;
 #if (DISTRIBUTEDCACHE)
 using MessagePack;
+using RESTfulAPITemplate.Core.SeedWork;
 #endif
 
 namespace RESTfulAPITemplate.Core.Entity

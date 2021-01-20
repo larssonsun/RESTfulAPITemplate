@@ -1,6 +1,6 @@
-﻿namespace RESTfulAPITemplate.Core.DomainModel
+﻿namespace RESTfulAPITemplate.App.Model
 {
-    public class LoginRequest
+    public class LoginCommandDTO
     {
         public string Username { get; set; }
         public string Password { get; set; }

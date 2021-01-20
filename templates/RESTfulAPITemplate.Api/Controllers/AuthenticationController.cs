@@ -4,11 +4,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RESTfulAPITemplate.Core.DomainModel;
-using RESTfulAPITemplate.Core.DTO;
-using RESTfulAPITemplate.Core.Interface;
+using RESTfulAPITemplate.App.Model;
+using RESTfulAPITemplate.Core.Specification.Filter;
+using RESTfulAPITemplate.App.Service;
 
-namespace RESTfulAPITemplate.Api.Controller
+namespace RESTfulAPITemplate.App.Controller
 {
     /// <summary>
     /// Authentication
@@ -18,9 +18,9 @@ namespace RESTfulAPITemplate.Api.Controller
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticateService _auth;
+        private readonly IAuthenticationService _auth;
         private readonly IMapper _mapper;
-        public AuthenticationController(IAuthenticateService auth, IMapper mapper)
+        public AuthenticationController(IAuthenticationService auth, IMapper mapper)
         {
             this._auth = auth;
             this._mapper = mapper;
@@ -38,7 +38,7 @@ namespace RESTfulAPITemplate.Api.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult> RequestToken([FromBody] LoginRequestDTO request)
+        public async Task<ActionResult> RequestToken([FromBody] LoginCommandDTO request)
         {
             if (request == null)
             {
@@ -52,15 +52,13 @@ namespace RESTfulAPITemplate.Api.Controller
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            var loginRequest = _mapper.Map<LoginRequest>(request);
-
-            var (isAuth, result) = await _auth.IsAuthenticated(loginRequest);
+            var (isAuth, result) = await _auth.IsAuthenticated(request);
             if (isAuth)
             {
                 return Ok(result);
             }
 
-            return BadRequest("Invalid Request");
+            return BadRequest("wrong user name or password");
         }
     }
 }

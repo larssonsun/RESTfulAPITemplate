@@ -197,12 +197,38 @@
         },
         {
           "exclude": [
-            "**/Repositories/UserRepository.cs",
-            "**/Interfaces/IAuthenticateService.cs",
-            "**/Interfaces/IUserRepository.cs",
-            "**/DomainModels/LoginRequest.cs",
-            "**/DomainModels/TokenManagement.cs",
+            "**/ScetiaIndentityContext.cs",
+            "**/Utils/ScetiaIndentityUtil.cs",
+            "**/Repositories/ScetiaUserRepository.cs",
+            "**/Services/ScetiaUserService.cs",
+            "**/Interfaces/IScetiaIndentityUtil.cs",
+            "**/Interfaces/IScetiaUserRepository.cs",
+            "**/Interfaces/IScetiaUserService.cs",
+            "**/Entities/AspnetMembership.cs",
+            "**/Entities/AspnetUsers.cs",
+            "**/Services/TokenAuthenticationService.cs"
+          ],
+          "condition": "(enable-scetia-authentication == \"false\")"
+        },
+        {
+          "exclude": [
+            "**/ScetiaIndentityContext.cs",
+            "**/Utils/ScetiaIndentityUtil.cs",
+            "**/Repositories/ScetiaUserRepository.cs",
+            "**/Services/ScetiaUserService.cs",
+            "**/Interfaces/IScetiaIndentityUtil.cs",
+            "**/Interfaces/IScetiaUserRepository.cs",
+            "**/Interfaces/IScetiaUserService.cs",
+            "**/Entities/AspnetMembership.cs",
+            "**/Entities/AspnetUsers.cs",
+            "**/Models/LoginCommand.cs",
+            "**/Models/LoginCommandDTO.cs",
+            "**/Models/LoginResultDTO.cs",
+            "**/Models/TokenManagementConf.cs",
+            "**/Services/IAuthenticationService.cs",
             "**/Services/TokenAuthenticationService.cs",
+            "**/Services/DefaultAuthenticationService.cs",
+            "**/Configurations/Validators/LoginRequestDTOValidator.cs",
             "**/Controllers/AuthenticationController.cs"
           ],
           "condition": "(enable-jwt-authentication != \"true\")"
@@ -226,23 +252,6 @@
             "**/Configurations/Validators/ProjectQueryDTOValidator.cs"
           ],
           "condition": "(enable-larsson-restfulapi-helper != \"true\")"
-        },
-        {
-          "exclude": [
-            "**/Entities/AspnetMembership.cs",
-            "**/Entities/AspnetUsers.cs",
-            "**/Interfaces/IScetiaIndentityUtil.cs",
-            "**/Repositories/ScetiaUserRepository.cs",
-            "**/Utils/ScetiaIndentityUtil.cs",
-            "**/ScetiaIndentityContext.cs"
-          ],
-          "condition": "(enable-scetia-authentication == \"false\")"
-        },
-        {
-          "exclude": [
-            "**/Repositories/UserRepository.cs"
-          ],
-          "condition": "(enable-scetia-authentication == \"true\")"
         },
         {
           "exclude": [

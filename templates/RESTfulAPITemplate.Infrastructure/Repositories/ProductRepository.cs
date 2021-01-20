@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 using Ardalis.Specification;
 #if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Interface;
-using Larsson.RESTfulAPIHelper.SortAndQuery;
 #endif
 using Microsoft.EntityFrameworkCore;
-using RESTfulAPITemplate.Core.DomainModel;
-using RESTfulAPITemplate.Core.DTO;
 using RESTfulAPITemplate.Core.Entity;
 using RESTfulAPITemplate.Core.Interface;
 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
-using RESTfulAPITemplate.Api.Controller.Extension;
+using RESTfulAPITemplate.App.Controller.Extension;
 #if (ENABLEJWTAUTHENTICATION)
 using Microsoft.AspNetCore.Authorization;
 #endif
@@ -20,8 +20,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using RESTfulAPITemplate.Core.DTO;
-using RESTfulAPITemplate.Core.DomainModel;
+using RESTfulAPITemplate.App.Model;
+using RESTfulAPITemplate.Core.SeedWork;
 using RESTfulAPITemplate.Core.Entity;
 using RESTfulAPITemplate.Core.Interface;
 using RESTfulAPITemplate.Core.Specification;
@@ -33,7 +33,7 @@ using Larsson.RESTfulAPIHelper.Shaping;
 using Larsson.RESTfulAPIHelper.Caching;
 #endif
 
-namespace RESTfulAPITemplate.Api.Controller
+namespace RESTfulAPITemplate.App.Controller
 {
     /// <summary>
     /// Product

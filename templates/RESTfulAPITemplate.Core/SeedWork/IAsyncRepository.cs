@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ardalis.Specification;
-using RESTfulAPITemplate.Core.Entity;
 
-namespace RESTfulAPITemplate.Core.Interface
+namespace RESTfulAPITemplate.Core.SeedWork
 {
     public interface IAsyncRepository<T> where T : BaseEntity<Guid>
     {

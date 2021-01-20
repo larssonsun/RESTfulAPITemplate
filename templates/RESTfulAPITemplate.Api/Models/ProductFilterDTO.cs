@@ -1,7 +1,7 @@
 ﻿#if (RESTFULAPIHELPER)
 using Larsson.RESTfulAPIHelper.Pagination;
 #endif
-namespace RESTfulAPITemplate.Core.DTO
+namespace RESTfulAPITemplate.App.Model
 {
     public class ProductFilterDTO
 

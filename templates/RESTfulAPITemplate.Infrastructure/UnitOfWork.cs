@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using RESTfulAPITemplate.Core.Interface;
+using RESTfulAPITemplate.Core.SeedWork;
 
 namespace RESTfulAPITemplate.Infrastructure
 {

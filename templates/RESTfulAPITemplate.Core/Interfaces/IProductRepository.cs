@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using RESTfulAPITemplate.Core.DomainModel;
 using RESTfulAPITemplate.Core.Entity;
+using RESTfulAPITemplate.Core.SeedWork;
 
 namespace RESTfulAPITemplate.Core.Interface
 {

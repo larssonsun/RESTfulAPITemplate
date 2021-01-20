@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="FluentValidation" Version="8.6.1" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.1" />
     <PackageReference Include="Ardalis.Specification" Version="4.1.0" />
     <PackageReference Condition="'$(RESTFULAPIHELPER)' == 'False'" Include="MessagePack" Version="2.2.85" />
     <PackageReference Condition="'$(RESTFULAPIHELPER)' == 'True'" Include="Larsson.RESTfulAPIHelper" Version="0.0.4" />
@@ -17,7 +14,7 @@
     <RESTFULAPIHELPER>True</RESTFULAPIHELPER>
     <DefaultItemExcludes Condition="'$(ENABLEJWTAUTHENTICATION)' == 'False' ">$(DefaultItemExcludes);
     Interfaces\**\IAuthenticateService.cs;
-    Interfaces\**\IUserRepository.cs;
+    Interfaces\**\IScetiaUserRepository.cs;
     DomainModels\**\LoginRequest.cs;
     DomainModels\**\TokenManagement.cs;</DefaultItemExcludes>
     <DefaultItemExcludes Condition="'$(RESTFULAPIHELPER)' == 'False' ">$(DefaultItemExcludes);

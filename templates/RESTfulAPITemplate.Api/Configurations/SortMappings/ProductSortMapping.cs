@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Larsson.RESTfulAPIHelper.SortAndQuery;
-using RESTfulAPITemplate.Core.DTO;
+using RESTfulAPITemplate.App.Model;
 using RESTfulAPITemplate.Core.Entity;
 
-namespace RESTfulAPITemplate.Core.Configuration.SortMapping
+namespace RESTfulAPITemplate.App.Configuration.SortMapping
 {
     public class ProductSortMapping : PropertyMapping<ProductDTO, Product>
     {

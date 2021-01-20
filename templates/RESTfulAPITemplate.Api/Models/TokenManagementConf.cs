@@ -1,6 +1,6 @@
-namespace RESTfulAPITemplate.Core.DomainModel
+namespace RESTfulAPITemplate.App.Model
 {
-    public class TokenManagement
+    public class TokenManagementConf
     {
         public string Secret { get; set; }
         public string Issuer { get; set; }

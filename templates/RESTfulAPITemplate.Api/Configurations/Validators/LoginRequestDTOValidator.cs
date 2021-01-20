@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using RESTfulAPITemplate.Core.DTO;
+using RESTfulAPITemplate.App.Model;
 
-namespace RESTfulAPITemplate.Core.Validator
+namespace RESTfulAPITemplate.App.Validator
 {
-    public class LoginRequestDTOValidator : AbstractValidator<LoginRequestDTO>
+    public class LoginRequestDTOValidator : AbstractValidator<LoginCommandDTO>
     {
         public LoginRequestDTOValidator()
         {

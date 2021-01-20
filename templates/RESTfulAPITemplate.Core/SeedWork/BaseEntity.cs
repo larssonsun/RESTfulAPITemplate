@@ -1,4 +1,4 @@
-namespace RESTfulAPITemplate.Core.Entity
+namespace RESTfulAPITemplate.Core.SeedWork
 {
     public abstract class BaseEntity<T>
     {
