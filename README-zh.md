@@ -142,28 +142,33 @@ The template "ASP.NET Core RESTfulAPI Template by Larsson" was created successfu
 
 ```
 demoForDb
-├─templateUseDemoForDb.Api
+├─templateUseDemoForDb.Api - 应用层
+│  ├─Configurations
+│  │  ├─PropertyMappings - 配置DTO与实体、Filter、Command之间的映射
+│  │  ├─SortMappings - 配置根据DTO中的指定属性映射到实体中的属性来排序
+│  │  └─Validators - 配置DTO验证
 │  ├─Controllers
 │  ├─Middlewares
-│  └─Services
+│  ├─Services - 应用服务
 │  └─appsettings.json
-├─templateUseDemoForDb.Core
-│  ├─Configurations
-│  │  ├─PropertyMappings
-│  │  ├─SortMappings
-│  │  └─Validators
-│  ├─DomainModels
-│  ├─DTOs
-│  ├─Entities
-│  └─Interfaces
+│
+├─templateUseDemoForDb.Core - 领域层
+│  ├─Entities - 领域实体（聚合、实体、值对象）
+│  ├─Interfaces
+│  ├─SeedWork
+│  ├─Services - 领域服务
+│  └─Specifications - 领域规则
+│
 ├─templateUseDemoForDb.EfMigration - 数据库迁移项目
 │  ├─DbContext - 数据库上下文
 │  ├─EntityConfigurations - 使用Fluent API方式配置模型映射（从DBcontext中独立出来）
-│  └─Migrations - 迁移文件（由迁移自动生成）
-│  └─appsettings.json - 配置文件(数据库连接部分需与API一致)
+│  ├─Migrations - 迁移文件（由迁移自动生成）
+│  ├─appsettings.json - 配置文件(数据库连接部分需与API一致)
 │  └─DemoContextSeed.cs - 数据种子文件（提供示例数据）
-└─templateUseDemoForDb.Infrastructure
-    └─Repositories
+│
+└─templateUseDemoForDb.Infrastructure - 基础设施层
+│  ├─Repositories - 仓储
+│  └─Utils - 基础设施服务
 ```
 
 进入项目*templateUseDemoForDb.EfMigration*的目录并修改配置文件*appsettings.json*中的数据库连接
